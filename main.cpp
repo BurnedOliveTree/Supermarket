@@ -5,7 +5,7 @@
 //  Created by Ksawery Chodyniecki and Paweł Müller.
 //
 
-#include <iostream>
+#include "classes.h"
 
 int main () {
     std::cout << "Hello, World!" << std::endl;
