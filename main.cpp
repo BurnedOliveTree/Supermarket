@@ -1,13 +1,8 @@
-//
-//  main.cpp
-//  PrOI, Projekt 8 - Supermarket
-//
-//  Created by Ksawery Chodyniecki and Paweł Müller.
-//
+#include "main.h"
 
-#include "classes.h"
+void testCash();
 
-int main () {
-    std::cout << "Hello, World!" << std::endl;
+int main() {
+    testCash();
     return 0;
 }
