@@ -7,10 +7,9 @@
 #ifndef Invoice_hpp
 #define Invoice_hpp
 
-#include "Consumer.hpp"
+#include "Customer.hpp"
 #include "Product.hpp"
 
-#include <stdio.h>
 #include <iostream>
 #include <map>
 #include <vector>
@@ -22,8 +21,8 @@ class Invoice {
     bool isPayed;
     time_t date;
     int number;
-    Consumer buyer;
-    Consumer seller;
+    Customer buyer;
+    Customer seller;
     map<unsigned short, unsigned short> products;
     vector<Product> *stock;
         
@@ -33,13 +32,13 @@ public:
      @param argIsPayed Bool whether the invoice has been payed.
      @param argDate Type time_t specifies invoice date.
      @param argNumber Integer to numerate invoices.
-     @param argBuyer Class Consumer object.
-     @param argSeller Class Consumer object.
+     @param argBuyer Class Customer object.
+     @param argSeller Class Customer object.
      @param argProducts Map containing product ID and quantity (both unsigned short type).
      */
-    Invoice(bool argIsPayed = false, time_t argDate = 0, int argNumber = 0, Consumer argBuyer = 0, Consumer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
+    Invoice(bool argIsPayed = false, time_t argDate = 0, int argNumber = 0, Customer argBuyer = 0, Customer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
     
-    void editInvoice(bool argIsPayed, time_t argDate, int argNumber, Consumer argBuyer, Consumer argSeller, map<unsigned short, unsigned short> argProducts);
+    void editInvoice(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts);
     
     // Operators overloading:
     /*bool operator==(Invoice other);
@@ -51,8 +50,8 @@ public:
     bool getIsPayed();
     time_t getDate();
     int getNumber();
-    Consumer getBuyer();
-    Consumer getSeller();
+    Customer getBuyer();
+    Customer getSeller();
     map<unsigned short, unsigned short> getProducts();
 
     // Setters:
@@ -72,13 +71,13 @@ public:
      Sets buyer attribute to given argument.
      @param newBuyer New buyer object.
      */
-    void setBuyer(Consumer newBuyer);
+    void setBuyer(Customer newBuyer);
     
     /**
      Sets seller attribute to given argument.
      @param newSeller New seller object.
     */
-    void setSeller(Consumer newSeller);
+    void setSeller(Customer newSeller);
     
     /**
      Sets number attribute to given argument.

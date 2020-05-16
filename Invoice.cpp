@@ -5,7 +5,7 @@
 //
 
 #include "Invoice.hpp"
-#include "Consumer.hpp"
+#include "Customer.hpp"
 
 #include <iostream>
 #include <map>
@@ -17,11 +17,11 @@
 
 using namespace std;
 
-Invoice::Invoice(bool argIsPayed, time_t argDate, int argNumber, Consumer argBuyer, Consumer argSeller, map<unsigned short, unsigned short> argProducts) {
+Invoice::Invoice(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
     editInvoice(argIsPayed, argDate, argNumber, argBuyer, argSeller, argProducts);
 }
 
-void Invoice::editInvoice(bool argIsPayed, time_t argDate, int argNumber, Consumer argBuyer, Consumer argSeller, map<unsigned short, unsigned short> argProducts) {
+void Invoice::editInvoice(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
     isPayed = argIsPayed;
     date = argDate;
     number = argNumber;
@@ -47,11 +47,11 @@ int Invoice::getNumber() {
     return number;
 }
 
-Consumer Invoice::getBuyer() {
+Customer Invoice::getBuyer() {
     return buyer;
 }
 
-Consumer Invoice::getSeller() {
+Customer Invoice::getSeller() {
     return seller;
 }
 
@@ -71,12 +71,12 @@ void Invoice::setDate(time_t newDate) {
     return;
 }
 
-void Invoice::setBuyer(Consumer newBuyer) {
+void Invoice::setBuyer(Customer newBuyer) {
     buyer = newBuyer;
     return;
 }
 
-void Invoice::setSeller(Consumer newSeller) {
+void Invoice::setSeller(Customer newSeller) {
     seller = newSeller;
     return;
 }
