@@ -8,11 +8,12 @@
 
 using namespace std;
 
-Customer::Customer(bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry) {
+Customer::Customer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry) {
     basket.clear();
-    editCustomer(argIsBusiness, argName, argTaxNumber, argStreet, argBuildingNumber, argPostcode, argCity, argCountry);
+    editCustomer(argID, argIsBusiness, argName, argTaxNumber, argStreet, argBuildingNumber, argPostcode, argCity, argCountry);
 }
-void Customer::editCustomer(bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry) {
+void Customer::editCustomer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry) {
+    ID = argID;
     isBusiness = argIsBusiness;
     name = argName;
     taxNumber = argTaxNumber;
@@ -24,6 +25,9 @@ void Customer::editCustomer(bool argIsBusiness, string argName, string argTaxNum
 }
 
 // Getters:
+unsigned short Customer::getID() {
+    return ID;
+}
 bool Customer::getIsBusiness() {
     return isBusiness;
 }
@@ -53,6 +57,11 @@ map<unsigned short, unsigned short> Customer::getBasket() {
 }
 
 //Setters:
+void Customer::setID(unsigned short newID) {
+    ID = newID;
+    return;
+}
+
 void Customer::setIsBusiness(bool newIsBusiness) {
     isBusiness = newIsBusiness;
     return;

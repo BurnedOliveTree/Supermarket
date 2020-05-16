@@ -12,6 +12,7 @@
 using namespace std;
 
 class Customer {
+    unsigned short ID;
     bool isBusiness;
     string name;
     string taxNumber;
@@ -26,6 +27,7 @@ class Customer {
 public:
     /**
      Customer object constructor.
+     @param argID Customer's ID.
      @param argIsBusiness Bool determining whether the customer is provate or corporate.
      @param argName Name of customer.
      @param argTaxNumber Tax number of the customer.
@@ -35,10 +37,11 @@ public:
      @param argCity Customer's city.
      @param argCountry Customer's country.
      */
-    Customer(bool argIsBusiness = false, string argName = "None", string argTaxNumber = "0000000000", string argStreet = "None", string argBuildingNumber = "None", string argPostcode = "None", string argCity = "None", string argCountry = "None");
-    void editCustomer(bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry);
+    Customer(unsigned short argID = 0, bool argIsBusiness = false, string argName = "None", string argTaxNumber = "0000000000", string argStreet = "None", string argBuildingNumber = "None", string argPostcode = "None", string argCity = "None", string argCountry = "None");
+    void editCustomer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry);
     
     // Getters:
+    unsigned short getID();
     bool getIsBusiness();
     string getName();
     string getTaxNumber();
@@ -50,6 +53,7 @@ public:
     map<unsigned short, unsigned short> getBasket();
     
     //Setters:
+    void setID(unsigned short newID);
     void setIsBusiness(bool newIsBusiness);
     void setName(string newName);
     void setTaxNumber(string newTaxNumber);
