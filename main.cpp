@@ -16,5 +16,7 @@ int main(int argc, char* argv[]) {
     if (argc > 1) {
         std::cout << "this function is yet to be handled" << std::endl;
     }
+    TestInvoice invoiceTest;
+    invoiceTest.menu();
     return 0;
 }
