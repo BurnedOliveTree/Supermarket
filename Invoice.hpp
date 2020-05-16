@@ -1,8 +1,7 @@
 //
-//  Invoice.hpp
-//  Zadanie 3
+//  PROIekt - symulacja supermarketu
 //
-//  Created by Paweł Müller on 07/04/2020.
+//  Created by Ksawery Chodyniecki and Paweł Müller.
 //
 
 #ifndef Invoice_hpp

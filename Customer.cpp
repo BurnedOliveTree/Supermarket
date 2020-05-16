@@ -1,3 +1,9 @@
+//
+//  PROIekt - symulacja supermarketu
+//
+//  Created by Ksawery Chodyniecki and Paweł Müller.
+//
+
 #include "Customer.hpp"
 
 using namespace std;

@@ -1,3 +1,9 @@
+//
+//  PROIekt - symulacja supermarketu
+//
+//  Created by Ksawery Chodyniecki and Paweł Müller.
+//
+
 #ifndef Base_hpp
 #define Base_hpp
 

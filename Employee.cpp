@@ -1,3 +1,9 @@
+//
+//  PROIekt - symulacja supermarketu
+//
+//  Created by Ksawery Chodyniecki and Paweł Müller.
+//
+
 #include "Employee.hpp"
 
 Employee::Employee(std::string first, std::string last) {

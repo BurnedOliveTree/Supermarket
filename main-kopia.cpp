@@ -1,8 +1,7 @@
 //
-//  main.cpp
-//  Zadanie 3
+//  PROIekt - symulacja supermarketu
 //
-//  Created by Paweł Müller on 03/04/2020.
+//  Created by Ksawery Chodyniecki and Paweł Müller.
 //
 
 #include "Product.hpp"
