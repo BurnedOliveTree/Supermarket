@@ -123,9 +123,9 @@ void CashDesk::operator +=(Customer* shopper) {
 
 int CashDesk::findInQueue(Customer* shopper) {
 /// returns the position of a Customer in this Cash Register's queue
-    for (int i=getQueueLength(); i>=0; --i) {
+    for (unsigned long i = getQueueLength(); i >= 0; --i) {
         if (customerQueue[i] == shopper)
-            return i;
+            return int(i);
     }
     return -1;
 }
