@@ -1,20 +1,24 @@
-CC = gcc
+CC = g++
 
-all: base.o product.o customer.o employee.o invoice.o cashdesk.o shop.o test.o main.o
-	$(CC) -Wall base.o product.o customer.o employee.o invoice.o cashdesk.o shop.o test.o main.o -o all
-
-%.o: %.cpp
-	$(CC) -Wall -c $<
+supermarket: main.o Shop.o Base.o Invoice.o Product.o Customer.o Employee.o CashDesk.o TestInvoice.o
+	$(CC) main.o Shop.o Base.o Invoice.o Product.o Customer.o Employee.o CashDesk.o TestInvoice.o -o supermarket
 
 main.o: main.cpp
-test.o: test.cpp
-base.o: base.cpp
-cashdesk.o: cashdesk.cpp
-customer.o: customer.cpp
-employee.o: employee.cpp
-invoice.o: invoice.cpp
-product.o: product.cpp
-shop.o: shop.cpp
+	$(CC) -Wall -c main.cpp
+	
+%.o: %.cpp %.hpp
+	$(CC) -Wall -c $<
+
+Shop.o: Shop.cpp Shop.hpp
+Base.o: Base.cpp Base.hpp
+Invoice.o: Invoice.cpp Invoice.hpp
+Product.o: Product.cpp Product.hpp
+Customer.o: Customer.cpp Customer.hpp
+Employee.o: Employee.cpp Employee.hpp
+CashDesk.o: CashDesk.cpp CashDesk.hpp
+
+TestInvoice.o: Tests/TestInvoice.cpp Tests/TestInvoice.hpp
+	$(CC) -Wall -c Tests/TestInvoice.cpp
 
 clean:
-	rm *.o all
+	rm *.o supermarket
