@@ -33,10 +33,7 @@ bool CashDesk::operator ==(amount secondID) {
 
 bool CashDesk::operator !=(amount secondID) {
 /// comparison operator overload comparing ID of CashDesk object and a unsigned short
-    if (getID() != secondID)
-        return true;
-    else
-        return false;
+    return !(getID() == secondID);
 }
 
 bool CashDesk::operator ==(CashDesk cash2) {
@@ -49,10 +46,7 @@ bool CashDesk::operator ==(CashDesk cash2) {
 
 bool CashDesk::operator !=(CashDesk cash2) {
 /// comparison operator overload comparing IDs of CashDesk objects
-    if (getID() != cash2.getID())
-        return true;
-    else
-        return false;
+    return !(getID() != cash2.getID());
 }
 
 void CashDesk::open() {
