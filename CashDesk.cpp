@@ -130,7 +130,7 @@ int CashDesk::findInQueue(Customer* shopper) {
     return -1;
 }
 
-int CashDesk::getQueueLength() {
+unsigned long CashDesk::getQueueLength() {
 /// returns the amount of Customers standind in queue of that Cash Register
     return customerQueue.size();
 }

@@ -33,7 +33,7 @@ public:
     Employee* assign(Employee* assigned);
     void standInLine(Customer* shopper);
     int findInQueue(Customer* shopper);
-    int getQueueLength();
+    unsigned long getQueueLength();
     void leaveTheQueue(Customer* shopper);
     
     bool operator ==(amount secondID);
