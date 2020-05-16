@@ -1,10 +1,10 @@
 CC = gcc
 
 all: base.o product.o customer.o employee.o invoice.o cashdesk.o shop.o test.o main.o
-	$(CC) base.o product.o customer.o employee.o invoice.o cashdesk.o shop.o test.o main.o -o all
+	$(CC) -Wall base.o product.o customer.o employee.o invoice.o cashdesk.o shop.o test.o main.o -o all
 
 %.o: %.cpp
-	$(CC) -c $<
+	$(CC) -Wall -c $<
 
 main.o: main.cpp
 test.o: test.cpp
