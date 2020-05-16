@@ -17,6 +17,7 @@ class Shop {
 /// Shop object, representing the whole shop, containing all other objects (Employees, Customers, CashDesks etc.)
     std::vector<Customer> customerContainer;
     std::vector<CashDesk> cashDeskContainer;
+    std::vector<Product> productContainer;
 
 public:
     amount getCustomerAmount();
