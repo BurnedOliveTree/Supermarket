@@ -15,13 +15,19 @@
 
 class Shop {
 /// Shop object, representing the whole shop, containing all other objects (Employees, Customers, CashDesks etc.)
-    std::vector<Customer> customerContainer;
     std::vector<CashDesk> cashDeskContainer;
+    std::vector<Customer> customerContainer;
+    std::vector<Employee> employeeContainer;
     std::vector<Product> productContainer;
+    unsigned long maxCustomerAmount;
+    unsigned long maxCashDeskAmount;
+    unsigned long maxEmployeeAmount;
+    unsigned long maxProductAmount;
 
 public:
+    amount getCashDeskAmount();
     amount getCustomerAmount();
-    void createCustomer(amount argID);
+    void createCustomer();
     Customer& findCustomer(amount argID);
 };
 
