@@ -6,13 +6,11 @@
 
 #include "CashDesk.hpp"
 
-float checkCash(float cash);
-
-CashDesk::CashDesk(unsigned short argID, float cashIn) {
+CashDesk::CashDesk(unsigned short argID, int cashIn) {
 /// CashDesk object constructor
     objID = argID;
     isOpen = false;
-    cashAmount = checkCash(cashIn);
+    cashAmount = cashIn;
     assignee = nullptr;
 }
 
@@ -62,34 +60,31 @@ void CashDesk::close() {
     isOpen = false;
 }
 
-float CashDesk::getCash() {
+int CashDesk::getCash() {
     return cashAmount;
 }
 
-void CashDesk::addCash(float n) {
-    n = checkCash(n);
+void CashDesk::addCash(int n) {
     cashAmount += n;
 }
 
-void CashDesk::operator +=(float n) {
+void CashDesk::operator +=(int n) {
     addCash(n);
 }
 
-void CashDesk::setCash(float n) {
-    n = checkCash(n);
+void CashDesk::setCash(int n) {
     cashAmount = n;
 }
 
-void CashDesk::operator =(float n) {
+void CashDesk::operator =(int n) {
     setCash(n);
 }
 
-void CashDesk::takeCash(float n) {
-    n = checkCash(n);
+void CashDesk::takeCash(int n) {
     cashAmount -= n;
 }
 
-void CashDesk::operator -=(float n) {
+void CashDesk::operator -=(int n) {
     takeCash(n);
 }
 

@@ -19,18 +19,18 @@ class CashDesk {
     std::vector<Customer*> customerQueue;
     Employee* assignee;
     bool isOpen;
-    float cashAmount;
+    int cashAmount;
 
 public:
-    CashDesk(unsigned short no, float cashIn);
+    CashDesk(unsigned short no, int cashIn);
     unsigned short getID();
     void open();
     bool getState();
     void close();
-    float getCash();
-    void addCash(float n);
-    void setCash(float n);
-    void takeCash(float n);
+    int getCash();
+    void addCash(int n);
+    void setCash(int n);
+    void takeCash(int n);
     Employee* assign(Employee* assigned);
     void standInLine(Customer* shopper);
     int findInQueue(Customer* shopper);
@@ -41,10 +41,10 @@ public:
     bool operator ==(CashDesk cash2);
     bool operator !=(unsigned short secondID);
     bool operator !=(CashDesk cash2);
-    void operator =(float n);
+    void operator =(int n);
     void operator =(Employee* assigned);
-    void operator +=(float n);
-    void operator -=(float n);
+    void operator +=(int n);
+    void operator -=(int n);
     void operator +=(Customer* shopper);
     void operator -=(Customer* shopper);
     friend std::ostream& operator <<(std::ostream& output, CashDesk& cashDesk) {
