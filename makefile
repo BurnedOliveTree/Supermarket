@@ -10,7 +10,6 @@ main.o: main.cpp
 	$(CC) -Wall -c $<
 
 Shop.o: Shop.cpp Shop.hpp
-Base.o: Base.cpp Base.hpp
 Invoice.o: Invoice.cpp Invoice.hpp
 Product.o: Product.cpp Product.hpp
 Customer.o: Customer.cpp Customer.hpp
