@@ -4,7 +4,6 @@
 //  Created by Ksawery Chodyniecki and Paweł Müller.
 //
 
-#include "Base.hpp"
 #include "Product.hpp"
 #include "Customer.hpp"
 #include "Employee.hpp"
