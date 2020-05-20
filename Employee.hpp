@@ -7,7 +7,7 @@
 #ifndef Employee_hpp
 #define Employee_hpp
 
-#include "Base.hpp"
+#include <string>
 
 class Employee {
 /// Employee object, eaech representing a single employee

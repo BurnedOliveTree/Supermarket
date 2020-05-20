@@ -7,22 +7,23 @@
 #ifndef CashDesk_hpp
 #define CashDesk_hpp
 
-#include "Base.hpp"
 #include "Customer.hpp"
 #include "Employee.hpp"
 
+#include <iostream>
+#include <vector>
+
 class CashDesk {
 /// CashDesk object, each representing a single cash register and it's queue of customers
-    amount objID;
-    std::pair<short, short> position;
+    unsigned short objID;
     std::vector<Customer*> customerQueue;
     Employee* assignee;
     bool isOpen;
     float cashAmount;
 
 public:
-    CashDesk(amount no, short x, short y, float cashIn);
-    amount getID();
+    CashDesk(unsigned short no, float cashIn);
+    unsigned short getID();
     void open();
     bool getState();
     void close();
@@ -36,9 +37,9 @@ public:
     unsigned long getQueueLength();
     void leaveTheQueue(Customer* shopper);
     
-    bool operator ==(amount secondID);
+    bool operator ==(unsigned short secondID);
     bool operator ==(CashDesk cash2);
-    bool operator !=(amount secondID);
+    bool operator !=(unsigned short secondID);
     bool operator !=(CashDesk cash2);
     void operator =(float n);
     void operator =(Employee* assigned);

@@ -7,7 +7,8 @@
 #ifndef Customer_hpp
 #define Customer_hpp
 
-#include "Base.hpp"
+#include <string>
+#include <map>
 
 using namespace std;
 

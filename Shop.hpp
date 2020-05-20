@@ -7,15 +7,17 @@
 #ifndef Shop_hpp
 #define Shop_hpp
 
-#include "Base.hpp"
 #include "Product.hpp"
 #include "Customer.hpp"
 #include "Employee.hpp"
 #include "CashDesk.hpp"
+
+#include <iostream> // będzie <string>
+#include <vector>
+#include <cmath>
+#include <ctime>
 #include <chrono>
 #include <thread>
-#include <ctime>
-#include <cmath>
 
 template <typename T, unsigned short maxArg=65535>
 struct Container {

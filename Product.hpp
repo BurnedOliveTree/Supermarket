@@ -7,7 +7,8 @@
 #ifndef Product_hpp
 #define Product_hpp
 
-#include "Base.hpp"
+#include <string>
+#include <cmath>
 
 using namespace std;
 

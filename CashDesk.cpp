@@ -8,22 +8,20 @@
 
 float checkCash(float cash);
 
-CashDesk::CashDesk(amount argID, short x, short y, float cashIn) {
+CashDesk::CashDesk(unsigned short argID, float cashIn) {
 /// CashDesk object constructor
     objID = argID;
-    std::pair<short, short> tempPair(x, y);
-    position = tempPair;
     isOpen = false;
     cashAmount = checkCash(cashIn);
     assignee = nullptr;
 }
 
-amount CashDesk::getID() {
+unsigned short CashDesk::getID() {
 /// returns the ID of CashDesk object
     return objID;
 }
 
-bool CashDesk::operator ==(amount secondID) {
+bool CashDesk::operator ==(unsigned short secondID) {
 /// comparison operator overload comparing IDs of CashDesk object and a unsigned short
     if (getID() == secondID)
         return true;
@@ -31,7 +29,7 @@ bool CashDesk::operator ==(amount secondID) {
         return false;
 }
 
-bool CashDesk::operator !=(amount secondID) {
+bool CashDesk::operator !=(unsigned short secondID) {
 /// comparison operator overload comparing ID of CashDesk object and a unsigned short
     return !(getID() == secondID);
 }

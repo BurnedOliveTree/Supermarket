@@ -44,6 +44,7 @@ void Shop::event() {
         custID = std::rand() % customers.size();
         // while(!cashDesks[otherID].getState()) - potential of an infinite loop, have to make sure first that there is one CashDesk open or check just for open CashDesks; also, it needs to be a do{...}while;
         otherID = std::rand() % cashDesks.size();
+        cashDesks[otherID].standInLine(&findCustomer(custID));
         std::cout << "Customer " << customers[custID].getID() << " has entered the queue to cash desk " << cashDesks[otherID].getID() << std::endl;
     }
     else if (diceRoll <= 100 - 5 * variable) {
@@ -93,7 +94,7 @@ unsigned short Shop::getProductAmount() {
 int Shop::createCashDesk() {
 /// calls the CashDesk constructor, appending him to the vector of all cash desks in this shop
     if (cashDesks.iterator + 1 < cashDesks.maxAmount) {
-        cashDesks.container.push_back(CashDesk(cashDesks.iterator, 0, 0, 0));
+        cashDesks.container.push_back(CashDesk(cashDesks.iterator, 0));
         cashDesks.iterator++;
         return cashDesks.iterator - 1;
     }
