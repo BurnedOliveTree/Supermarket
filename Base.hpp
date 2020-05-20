@@ -9,6 +9,8 @@
 
 #define amount short unsigned int
 
+// może tu wsadzić klasę do polimorfii / dziedziczenia, która będzie obrabiać jakoś pieniądze? czy coś?
+
 #include <cmath>
 #include <iostream>
 #include <string>

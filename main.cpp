@@ -10,7 +10,7 @@
 #include "Employee.hpp"
 #include "CashDesk.hpp"
 #include "Shop.hpp"
-#include "Tests/TestInvoice.hpp"
+#include "Tests/TestInvoice.cpp"
 
 #include <iostream>
 #include <fstream>
@@ -26,7 +26,9 @@ vector<unsigned int> handleArgs(int argc, char *argv[]);
 vector<unsigned int> strVectorToIntVector(vector<string> stringData);
 
 int main(int argc, char* argv[]) {
-    vector<unsigned int> givenArguments = handleArgs(argc, argv);
+    // vector<unsigned int> givenArguments = handleArgs(argc, argv);
+    Shop simulation;
+    simulation.run(20);
     return 0;
 }
 

@@ -12,23 +12,45 @@
 #include "Customer.hpp"
 #include "Employee.hpp"
 #include "CashDesk.hpp"
+#include <chrono>
+#include <thread>
+#include <ctime>
+#include <cmath>
+
+template <typename T, unsigned short maxArg=65535>
+struct Container {
+/// Container structure containing std::vector of specific objects, maximum amounts of them and their current "iterator" - a special value that is the new objects ID
+    unsigned short maxAmount = maxArg;
+    unsigned short iterator = 0;
+    std::vector<T> container;
+    
+    unsigned long size() {
+        return container.size();
+    }
+    T& operator[](unsigned long index) {
+        return container[index];
+    }
+};
 
 class Shop {
 /// Shop object, representing the whole shop, containing all other objects (Employees, Customers, CashDesks etc.)
-    std::vector<CashDesk> cashDeskContainer;
-    std::vector<Customer> customerContainer;
-    std::vector<Employee> employeeContainer;
-    std::vector<Product> productContainer;
-    unsigned long maxCustomerAmount;
-    unsigned long maxCashDeskAmount;
-    unsigned long maxEmployeeAmount;
-    unsigned long maxProductAmount;
-
+    Container<CashDesk> cashDesks;
+    Container<Customer> customers;
+    Container<Employee> employees;
+    Container<Product> products;
 public:
-    amount getCashDeskAmount();
-    amount getCustomerAmount();
-    void createCustomer();
-    Customer& findCustomer(amount argID);
+    void run(unsigned short time);
+    void event();
+    void executeQueues();
+    unsigned short getCashDeskAmount();
+    unsigned short getCustomerAmount();
+    unsigned short getEmployeeAmount();
+    unsigned short getProductAmount();
+    int createCashDesk();
+    int createCustomer();
+    int createProduct();
+    Customer& findCustomer(unsigned short argID);
+    Product& findProduct(unsigned short argID);
 };
 
 #endif /* Shop_hpp */
