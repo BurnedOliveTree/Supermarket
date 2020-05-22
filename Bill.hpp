@@ -113,4 +113,21 @@ public:
     void removeProduct(unsigned short newProductID, unsigned short newQuantity);
 };
 
+
+class Invoice: public Bill {
+    public:
+    using Bill::Bill;
+    
+    /**
+     Generates ASCII representation of the bill.
+     */
+    string generate();
+    
+    /**
+     Saves ASCII representation of the bill to file.
+     @param filename String filename to use. Remember about extension (preferred .txt).
+     */
+    void save(string filename);
+};
+
 #endif /* Bill_hpp */
