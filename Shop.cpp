@@ -5,6 +5,7 @@
 //
 
 #include "Shop.hpp"
+#include <fstream>
 
 Shop::Shop() {
     //konstruktor domyslny
@@ -12,6 +13,21 @@ Shop::Shop() {
 
 Shop::Shop(string filename) {
     //odczyt pliku i przekazanie argumentow
+    unsigned short values[5] = {};
+    char i = 0;
+    
+    ifstream file;
+    file.open(filename);
+    if (file >> values[i++]) {}
+    else cout << "File error." << endl;
+    
+    file.close();
+    
+    //czas, ilosc kas, ilosc pracownikow, ilosc klientow
+    time = values[0];
+    cashDesks.maxAmount = values[1];
+    customers.maxAmount = values[2];
+    customers.maxAmount = values[3];
 }
 
 Shop::Shop(char *arguments[]) {
