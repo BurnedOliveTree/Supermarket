@@ -21,6 +21,13 @@ using namespace std;
 
 void manualTest();
 
+/**
+        Kolejnosc argumentow:
+                czas, ilosc kas, ilosc pracownikow, ilosc klientow, ...
+            lub
+                nazwa pliku z wartosciami (w powyzszej kolejnosci).
+        Brak argumentow skutkuje wlaczeniem recznego sterowania.
+ */
 int main(int argc, char* argv[]) {
     switch(argc) {
         case 0: case 1: {
