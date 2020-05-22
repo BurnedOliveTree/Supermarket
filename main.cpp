@@ -4,10 +4,6 @@
 //  Created by Ksawery Chodyniecki and Paweł Müller.
 //
 
-#include "Product.hpp"
-#include "Customer.hpp"
-#include "Employee.hpp"
-#include "CashDesk.hpp"
 #include "Shop.hpp"
 #include "Tests/TestInvoice.hpp"
 

@@ -7,7 +7,7 @@
 
 #include "TestInvoice.hpp"
 #include "../Product.hpp"
-#include "../Invoice.hpp"
+#include "../Bill.hpp"
 #include "../Customer.hpp"
 
 #include <iostream>
