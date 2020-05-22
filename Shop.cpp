@@ -6,7 +6,19 @@
 
 #include "Shop.hpp"
 
-void Shop::run(unsigned short time) {
+Shop::Shop() {
+    //konstruktor domyslny
+}
+
+Shop::Shop(string filename) {
+    //odczyt pliku i przekazanie argumentow
+}
+
+Shop::Shop(char *arguments[]) {
+    //odczyt argumentow przekazanych bezposrednio
+}
+
+void Shop::run() {
 /// main method of class, which simulates the whole shop
     createProduct();
     createCashDesk();

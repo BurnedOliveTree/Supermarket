@@ -40,8 +40,13 @@ class Shop {
     Container<Customer> customers;
     Container<Employee> employees;
     Container<Product> products;
+    unsigned short time;
+
 public:
-    void run(unsigned short time);
+    Shop();
+    Shop(string filename);
+    Shop(char *arguments[]);
+    void run();
     void event();
     void executeQueues();
     unsigned short getCashDeskAmount();
