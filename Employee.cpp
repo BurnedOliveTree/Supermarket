@@ -11,6 +11,7 @@ Employee::Employee(unsigned short argID, std::string first, std::string last) {
     objID = argID;
     firstName = first;
     lastName = last;
+    occupied = false;
 }
 
 unsigned short Employee::getID() {

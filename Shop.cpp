@@ -14,6 +14,7 @@ Shop::Shop() {
 Shop::Shop(unsigned long argTime) {
     //konstruktor niedomyslny
     time = argTime;
+    scanSpeed = 5; // 5, hm
 }
 
 Shop::Shop(string filename) {
@@ -30,6 +31,7 @@ Shop::Shop(string filename) {
     
     //czas, ilosc kas, ilosc pracownikow, ilosc klientow
     time = values[0];
+    scanSpeed = 5; // 5, hm
     cashDesks.maxAmount = values[1];
     customers.maxAmount = values[2];
     customers.maxAmount = values[3];
@@ -78,7 +80,7 @@ void Shop::event() {
         custID = std::rand() % customers.size();
         // while(!cashDesks[otherID].getState()) - potential of an infinite loop, have to make sure first that there is one CashDesk open or check just for open CashDesks; also, it needs to be a do{...}while;
         otherID = std::rand() % cashDesks.size();
-        cashDesks[otherID].standInLine(&findCustomer(custID));
+        cashDesks[otherID].push(&findCustomer(custID));
         std::cout << "Customer " << customers[custID].getID() << " has entered the queue to cash desk " << cashDesks[otherID].getID() << std::endl;
     }
     else if (diceRoll <= 100 - 5 * variable) {
@@ -103,7 +105,15 @@ void Shop::event() {
 }
 
 void Shop::executeQueues() {
-    return;
+    Customer* custPoint = nullptr;
+    for (unsigned long i = 0; i < cashDesks.size(); ++i) { // size should be maxAmount
+        if (cashDesks[i].getState()) {
+            custPoint = cashDesks[i].scan(scanSpeed);
+            if (custPoint != nullptr) {
+                // zaplac, wyjdz, stworz rachunek i wgl
+            }
+        }
+    }
 }
 
 unsigned short Shop::getCashDeskAmount() {

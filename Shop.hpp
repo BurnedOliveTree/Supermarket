@@ -24,6 +24,7 @@ struct Container {
 /// Container structure containing std::vector of specific objects, maximum amounts of them and their current "iterator" - a special value that is the new objects ID
     unsigned short maxAmount = maxArg;
     unsigned short iterator = 0;
+    unsigned short active = 0;
     std::vector<T> container;
     
     unsigned long size() {
@@ -41,6 +42,7 @@ class Shop {
     Container<Employee> employees;
     Container<Product> products;
     unsigned short time;
+    unsigned short scanSpeed;
 
 public:
     Shop();

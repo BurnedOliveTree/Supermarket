@@ -12,6 +12,7 @@ CashDesk::CashDesk(unsigned short argID, int cashIn) {
     isOpen = false;
     cashAmount = cashIn;
     assignee = nullptr;
+    itemsScaned = 0;
 }
 
 unsigned short CashDesk::getID() {
@@ -105,36 +106,28 @@ void CashDesk::operator =(Employee* assigned) {
     assign(assigned);
 }
 
-void CashDesk::standInLine(Customer* shopper) {
+void CashDesk::push(Customer* shopper) {
 /// assigns a Customer to the CashDesk queue (checking whether Customer is already in a queue will be done via methods and attributes of the Customer class)
-    customerQueue.push_back(shopper);
+    customerQueue.push(shopper);
 }
 
-void CashDesk::operator +=(Customer* shopper) {
-    standInLine(shopper);
-}
-
-int CashDesk::findInQueue(Customer* shopper) {
-/// returns the position of a Customer in this Cash Register's queue
-    for (unsigned long i = getQueueLength(); i >= 0; --i) {
-        if (customerQueue[i] == shopper)
-            return int(i);
-    }
-    return -1;
-}
-
-unsigned long CashDesk::getQueueLength() {
+unsigned long CashDesk::size() {
 /// returns the amount of Customers standind in queue of that Cash Register
     return customerQueue.size();
 }
 
-void CashDesk::leaveTheQueue(Customer* shopper) {
-/// removes given Customer from the queue
-    int i = CashDesk::findInQueue(shopper);
-    std::cout << i << " ";
-    customerQueue.erase(customerQueue.begin()+i);
+Customer* CashDesk::pop() {
+/// removes first Customer from the queue
+    Customer* result = customerQueue.front();
+    customerQueue.pop();
+    return result;
 }
 
-void CashDesk::operator -=(Customer* shopper) {
-    leaveTheQueue(shopper);
+Customer* CashDesk::scan(unsigned short scanSpeed) {
+    itemsScaned += scanSpeed;
+    if (customerQueue.front() -> getBasketSize() < itemsScaned) {
+        itemsScaned = 0;
+        return pop();
+    }
+    return nullptr;
 }
