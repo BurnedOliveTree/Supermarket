@@ -14,6 +14,7 @@ Shop::Shop() {
 Shop::Shop(unsigned long argTime) {
     //konstruktor niedomyslny
     time = argTime;
+    scanSpeed = 5; // 5, hm
 }
 
 Shop::Shop(string filename) {
@@ -30,6 +31,7 @@ Shop::Shop(string filename) {
     
     //czas, ilosc kas, ilosc pracownikow, ilosc klientow
     time = values[0];
+    scanSpeed = 5; // 5, hm
     cashDesks.maxAmount = values[1];
     customers.maxAmount = values[2];
     customers.maxAmount = values[3];
@@ -103,9 +105,13 @@ void Shop::event() {
 }
 
 void Shop::executeQueues() {
+    Customer* custPoint = nullptr;
     for (unsigned long i = 0; i < cashDesks.size(); ++i) { // size should be maxAmount
         if (cashDesks[i].getState()) {
-            cashDesks[i].scan(5); // zmien 5 na scanSpeed
+            custPoint = cashDesks[i].scan(scanSpeed);
+            if (custPoint != nullptr) {
+                // zaplac, wyjdz, stworz rachunek i wgl
+            }
         }
     }
 }
