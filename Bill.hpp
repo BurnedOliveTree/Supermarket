@@ -41,12 +41,6 @@ public:
     
     void editBill(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts);
     
-    // Operators overloading:
-    /*bool operator==(Bill other);
-    bool operator!=(Bill other);
-    Bill operator=(Bill other);
-    Bill(Bill &pattern);*/
-    
     // Getters:
     bool getIsPayed();
     time_t getDate();
