@@ -5,7 +5,7 @@
 //
 
 #include "Shop.hpp"
-#include "Tests/TestInvoice.hpp"
+#include "TestInvoice.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -14,6 +14,14 @@
 #include <vector>
 
 using namespace std;
+
+void stupidTemporaryMethod() {
+    unsigned long a;
+    cout << "Podaj czas trwania [s]:" << endl;
+    cin >> a;
+    Shop simulation(a);
+    simulation.run();
+}
 
 void manualTest();
 
@@ -27,8 +35,10 @@ void manualTest();
 int main(int argc, char* argv[]) {
     switch(argc) {
         case 0: case 1: {
-            manualTest();
-            break; }
+            stupidTemporaryMethod();
+            // manualTest(); // temporarily commented
+            break;
+        }
         case 2: {
             Shop simulation(argv[1]);
             simulation.run();
