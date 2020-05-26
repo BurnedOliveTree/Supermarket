@@ -21,7 +21,7 @@ class Bill {
 protected:
     bool isPayed;
     time_t date;
-    int number;
+    unsigned short ID;
     Customer buyer;
     Customer seller;
     map<unsigned short, unsigned short> products;
@@ -32,19 +32,18 @@ public:
      Bill object constructor:
      @param argIsPayed Bool whether the bill has been payed.
      @param argDate Type time_t specifies bill date.
-     @param argNumber Integer to numerate bills.
+     @param argID Integer to numerate bills.
      @param argBuyer Class Customer object.
      @param argSeller Class Customer object.
      @param argProducts Map containing product ID and quantity (both unsigned short type).
      */
-    Bill(bool argIsPayed = false, time_t argDate = 0, int argNumber = 0, Customer argBuyer = 0, Customer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
+    Bill(bool argIsPayed = false, time_t argDate = 0, unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
     
-    void editBill(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts);
     
     // Getters:
     bool getIsPayed();
     time_t getDate();
-    int getNumber();
+    unsigned short getID();
     Customer getBuyer();
     Customer getSeller();
     map<unsigned short, unsigned short> getProducts();
@@ -76,9 +75,9 @@ public:
     
     /**
      Sets number attribute to given argument.
-     @param newNumber New number.
+     @param newID New number.
      */
-    void setNumber(int newNumber);
+    void setID(unsigned short newID);
     
     /**
      Sets stock.

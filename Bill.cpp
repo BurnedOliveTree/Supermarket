@@ -17,14 +17,10 @@
 
 using namespace std;
 
-Bill::Bill(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
-    editBill(argIsPayed, argDate, argNumber, argBuyer, argSeller, argProducts);
-}
-
-void Bill::editBill(bool argIsPayed, time_t argDate, int argNumber, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
+Bill::Bill(bool argIsPayed, time_t argDate, unsigned short argID, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
     isPayed = argIsPayed;
     date = argDate;
-    number = argNumber;
+    ID = argID;
     buyer = argBuyer;
     seller = argSeller;
     if (argProducts.empty()) {
@@ -33,6 +29,8 @@ void Bill::editBill(bool argIsPayed, time_t argDate, int argNumber, Customer arg
         products = argProducts;
     }
 }
+
+
 
 // Getters:
 bool Bill::getIsPayed() {
@@ -43,8 +41,8 @@ time_t Bill::getDate() {
     return date;
 }
 
-int Bill::getNumber() {
-    return number;
+unsigned short Bill::getID() {
+    return ID;
 }
 
 Customer Bill::getBuyer() {
@@ -81,8 +79,8 @@ void Bill::setSeller(Customer newSeller) {
     return;
 }
 
-void Bill::setNumber(int newNumber) {
-    number = newNumber;
+void Bill::setID(unsigned short newID) {
+    ID = newID;
     return;
 }
 
@@ -143,7 +141,7 @@ string Invoice::generate() {
     for (int i = 0; i < 78; i++) output += "_";
     output += "\n";
     for (int i = 0; i < 30; i++) output += " ";
-    output += "INVOICE  no. " + to_string(number) + "\n";
+    output += "INVOICE  no. " + to_string(ID) + "\n";
     output += "FROM: \n" + seller.getInfo() + "\n\n";
     output += "BILL TO: \n" + buyer.getInfo() + "\n\n";
     for (int i = 0; i < 78; i++) output += "_";

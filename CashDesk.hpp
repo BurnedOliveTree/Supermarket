@@ -15,7 +15,7 @@
 
 class CashDesk {
 /// CashDesk object, each representing a single cash register and it's queue of customers
-    unsigned short objID;
+    unsigned short ID;
     std::vector<Customer*> customerQueue;
     Employee* assignee;
     bool isOpen;

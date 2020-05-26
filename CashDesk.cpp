@@ -8,7 +8,7 @@
 
 CashDesk::CashDesk(unsigned short argID, int cashIn) {
 /// CashDesk object constructor
-    objID = argID;
+    ID = argID;
     isOpen = false;
     cashAmount = cashIn;
     assignee = nullptr;
@@ -16,7 +16,7 @@ CashDesk::CashDesk(unsigned short argID, int cashIn) {
 
 unsigned short CashDesk::getID() {
 /// returns the ID of CashDesk object
-    return objID;
+    return ID;
 }
 
 bool CashDesk::operator ==(unsigned short secondID) {

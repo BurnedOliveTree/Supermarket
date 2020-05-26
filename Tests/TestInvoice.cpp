@@ -230,7 +230,7 @@ int TestInvoice::invoiceChoice(vector<Invoice> list) {
     
     output += "Wybierz indeks:\n";
     for (int i = 0; i < list.size(); i++) {
-        output += to_string(i) + ". Faktura nr:" + to_string(list[i].getNumber()) + "\n";
+        output += to_string(i) + ". Faktura nr:" + to_string(list[i].getID()) + "\n";
     }
     output += "Twoj wybor: ";
     cout << output;
@@ -353,7 +353,7 @@ void TestInvoice::editInvoice(Invoice &invoice) {
             case number:
                 cout << "Podaj nowy numer:\n";
                 cin >> newInt;
-                invoice.setNumber(newInt);
+                invoice.setID(newInt);
                 break;
             case buyer:
                 cout << "Wybierz nabywce:\n";
