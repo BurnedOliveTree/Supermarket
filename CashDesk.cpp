@@ -45,9 +45,11 @@ bool CashDesk::operator !=(CashDesk cash2) {
     return !(getID() != cash2.getID());
 }
 
-void CashDesk::open() {
+void CashDesk::open(Employee* assigned) {
 /// sets this CashDesk status to open
     isOpen = true;
+    assigned -> setBusy();
+    assignee = assigned;
 }
 
 bool CashDesk::getState() {
@@ -55,9 +57,11 @@ bool CashDesk::getState() {
     return isOpen;
 }
 
-void CashDesk::close() {
+Employee* CashDesk::close() {
 /// sets this CashDesk status to closed
     isOpen = false;
+    assignee -> setFree();
+    return assignee;
 }
 
 int CashDesk::getCash() {
@@ -92,6 +96,8 @@ Employee* CashDesk::assign(Employee* assigned) {
 /// assigns an Employee to the cash register and returns the previously assigned Employee, if there was any
     Employee* temp = assignee;
     assignee = assigned;
+    assigned -> setBusy();
+    temp -> setFree();
     return temp;
 }
 

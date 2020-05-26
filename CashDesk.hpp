@@ -24,9 +24,9 @@ class CashDesk {
 public:
     CashDesk(unsigned short no, int cashIn);
     unsigned short getID();
-    void open();
+    void open(Employee* assigned);
     bool getState();
-    void close();
+    Employee* close();
     int getCash();
     void addCash(int n);
     void setCash(int n);

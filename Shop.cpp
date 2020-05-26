@@ -11,6 +11,11 @@ Shop::Shop() {
     //konstruktor domyslny
 }
 
+Shop::Shop(unsigned long argTime) {
+    //konstruktor niedomyslny
+    time = argTime;
+}
+
 Shop::Shop(string filename) {
     //odczyt pliku i przekazanie argumentow
     unsigned short values[5] = {};
@@ -38,6 +43,7 @@ void Shop::run() {
 /// main method of class, which simulates the whole shop
     createProduct();
     createCashDesk();
+    createEmployee();
     if (customers.maxAmount == 65535)
         customers.maxAmount = time * 0.8; // a temporary mean
     std::srand(std::time(nullptr));
@@ -79,20 +85,21 @@ void Shop::event() {
     // random cashDesk changes it status (open / close)
         otherID = std::rand() % cashDesks.size();
         if (cashDesks[otherID].getState()) {
-            cashDesks[otherID].close();
-            // free the employee if he is not freed by close()
-            std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just closed" << std::endl;
+            std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just closed, freeing employee " << cashDesks[otherID].close() -> getID() << std::endl;
         }
         else {
-            cashDesks[otherID].open();
-            // get the employee busy if he is not getting busy by open()
-            std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just opened" << std::endl;
+            // while(!employees[custID].isOccupied()) - potential of an infinite loop, same comment as in CashDesk;
+            custID = std::rand() % employees.size();
+            cashDesks[otherID].open(&employees[custID]);
+            std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just opened and employee " << employees[custID].getID() << " has been assigned to it" << std::endl;
         }
     }
+    // else if - a random Employee changes shifts of another on a random CashDesk
     else {
     // customer asks employee about something
         std::cout << "A random customer has asked a random employee about most random of things" << std::endl;
     }
+    std::cout << std::endl;
 }
 
 void Shop::executeQueues() {
@@ -135,6 +142,16 @@ int Shop::createCustomer() {
         customers.container.push_back(Customer(customers.iterator, false, "Jan K", "1234567890", "Sezamkowa", "18", "05-800", "Warszawa", "Polska"));
         customers.iterator++;
         return customers.iterator - 1;
+    }
+    return -1;
+}
+
+int Shop::createEmployee() {
+/// calls the Product constructor, appending him to the vector of all products in this shop
+    if (employees.iterator + 1 < employees.maxAmount) {
+        employees.container.push_back(Employee(employees.iterator, "Geralt", "z Rivii"));
+        employees.iterator++;
+        return employees.iterator - 1;
     }
     return -1;
 }

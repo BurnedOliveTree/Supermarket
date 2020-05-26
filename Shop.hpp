@@ -44,6 +44,7 @@ class Shop {
 
 public:
     Shop();
+    Shop(unsigned long argTime);
     Shop(string filename);
     Shop(char *arguments[]);
     void run();
@@ -55,6 +56,7 @@ public:
     unsigned short getProductAmount();
     int createCashDesk();
     int createCustomer();
+    int createEmployee();
     int createProduct();
     Customer& findCustomer(unsigned short argID);
     Product& findProduct(unsigned short argID);
