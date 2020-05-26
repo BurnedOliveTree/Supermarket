@@ -31,7 +31,6 @@ Bill::Bill(bool argIsPayed, time_t argDate, unsigned short argID, Customer argBu
 }
 
 
-
 // Getters:
 bool Bill::getIsPayed() {
     return isPayed;
@@ -134,8 +133,7 @@ void Bill::removeProduct(unsigned short removeProductID, unsigned short removeQu
 
 string Invoice::generate() {
     vector<Product> stockList = *stock;
-    char tempTime [80];
-    strftime (tempTime, 80 , "%F", localtime(&date));
+
     string output = "", temp = "", spaces = "                                   ";
     
     for (int i = 0; i < 78; i++) output += "_";
@@ -201,7 +199,7 @@ void Invoice::save(string filename) {
 
 
 
-/*   =======================    BILL    =======================   */
+/*   =======================   RECEIPT   =======================   */
 
 string Receipt::generate() {
     return "Dumb ways to die.";
@@ -213,4 +211,15 @@ void Receipt::save(string filename) {
     file << generate();
     file.close();
     return;
+}
+
+string centerString(string text, unsigned short length, string filler) {
+    unsigned short textLength = text.size(), spaceCount = (length - textLength) / 2;
+    string output = "";
+    
+    for (int i = 0; i < spaceCount; i++) output += filler;
+    output += text;
+    for (int i = 0; i < length - spaceCount; i++) output += filler;
+    
+    return output;
 }
