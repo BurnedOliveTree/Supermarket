@@ -24,14 +24,31 @@ struct Container {
 /// Container structure containing std::vector of specific objects, maximum amounts of them and their current "iterator" - a special value that is the new objects ID
     unsigned short maxAmount = maxArg;
     unsigned short iterator = 0;
-    unsigned short active = 0;
     std::vector<T> container;
+    std::vector<T*> active;
     
     unsigned long size() {
         return container.size();
     }
+    unsigned long activeSize() {
+        return active.size();
+    }
     T& operator[](unsigned long index) {
         return container[index];
+    }
+    unsigned long findActive(unsigned short argID) {
+        for (unsigned long i = 0; i < activeSize(); ++i) {
+            if (active[i].getID() == argID)
+                return i;
+        }
+        return -1;
+    }
+    T* find(unsigned short argID) {
+    /// returns the adress of T object based on a given ID
+        for (unsigned long i=container.size()-1; i>=0; --i)
+            if (container[i].getID() == argID)
+                return &container[i];
+        return nullptr;
     }
 };
 
@@ -47,7 +64,7 @@ class Shop {
 public:
     Shop();
     Shop(unsigned long argTime);
-    Shop(string filename);
+    Shop(std::string filename);
     Shop(char *arguments[]);
     void run();
     void event();
@@ -60,8 +77,6 @@ public:
     int createCustomer();
     int createEmployee();
     int createProduct();
-    Customer& findCustomer(unsigned short argID);
-    Product& findProduct(unsigned short argID);
 };
 
 #endif /* Shop_hpp */
