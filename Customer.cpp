@@ -55,6 +55,9 @@ string Customer::getCountry() {
 map<unsigned short, unsigned short> Customer::getBasket() {
     return basket;
 }
+unsigned long Customer::getBasketSize() {
+    return basket.size();
+}
 
 //Setters:
 void Customer::setID(unsigned short newID) {

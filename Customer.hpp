@@ -52,6 +52,7 @@ public:
     string getCity();
     string getCountry();
     map<unsigned short, unsigned short> getBasket();
+    unsigned long getBasketSize();
     
     //Setters:
     void setID(unsigned short newID);
