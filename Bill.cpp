@@ -198,3 +198,21 @@ void Invoice::save(string filename) {
     file.close();
     return;
 }
+
+
+
+
+
+/*   =======================    BILL    =======================   */
+
+string Receipt::generate() {
+    return "Dumb ways to die.";
+}
+
+void Receipt::save(string filename) {
+    fstream file;
+    file.open(filename, ios::out);
+    file << generate();
+    file.close();
+    return;
+}
