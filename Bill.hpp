@@ -144,6 +144,4 @@ class Receipt: public Bill {
     void save(string filename);
 };
 
-string centerString(string text, unsigned short length, string filler);
-
 #endif /* Bill_hpp */

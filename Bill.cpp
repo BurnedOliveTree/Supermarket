@@ -6,6 +6,8 @@
 
 #include "Bill.hpp"
 #include "Customer.hpp"
+#include "AddOns/StringOperations.hpp"
+
 
 #include <iostream>
 #include <map>
@@ -202,7 +204,41 @@ void Invoice::save(string filename) {
 /*   =======================   RECEIPT   =======================   */
 
 string Receipt::generate() {
-    return "Dumb ways to die.";
+    char receiptWidth = 40;
+    
+    vector<Product> stockList = *stock;
+    unsigned int value = 0;
+    string output = stringAlign("_", 0, 40, "_");
+    
+    output += "\n";
+    output += "|" + stringAlign(seller.getName(), 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(seller.getStreet() + seller.getBuildingNumber(), 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(seller.getCity() + seller.getPostcode(), 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(seller.getTaxNumber(), 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
+    output += "|" + stringAlign("RECEIPT", 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
+    output += "| NAME          QTY  x PRICE   VALUE   |\n";
+
+    for (auto productPair:products) {
+        for (Product product: stockList) {
+            if (product.getID() == productPair.first) {
+                value = product.calculatePriceBrutto() * product.getQuantity();
+                output += "|";
+                output += stringAlign(product.getName(), 0, 14);
+                output += " ";
+                output += stringAlign(to_string(product.getQuantity()), 0, 5);
+                output += "x ";
+                output += stringAlign(to_string(product.calculatePriceBrutto()), 0, 7);
+                output += " ";
+                output += stringAlign(to_string(value), 0, 8);
+                output += "|\n";
+                break;
+            }
+        }
+    }
+    output += stringAlign("_", 0, 40, "_") += "\n";
+    return output;
 }
 
 void Receipt::save(string filename) {
@@ -211,15 +247,4 @@ void Receipt::save(string filename) {
     file << generate();
     file.close();
     return;
-}
-
-string centerString(string text, unsigned short length, string filler) {
-    unsigned short textLength = text.size(), spaceCount = (length - textLength) / 2;
-    string output = "";
-    
-    for (int i = 0; i < spaceCount; i++) output += filler;
-    output += text;
-    for (int i = 0; i < length - spaceCount; i++) output += filler;
-    
-    return output;
 }
