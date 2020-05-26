@@ -8,9 +8,9 @@
 #ifndef TestInvoice_hpp
 #define TestInvoice_hpp
 
-#include "../Product.hpp"
-#include "../Bill.hpp"
-#include "../Customer.hpp"
+#include "Product.hpp"
+#include "Bill.hpp"
+#include "Customer.hpp"
 
 #include <iostream>
 #include <vector>

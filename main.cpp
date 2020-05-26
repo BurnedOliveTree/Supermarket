@@ -5,7 +5,7 @@
 //
 
 #include "Shop.hpp"
-#include "TestInvoice.hpp"
+#include "Tests/TestInvoice.hpp"
 
 #include <iostream>
 #include <fstream>

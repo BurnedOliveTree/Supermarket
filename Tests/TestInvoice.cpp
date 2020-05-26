@@ -6,9 +6,9 @@
 //
 
 #include "TestInvoice.hpp"
-#include "../Product.hpp"
-#include "../Bill.hpp"
-#include "../Customer.hpp"
+#include "Product.hpp"
+#include "Bill.hpp"
+#include "Customer.hpp"
 
 #include <iostream>
 #include <string>
