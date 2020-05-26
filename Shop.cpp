@@ -77,22 +77,27 @@ void Shop::event() {
     }
     else if (diceRoll <= 100 - 10 * variable) {
     // customer joins the queue to a CashDesk
+        // klient już może być w kasie, więc też może być busy, więc ten sam problem z while, więc też dla nich trzeba używać active. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         custID = std::rand() % customers.size();
         // while(!cashDesks[otherID].getState()) - potential of an infinite loop, have to make sure first that there is one CashDesk open or check just for open CashDesks; also, it needs to be a do{...}while;
         otherID = std::rand() % cashDesks.size();
-        cashDesks[otherID].push(&findCustomer(custID));
+        cashDesks[otherID].push(customers.find(custID));
         std::cout << "Customer " << customers[custID].getID() << " has entered the queue to cash desk " << cashDesks[otherID].getID() << std::endl;
     }
     else if (diceRoll <= 100 - 5 * variable) {
     // random cashDesk changes it status (open / close)
         otherID = std::rand() % cashDesks.size();
         if (cashDesks[otherID].getState()) {
-            std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just closed, freeing employee " << cashDesks[otherID].close() -> getID() << std::endl;
+            Employee* freed = cashDesks[otherID].close();
+            std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just closed, freeing employee " << freed -> getID() << std::endl;
+            employees.active.push_back(freed);
+            cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(cashDesks[otherID].getID()));
         }
         else {
-            // while(!employees[custID].isOccupied()) - potential of an infinite loop, same comment as in CashDesk;
-            custID = std::rand() % employees.size();
+            custID = std::rand() % employees.activeSize();
             cashDesks[otherID].open(&employees[custID]);
+            employees.active.erase(employees.active.begin() + employees.findActive(employees[custID].getID()));
+            cashDesks.active.push_back(&cashDesks[otherID]);
             std::cout << "Cash desk " << cashDesks[otherID].getID() << " has just opened and employee " << employees[custID].getID() << " has been assigned to it" << std::endl;
         }
     }
@@ -160,6 +165,7 @@ int Shop::createEmployee() {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 < employees.maxAmount) {
         employees.container.push_back(Employee(employees.iterator, "Geralt", "z Rivii"));
+        employees.active.push_back(employees.find(employees.iterator));
         employees.iterator++;
         return employees.iterator - 1;
     }
@@ -174,20 +180,4 @@ int Shop::createProduct() {
         return products.iterator - 1;
     }
     return -1;
-}
-
-Customer& Shop::findCustomer(unsigned short argID) {
-/// returns the adress of Customer object based on a given ID
-    for (unsigned long i=customers.size()-1; i>=0; --i)
-        if (customers[i].getID() == argID)
-            return customers[i];
-    throw "ValueError: tried to return an object through ID that doesn't correspond to any of the existing ones.";
-}
-
-Product& Shop::findProduct(unsigned short argID) {
-/// returns the adress of Product object based on a given ID
-    for (unsigned long i=products.size()-1; i>=0; --i)
-        if (products[i].getID() == argID)
-            return products[i];
-    throw "ValueError: tried to return an object through ID that doesn't correspond to any of the existing ones.";
 }
