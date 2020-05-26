@@ -1,7 +1,7 @@
 CC = g++
 
-supermarket: main.o Shop.o Base.o Bill.o Product.o Customer.o Employee.o CashDesk.o TestInvoice.o
-	$(CC) main.o Shop.o Base.o Bill.o Product.o Customer.o Employee.o CashDesk.o TestInvoice.o -o supermarket
+supermarket: main.o Shop.o Base.o Bill.o Product.o Customer.o Employee.o CashDesk.o TestInvoice.o StringOperations.o
+	$(CC) main.o Shop.o Base.o Bill.o Product.o Customer.o Employee.o CashDesk.o TestInvoice.o StringOperations.o -o supermarket
 
 main.o: main.cpp
 	$(CC) -Wall -c main.cpp
@@ -18,6 +18,9 @@ CashDesk.o: CashDesk.cpp CashDesk.hpp
 
 TestInvoice.o: Tests/TestInvoice.cpp Tests/TestInvoice.hpp
 	$(CC) -Wall -c Tests/TestInvoice.cpp
+
+StringOperations.o: AddOns/StringOperations.cpp AddOns/StringOperations.hpp
+	$(CC) -Wall -c AddOns/StringOperations.cpp
 
 clean:
 	rm *.o supermarket
