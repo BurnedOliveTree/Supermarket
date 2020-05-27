@@ -47,15 +47,17 @@ Shop::Shop(char *arguments[]) {
 
 Shop::~Shop() {
     // delete customers
-    for (long i = cashDesks.size()-1; i > -1; --i) {
+    for (long i = customers.activeSize()-1; i > -1; --i)
+        delete &customers[i];
+    for (unsigned long j = 0; j < cashDesks.activeSize(); ++j)
+        for (long i = cashDesks[j].size(); i > -1; --i)
+            delete &customers[i];
+    for (long i = cashDesks.size()-1; i > -1; --i)
         delete &cashDesks[i];
-    }
-    for (long i = employees.size()-1; i > -1; --i) {
+    for (long i = employees.size()-1; i > -1; --i)
         delete &employees[i];
-    }
-    for (long i = products.size()-1; i > -1; --i) {
+    for (long i = products.size()-1; i > -1; --i)
         delete &products[i];
-    }
 }
 
 void Shop::run() {
@@ -149,6 +151,7 @@ void Shop::executeQueues() {
             if (custPoint != nullptr) {
                 // to jest moment, w którym wszystkie towary klienta zostały zeskanowane, więc powinien zapłacić, dostać rachunek i wyjść (czyli de facto zostać zniszczony)
                 // custPoint będzie trzymał wskaźnik na tego klienta (który został już wypchnięty z vector'a kolejki)
+                // a, no i delete tego Customer
             }
         }
     }
