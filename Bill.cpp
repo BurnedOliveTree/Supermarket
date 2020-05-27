@@ -165,7 +165,7 @@ string Invoice::generate() const {
                 output += "|";
                 output += stringAlign(to_string(product.calculatePriceBrutto()), 0, 8);
                 output += "|";
-                output += stringAlign(to_string(product.getVAT()) + "%", 0, 5);
+                output += stringAlign(to_string(product.getVAT()) + " %", 1, 5);
                 output += "|";
                 output += stringAlign(to_string(product.getVAT() * product.getQuantity() * product.getPrice()), 0, 9);
                 output += "|";
