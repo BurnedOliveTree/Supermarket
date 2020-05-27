@@ -12,17 +12,19 @@
 
 using namespace std;
 
+enum Measure{pcs, kg};
+
 class Product {
     string name; // A name of the product.
     unsigned short ID; // An identifier of the product.
     unsigned int price; // Price netto in 1/100 PLN (gr).
-    unsigned short VAT; // VAT value (in percents).
+    unsigned char VAT; // VAT value (in percents).
     unsigned short quantity; // Quantity of the product in warehouse.
     unsigned short reservedQuantity; // Quantity of the product reserved for clients (not on shelf, not bought yet).
+    Measure measureUnits;
     
 public:
-    Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned short argVAT = 0, unsigned short argQuantity = 0, unsigned short argReservedQuantity = 0);
-    void editProduct(string argName, unsigned short argID, unsigned int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity = 0);
+    Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, unsigned short argReservedQuantity = 0, Measure argMeasureUnits = pcs);
         
     // Getters:
     string getName();

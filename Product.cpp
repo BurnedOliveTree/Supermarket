@@ -8,18 +8,14 @@
 
 using namespace std;
 
-Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity) {
-    editProduct(argName, argID, argPrice, argVAT, argQuantity, argReservedQuantity);
-    return;
-}
-
-void Product::editProduct(string argName, unsigned short argID, unsigned int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity) {
+Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned char argVAT, unsigned short argQuantity, unsigned short argReservedQuantity, Measure argMeasureUnits) {
     name = argName;
     ID = argID;
     price = argPrice;
     VAT = argVAT;
     quantity = argQuantity;
     reservedQuantity = argReservedQuantity;
+    measureUnits = argMeasureUnits;
     return;
 }
 
