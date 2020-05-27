@@ -31,6 +31,7 @@ public:
     unsigned int getPrice() const;
     unsigned short getVAT() const;
     unsigned short getQuantity() const;
+    Measure getMeasureUnits() const;
     
     // Setters:
     void setName(string newName);

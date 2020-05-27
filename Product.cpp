@@ -40,6 +40,11 @@ unsigned short Product::getQuantity() const {
     return quantity;
 }
 
+Measure Product::getMeasureUnits() const {
+    return measureUnits;
+}
+
+
 
 // Setters:
 void Product::setName(string newName) {
