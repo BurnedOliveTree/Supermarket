@@ -73,6 +73,7 @@ void Shop::event() {
         custID = std::rand() % customers.size();
         otherID = std::rand() % products.size();
         customers[custID].addToBasket(otherID, 1); // 1 should be change into mathematical equation returning mostly 1; and shouldn't otherID be findProduct(otherID) instead?
+        // wywal ten produkt z active jeśli już jest w pełni wzięty
         std::cout << "Customer " << customers[custID].getID() << " has added a/an " << products[otherID].getName() << " into his basket" << std::endl;
     }
     else if (diceRoll <= 100 - 10 * variable) {
@@ -155,6 +156,7 @@ int Shop::createCustomer() {
 /// calls the Customer constructor, appending him to the vector of all customers in this shop
     if (customers.iterator + 1 < customers.maxAmount) {
         customers.container.push_back(Customer(customers.iterator, false, "Jan K", "1234567890", "Sezamkowa", "18", "05-800", "Warszawa", "Polska"));
+        // push back active
         customers.iterator++;
         return customers.iterator - 1;
     }
@@ -176,6 +178,7 @@ int Shop::createProduct() {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (products.iterator + 1 < products.maxAmount) {
         products.container.push_back(Product("Banana", products.iterator, 320, 23, 8, 0));
+        // push back active
         products.iterator++;
         return products.iterator - 1;
     }
