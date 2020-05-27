@@ -62,7 +62,7 @@ void Shop::run() {
     generate();
     cashDesks[1].assign(&employees[1]); // this is a problem - every cash desk is closed at the beginning; also run needs to check if it's not closing the last cash desk, otherwise it's a looming ArithmeticsError
     cashDesks.active.push_back(&cashDesks[1]);
-    std::srand(std::time(nullptr));
+    std::srand((unsigned int)std::time(nullptr));
     for (unsigned short i = 0; i < time; ++i) {
         std::cout << event();
         // czy liczba wydarzeń nie powinna się zwiększać w zależności od liczby klientów?
