@@ -72,7 +72,7 @@ void Shop::event() {
     // customer adds something to their basket
         randA = std::rand() % customers.activeSize();
         randB = std::rand() % products.activeSize();
-        customers.active[randA]->addToBasket(products.active[randB]->getID(), 1);
+        customers.active[randA]->addToBasket(products.active[randB], 1);
         if (!products.active[randB]->getQuantity()) {
             products.active.erase(products.active.begin() + products.findActive(products[randB].getID()));
         }
