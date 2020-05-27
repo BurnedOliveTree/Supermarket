@@ -8,19 +8,13 @@
 #include "Customer.hpp"
 #include "AddOns/StringOperations.hpp"
 
-
-#include <iostream>
-#include <map>
 #include <utility>
-#include <ctime>
 #include <fstream>
-#include <time.h>
 #include <exception>
 
 using namespace std;
 
-Bill::Bill(bool argIsPayed, time_t argDate, unsigned short argID, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
-    isPayed = argIsPayed;
+Bill::Bill(chrono::time_point<chrono::high_resolution_clock> argDate, unsigned short argID, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
     date = argDate;
     ID = argID;
     buyer = argBuyer;
@@ -34,11 +28,7 @@ Bill::Bill(bool argIsPayed, time_t argDate, unsigned short argID, Customer argBu
 
 
 // Getters:
-bool Bill::getIsPayed() const{
-    return isPayed;
-}
-
-time_t Bill::getDate() const {
+chrono::time_point<chrono::high_resolution_clock> Bill::getDate() const {
     return date;
 }
 
@@ -60,12 +50,7 @@ map<unsigned short, unsigned short> Bill::getProducts() const {
 
 
 // Setters:
-void Bill::setIsPayed(bool newStatus) {
-    isPayed = newStatus;
-    return;
-}
-
-void Bill::setDate(time_t newDate) {
+void Bill::setDate(chrono::time_point<chrono::high_resolution_clock> newDate) {
     date = newDate;
     return;
 }

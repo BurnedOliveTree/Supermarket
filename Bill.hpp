@@ -13,14 +13,13 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <ctime>
+#include <chrono>
 
 using namespace std;
 
 class Bill {
 protected:
-    bool isPayed;
-    time_t date;
+    chrono::time_point<chrono::high_resolution_clock> date;
     unsigned short ID;
     Customer buyer;
     Customer seller;
@@ -30,19 +29,17 @@ protected:
 public:
     /**
      Bill object constructor:
-     @param argIsPayed Bool whether the bill has been payed.
      @param argDate Type time_t specifies bill date.
      @param argID Integer to numerate bills.
      @param argBuyer Class Customer object.
      @param argSeller Class Customer object.
      @param argProducts Map containing product ID and quantity (both unsigned short type).
      */
-    Bill(bool argIsPayed = false, time_t argDate = 0, unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
+    Bill(chrono::time_point<chrono::high_resolution_clock> argDate = chrono::steady_clock::now(), unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
     
     
     // Getters:
-    bool getIsPayed() const;
-    time_t getDate() const;
+    chrono::time_point<chrono::high_resolution_clock> getDate() const;
     unsigned short getID() const;
     Customer getBuyer() const;
     Customer getSeller() const;
@@ -50,16 +47,10 @@ public:
 
     // Setters:
     /**
-     Sets isPayed attribute to given argument.
-     @param newStatus New status of the payment.
-     */
-    void setIsPayed(bool newStatus);
-    
-    /**
      Sets date attribute to given argument.
      @param newDate New date of bill.
      */
-    void setDate(time_t newDate);
+    void setDate(chrono::time_point<chrono::high_resolution_clock> newDate);
     
     /**
      Sets buyer attribute to given argument.
