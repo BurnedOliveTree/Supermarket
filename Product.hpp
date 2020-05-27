@@ -24,7 +24,7 @@ class Product {
     Measure measureUnits;
     
 public:
-    Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, unsigned short argReservedQuantity = 0, Measure argMeasureUnits = pcs);
+    Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, Measure argMeasureUnits = pcs, unsigned short argReservedQuantity = 0);
         
     // Getters:
     string getName() const;

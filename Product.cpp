@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned char argVAT, unsigned short argQuantity, unsigned short argReservedQuantity, Measure argMeasureUnits) {
+Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned char argVAT, unsigned short argQuantity, Measure argMeasureUnits, unsigned short argReservedQuantity) {
     name = argName;
     ID = argID;
     price = argPrice;

@@ -183,7 +183,7 @@ int Shop::createEmployee() {
 int Shop::createProduct() {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (products.iterator + 1 < products.maxAmount) {
-        products.container.push_back(Product("Banana", products.iterator, 320, 23, 8, 0));
+        products.container.push_back(Product("Banana", products.iterator, 320, 23, 8, pcs));
         products.active.push_back(products.find(products.iterator));
         products.iterator++;
         return products.iterator - 1;
