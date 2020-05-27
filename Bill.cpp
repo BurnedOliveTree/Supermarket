@@ -134,58 +134,52 @@ void Bill::removeProduct(unsigned short removeProductID, unsigned short removeQu
 /*   =======================   INVOICE   =======================   */
 
 string Invoice::generate() {
+    char invoiceWidth = 78;
+
     vector<Product> stockList = *stock;
 
-    string output = "", temp = "", spaces = "                                   ";
-    
-    for (int i = 0; i < 78; i++) output += "_";
+    string output = stringAlign("_", 2, invoiceWidth, "_");
+
     output += "\n";
-    for (int i = 0; i < 30; i++) output += " ";
-    output += "INVOICE  no. " + to_string(ID) + "\n";
-    output += "FROM: \n" + seller.getInfo() + "\n\n";
-    output += "BILL TO: \n" + buyer.getInfo() + "\n\n";
-    for (int i = 0; i < 78; i++) output += "_";
-    output +="\n| Name                   | Qty | Netto | Brutto | VAT | VAT amt | Brutto amt |\n";
-    if (products.empty()) output += "No products given.";
-    else {
-        for (auto productPair:products) {
-            output += "| ";
-            for (Product product: stockList) {
-                if (product.getID() == productPair.first) {
-                    temp = product.getName() + spaces;
-                    for (int i = 0; i < 22; i++) output += temp[i];
-                    output +=  " | ";
-                    
-                    temp = to_string(product.getQuantity()) + spaces;
-                    for (int i = 0; i < 3; i++) output += temp[i];
-                    output +=  " | ";
-                    
-                    temp = to_string(product.getPrice()) + spaces;
-                    for (int i = 0; i < 5; i++) output += temp[i];
-                    output +=  " | ";
-                    
-                    temp = to_string(product.calculatePriceBrutto()) + spaces;
-                    for (int i = 0; i < 6; i++) output += temp[i];
-                    output +=  " | ";
-                    
-                    temp = to_string(product.getVAT()) + spaces;
-                    for (int i = 0; i < 3; i++) output += temp[i];
-                    output +=  " | ";
-                    
-                    temp = to_string(product.getVAT() * product.getQuantity() * product.getPrice()) + spaces;
-                    for (int i = 0; i < 7; i++) output += temp[i];
-                    output +=  " | ";
-                    
-                    temp = to_string(product.calculatePriceBrutto() * product.getQuantity()) + spaces;
-                    for (int i = 0; i < 10; i++) output += temp[i];
-                    output +=  " |\n";
-                    break;
-                }
+    output += "|" + stringAlign("INVOICE", 2, invoiceWidth - 2) + "|\n";
+    output += "|" + stringAlign("#" + to_string(ID), 2, invoiceWidth - 2) + "|\n";
+
+    output += "|" + stringAlign("BILL FROM:", 2, (invoiceWidth - 4) / 2) + "  " + stringAlign("BILL TO:", 2, (invoiceWidth - 4) / 2) + "|\n";
+    output += "|" + stringAlign(seller.getName(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getName(), 2, (invoiceWidth - 4) / 2) + "|\n";
+    output += "|" + stringAlign(seller.getStreet() + " " + seller.getBuildingNumber(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getStreet() + " " + buyer.getBuildingNumber(), 2, (invoiceWidth - 4) / 2) + "|\n";
+    output += "|" + stringAlign(seller.getCity() + " " + seller.getPostcode(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getCity() + " " + buyer.getPostcode(), 2, (invoiceWidth - 4) / 2) + "|\n";
+    output += "|" + stringAlign(seller.getTaxNumber(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getTaxNumber(), 2, (invoiceWidth - 4) / 2) + "|\n";
+
+    output += "|" + stringAlign("_", 2, invoiceWidth - 2, "_") + "|\n";
+
+    output += "| NAME                   | QTY | NETTO | BRUTTO | VAT | VAT AMT | BRUTTO AMT |\n";
+    for (auto productPair:products) {
+        for (Product product: stockList) {
+            if (product.getID() == productPair.first) {
+                output += "|";
+                output += stringAlign(product.getName(), 0, 24);
+                output += "|";
+                output += stringAlign(to_string(product.getQuantity()), 0, 5);
+                output += "|";
+                output += stringAlign(to_string(product.getPrice()), 0, 7);
+                output += "|";
+                output += stringAlign(to_string(product.calculatePriceBrutto()), 0, 8);
+                output += "|";
+                output += stringAlign(to_string(product.getVAT()), 0, 5);
+                output += "|";
+                output += stringAlign(to_string(product.getVAT() * product.getQuantity() * product.getPrice()), 0, 9);
+                output += "|";
+                output += stringAlign(to_string(product.calculatePriceBrutto() * product.getQuantity()), 0, 12);
+                output += "|\n";
+                break;
             }
         }
     }
-    for (int i = 0; i < 78; i++) output += "_";
-    output += "\n";
+    output += "|" + stringAlign(".", 2, invoiceWidth - 2, ".") + "|\n";
+    output += "|" + stringAlign("SUMMARY: ", 1, invoiceWidth - 14) + "XXXXXXXXXXXX|\n";
+    output += "|" + stringAlign("TMS: TTTTT   ID: " + to_string(ID), 2, invoiceWidth - 2) + "|\n";
+
+    output += stringAlign("¯", 0, invoiceWidth, "¯") += "\n";
     return output;
 }
 
