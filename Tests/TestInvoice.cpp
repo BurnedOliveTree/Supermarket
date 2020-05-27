@@ -25,10 +25,10 @@ TestInvoice::TestInvoice() {
     products.push_back(Product("Puszka kukurydzy", 5, 567, 23, 100, pcs));
     products.push_back(Product("Mentha rotundifolia (L.) Huds.", 6, 60, 5, 500, pcs));
 
-    Customer seller1(true, "Supermarket", "5351638772", "Poziomkowa", "15A", "00-009", "Szczebrzeszyn", "Atlantyda");
-    Customer seller2(true, "DeutschMart", "DE7573850993", "Großestraße", "1", "17-120", "Berlin", "Deutschland");
-    Customer buyer1(false, "Anna Nowak", "0", "Jablkowa", "199/13", "14-900", "Świnoujście", "Atlantyda");
-    Customer buyer2(true, "John Doe", "8889997766", "Baker Street", "221b", "NW1 6XE", "London", "United Kingdom");
+    Customer seller1(true, 1, "Supermarket", "5351638772", "Poziomkowa", "15A", "00-009", "Szczebrzeszyn", "Atlantyda");
+    Customer seller2(true, 2, "DeutschMart", "DE7573850993", "Grossestrasse", "1", "17-120", "Berlin", "Deutschland");
+    Customer buyer1(false, 3, "Anna Nowak", "0", "Jablkowa", "199/13", "14-900", "Swinoujscie", "Atlantyda");
+    Customer buyer2(true, 4, "John Doe", "8889997766", "Baker Street", "221b", "NW1 6XE", "London", "United Kingdom");
 
     sellers.push_back(seller1);
     sellers.push_back(seller2);
@@ -49,12 +49,15 @@ TestInvoice::TestInvoice() {
     Invoice invoice1(false, 0, 1490, buyers[0], sellers[1], buyers[0].getBasket());
     invoice1.setStock(productsPointer);
     invoices.push_back(invoice1);
-    cout << invoice1;
+    cout << invoice1.generate();
     cout << endl << endl;
     
     Receipt receipt1(false, 0, 1490, buyers[1], sellers[0], buyers[1].getBasket());
     receipt1.setStock(productsPointer);
     receipts.push_back(receipt1);
+    cout << receipt1.generate();
+    cout << endl << endl;
+
 }
 
 void TestInvoice::menu() {
