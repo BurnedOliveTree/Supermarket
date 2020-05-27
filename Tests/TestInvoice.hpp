@@ -24,6 +24,7 @@ class TestInvoice {
     vector<Customer> buyers;
     vector<Customer> sellers;
     vector<Invoice> invoices;
+    vector<Receipt> receipts;
     vector<Product> *productsPointer;
     
 public:

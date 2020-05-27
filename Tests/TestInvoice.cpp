@@ -19,11 +19,11 @@ using namespace std;
 
 TestInvoice::TestInvoice() {
     productsPointer = &products;
-    products.push_back(Product("Jablka", 2, 120, 5, 100));
-    products.push_back(Product("Pomidory", 1, 720, 5, 50));
-    products.push_back(Product("Patelnia", 3, 6599, 23, 3));
-    products.push_back(Product("Puszka kukurydzy", 5, 567, 23, 100));
-    products.push_back(Product("Mentha rotundifolia (L.) Huds.", 6, 60, 5, 500));
+    products.push_back(Product("Jablka", 2, 120, 5, 100, kg));
+    products.push_back(Product("Pomidory", 1, 720, 5, 50, kg));
+    products.push_back(Product("Patelnia", 3, 6599, 23, 3, pcs));
+    products.push_back(Product("Puszka kukurydzy", 5, 567, 23, 100, pcs));
+    products.push_back(Product("Mentha rotundifolia (L.) Huds.", 6, 60, 5, 500, pcs));
 
     Customer seller1(true, "Supermarket", "5351638772", "Poziomkowa", "15A", "00-009", "Szczebrzeszyn", "Atlantyda");
     Customer seller2(true, "DeutschMart", "DE7573850993", "Großestraße", "1", "17-120", "Berlin", "Deutschland");
@@ -49,6 +49,12 @@ TestInvoice::TestInvoice() {
     Invoice invoice1(false, 0, 1490, buyers[0], sellers[1], buyers[0].getBasket());
     invoice1.setStock(productsPointer);
     invoices.push_back(invoice1);
+    cout << invoice1;
+    cout << endl << endl;
+    
+    Receipt receipt1(false, 0, 1490, buyers[1], sellers[0], buyers[1].getBasket());
+    receipt1.setStock(productsPointer);
+    receipts.push_back(receipt1);
 }
 
 void TestInvoice::menu() {
