@@ -52,7 +52,7 @@ string Customer::getCity() const {
 string Customer::getCountry() const {
     return country;
 }
-map<unsigned short, unsigned short> Customer::getBasket() const {
+map<Product*, unsigned short> Customer::getBasket() const {
     return basket;
 }
 unsigned long Customer::getBasketSize() const {
@@ -117,11 +117,13 @@ void Customer::addToBasket(Product* argProduct, unsigned short argQuantity) {
         basket.insert(std::pair<Product*, unsigned short>(argProduct, argQuantity));
     else
         basket[argProduct] += argQuantity;
-    argProduct -> setQuantity(argProduct -> getQuantity() - argQuantity);
+    argProduct -> decQuantity(argQuantity);
 }
 
-void Customer::removeFromBasket(Product* argProduct, unsigned short quantity) {
-    return; // Zostanie zaimplementowane w projekcie - niepotrzebne w zad 3.
+void Customer::removeFromBasket(Product* argProduct, unsigned short argQuantity) {
+    basket.erase(argProduct);
+    argProduct -> addQuantity(argQuantity);
+    return;
 }
 
 void Customer::clearBasket() {

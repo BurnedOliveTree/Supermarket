@@ -53,7 +53,7 @@ public:
     string getPostcode() const;
     string getCity() const;
     string getCountry() const;
-    map<unsigned short, unsigned short> getBasket() const;
+    map<Product*, unsigned short> getBasket() const;
     unsigned long getBasketSize() const;
     
     //Setters:

@@ -38,6 +38,8 @@ public:
     void setPrice(unsigned int newPrice);
     void setVAT(unsigned short newVAT);
     void setQuantity(unsigned short newQuantity);
+    void addQuantity(unsigned short argQuantity);
+    void decQuantity(unsigned short argQuantity);
     
     // Additional features:
     string getInfo();

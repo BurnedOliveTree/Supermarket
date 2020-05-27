@@ -67,6 +67,16 @@ void Product::setQuantity(unsigned short newQuantity) {
     return;
 }
 
+void Product::addQuantity(unsigned short argQuantity) {
+    quantity += argQuantity;
+    return;
+}
+
+void Product::decQuantity(unsigned short argQuantity) {
+    quantity -= argQuantity;
+    return;
+}
+
 
 // Additional features:
 string Product::getInfo() {
