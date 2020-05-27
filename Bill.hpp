@@ -65,6 +65,18 @@ public:
      @param newID New number.
      */
     void setID(unsigned short newID);
+    
+    /**
+     Converts price in PLN/100 to PLN.
+     @param price Price in PLN/100.
+     */
+    string convertPricePLN(unsigned short price) const;
+    
+    /**
+     Converts g to kg.
+     @param quantity Quantity in g.
+     */
+    string convertToKg(unsigned short quantity) const;
 };
 
 

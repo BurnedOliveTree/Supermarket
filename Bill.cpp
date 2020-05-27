@@ -57,6 +57,22 @@ void Bill::setID(unsigned short newID) {
     ID = newID;
 }
 
+string Bill::convertPricePLN(unsigned short price) const {
+    string output = to_string(price);
+    unsigned char priceLength = output.length(), dotIndex = priceLength - 2;
+    string prefix = output.substr(0, dotIndex);
+    string suffix = output.substr(dotIndex, 2);
+    return (prefix != "" ? prefix: "0") + "." + suffix;
+}
+
+string Bill::convertToKg(unsigned short quantity) const {
+    string output = to_string(quantity);
+    unsigned char priceLength = output.length(), dotIndex = priceLength - 3;
+    string prefix = output.substr(0, dotIndex);
+    string suffix = output.substr(dotIndex, 3);
+    return (prefix != "" ? prefix: "0") + "." + suffix;
+}
+
 
 
 /*   =======================   INVOICE   =======================   */
