@@ -35,7 +35,7 @@ public:
      @param argSeller Class Customer object.
      @param argProducts Map containing product ID and quantity (both unsigned short type).
      */
-    Bill(chrono::time_point<chrono::high_resolution_clock> argDate = chrono::steady_clock::now(), unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0, map<unsigned short, unsigned short> argProducts = map<unsigned short, unsigned short>());
+    Bill(chrono::time_point<chrono::high_resolution_clock> argDate = chrono::steady_clock::now(), unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0);
     
     
     // Getters:
@@ -75,12 +75,6 @@ public:
      @param argStock Pointer to stock.
      */
     void setStock(vector<Product> *argStock);
-    
-    /**
-     Replaces all the existing products with the new ones.
-     @param newProducts New products map.
-     */
-    void setProducts(map<unsigned short, unsigned short> newProducts);
 };
 
 

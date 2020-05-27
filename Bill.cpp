@@ -14,16 +14,11 @@
 
 using namespace std;
 
-Bill::Bill(chrono::time_point<chrono::high_resolution_clock> argDate, unsigned short argID, Customer argBuyer, Customer argSeller, map<unsigned short, unsigned short> argProducts) {
+Bill::Bill(chrono::time_point<chrono::high_resolution_clock> argDate, unsigned short argID, Customer argBuyer, Customer argSeller) {
     date = argDate;
     ID = argID;
     buyer = argBuyer;
     seller = argSeller;
-    if (argProducts.empty()) {
-        products = buyer.getBasket();
-    } else {
-        products = argProducts;
-    }
 }
 
 
@@ -52,31 +47,22 @@ map<unsigned short, unsigned short> Bill::getProducts() const {
 // Setters:
 void Bill::setDate(chrono::time_point<chrono::high_resolution_clock> newDate) {
     date = newDate;
-    return;
 }
 
 void Bill::setBuyer(Customer newBuyer) {
     buyer = newBuyer;
-    return;
 }
 
 void Bill::setSeller(Customer newSeller) {
     seller = newSeller;
-    return;
 }
 
 void Bill::setID(unsigned short newID) {
     ID = newID;
-    return;
 }
 
 void Bill::setStock(vector<Product> *argStock) {
     stock = argStock;
-}
-
-void Bill::setProducts(map<unsigned short, unsigned short> newProducts) {
-    products = newProducts;
-    return;
 }
 
 
@@ -98,7 +84,7 @@ string Invoice::generate() const {
     output += "|" + stringAlign(seller.getName(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getName(), 2, (invoiceWidth - 4) / 2) + "|\n";
     output += "|" + stringAlign(seller.getStreet() + " " + seller.getBuildingNumber(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getStreet() + " " + buyer.getBuildingNumber(), 2, (invoiceWidth - 4) / 2) + "|\n";
     output += "|" + stringAlign(seller.getCity() + " " + seller.getPostcode(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getCity() + " " + buyer.getPostcode(), 2, (invoiceWidth - 4) / 2) + "|\n";
-    output += "|" + stringAlign(seller.getTaxNumber(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getTaxNumber(), 2, (invoiceWidth - 4) / 2) + "|\n";
+    output += "|" + stringAlign(seller.getTaxNumber(), 2, (invoiceWidth - 4) / 2) + "  " + stringAlign(buyer.getTaxNumber()!="0"?buyer.getTaxNumber():" ", 2, (invoiceWidth - 4) / 2) + "|\n";
 
     output += "|" + stringAlign("_", 2, invoiceWidth - 2, "_") + "|\n";
 
@@ -138,7 +124,6 @@ void Invoice::save(string filename) {
     file.open(filename, ios::out);
     file << generate();
     file.close();
-    return;
 }
 
 
@@ -193,5 +178,4 @@ void Receipt::save(string filename) {
     file.open(filename, ios::out);
     file << generate();
     file.close();
-    return;
 }

@@ -37,22 +37,21 @@ TestInvoice::TestInvoice() {
     map<unsigned short, unsigned short> productsList;
     productsList.insert(pair<unsigned short, unsigned short>(1, 10));
     productsList.insert(pair<unsigned short, unsigned short>(3, 17));
-    buyers[0].setBasket(productsList);
+    //buyers[0].setBasket(productsList);
     productsList.clear();
     productsList.insert(pair<unsigned short, unsigned short>(2, 7));
     productsList.insert(pair<unsigned short, unsigned short>(3, 1));
     productsList.insert(pair<unsigned short, unsigned short>(6, 90));
     productsList.insert(pair<unsigned short, unsigned short>(5, 6));
-    buyers[1].setBasket(productsList);
+    //buyers[1].setBasket(productsList);
     
-    Invoice invoice1(chrono::steady_clock::now(), 1490, buyers[0], sellers[1], buyers[0].getBasket());
+    Invoice invoice1(chrono::steady_clock::now(), 1490, buyers[0], sellers[1]);
     invoice1.setStock(productsPointer);
     invoices.push_back(invoice1);
     cout << invoice1.generate();
     cout << endl << endl;
     
-    Receipt receipt1(chrono::steady_clock::now(), 53342, buyers[1], sellers[0], buyers[1].getBasket());
-    receipt1.setStock(productsPointer);
+    Receipt receipt1(chrono::steady_clock::now(), 53342, buyers[1], sellers[0]);
     receipts.push_back(receipt1);
     cout << receipt1.generate();
     cout << endl << endl;
