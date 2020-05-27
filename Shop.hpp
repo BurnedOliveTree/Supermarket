@@ -69,7 +69,7 @@ public:
     Shop(unsigned long argTime);
     Shop(std::string filename);
     Shop(char *arguments[]);
-    // i tu jest destruktor, jego brak jest tylko iluzją
+    ~Shop();
     void run();
     std::string event();
     void executeQueues();

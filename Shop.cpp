@@ -45,6 +45,19 @@ Shop::Shop(char *arguments[]) {
     //odczyt argumentow przekazanych bezposrednio
 }
 
+Shop::~Shop() {
+    // delete customers
+    for (long i = cashDesks.size()-1; i > -1; --i) {
+        delete &cashDesks[i];
+    }
+    for (long i = employees.size()-1; i > -1; --i) {
+        delete &employees[i];
+    }
+    for (long i = products.size()-1; i > -1; --i) {
+        delete &products[i];
+    }
+}
+
 void Shop::run() {
 /// main method of class, which simulates the whole shop
     generate();
