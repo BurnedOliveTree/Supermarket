@@ -69,7 +69,7 @@ void Shop::event() {
         else
             std::cout << "A maximum value of customers has been reached, nothing happens" << std::endl;
     }
-    else if (diceRoll <= 100 - 40 * variable) {
+    else if (diceRoll <= 100 - 60 * variable) {
     // customer adds something to their basket
         randA = std::rand() % customers.activeSize();
         randB = std::rand() % products.activeSize();
@@ -79,14 +79,14 @@ void Shop::event() {
         }
         std::cout << "Customer " << customers.active[randA]->getID() << " has added a/an " << products.active[randB]->getName() << " into his basket" << std::endl;
     }
-    else if (diceRoll <= 100 - 10 * variable) {
+    else if (diceRoll <= 100 - 20 * variable) {
     // customer joins the queue to a CashDesk
         randA = std::rand() % customers.activeSize();
         randB = std::rand() % cashDesks.activeSize();
         cashDesks.active[randB] -> push(customers.active[randA]);
         std::cout << "Customer " << customers.active[randA]->getID() << " has entered the queue to cash desk " << cashDesks.active[randB]->getID() << std::endl;
     }
-    else if (diceRoll <= 100 - 5 * variable) {
+    else if (diceRoll <= 100 - 10 * variable) {
     // random cashDesk changes it status (open / close)
         randB = std::rand() % cashDesks.size();
         if (cashDesks[randB].getState()) {
@@ -103,7 +103,13 @@ void Shop::event() {
             std::cout << "Cash desk " << cashDesks[randB].getID() << " has just opened and employee " << employees.active[randA]->getID() << " has been assigned to it" << std::endl;
         }
     }
-    // else if - a random Employee changes shifts of another on a random CashDesk
+    else if (diceRoll <= 100 - 5 * variable) {
+    // a random Employee changes shifts of another on a random CashDesk
+        randA = employees.active[std::rand() % employees.activeSize()] -> getID();
+        randB = std::rand() % cashDesks.activeSize();
+        employees.active.push_back(cashDesks.active[randB] -> assign(employees.find(randA)));
+        employees.active.erase(employees.active.begin() + employees.findActive(randA));
+    }
     else {
     // customer asks employee about something
         std::cout << "A random customer has asked a random employee about most random of things" << std::endl;
