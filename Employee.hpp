@@ -23,7 +23,6 @@ public:
     bool isOccupied();
     void setFree();
     void setBusy();
-    // void employeet();
 };
 
 #endif /* Employee_hpp */

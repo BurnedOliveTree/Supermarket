@@ -13,17 +13,19 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 void stupidTemporaryMethod() {
     unsigned long a;
-    cout << "Podaj czas trwania [s]:" << endl;
-    cin >> a;
+    std::cout << "Podaj czas trwania [s]:" << std::endl;
+    std::cin >> a;
     Shop simulation(a);
     simulation.run();
 }
 
-void manualTest();
+void manualTest() {
+    std::cout << "Brak podanych argumentow." << std::endl << "Inicjacja manualnego dostepu do programu." << std::endl;
+    TestInvoice invoiceTest;
+    invoiceTest.menu();
+}
 
 /**
         Kolejnosc argumentow:
@@ -36,7 +38,7 @@ int main(int argc, char* argv[]) {
     switch(argc) {
         case 0: case 1: {
             stupidTemporaryMethod();
-            // manualTest(); // temporarily commented
+//            manualTest();
             break;
         }
         case 2: {
@@ -50,10 +52,4 @@ int main(int argc, char* argv[]) {
         }
     }
     return 0;
-}
-
-void manualTest() {
-    cout << "Brak podanych argumentow." << endl << "Inicjacja manualnego dostepu do programu." << endl;
-    TestInvoice invoiceTest;
-    invoiceTest.menu();
 }

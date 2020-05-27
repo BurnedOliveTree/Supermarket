@@ -43,7 +43,6 @@ public:
     bool operator !=(unsigned short secondID);
     bool operator !=(CashDesk cash2);
     void operator =(unsigned int n);
-    void operator =(Employee* assigned);
     void operator +=(unsigned int n);
     void operator -=(unsigned int n);
     friend std::ostream& operator <<(std::ostream& output, CashDesk& cashDesk) {

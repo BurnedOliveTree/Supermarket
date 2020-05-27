@@ -102,10 +102,6 @@ Employee* CashDesk::assign(Employee* assigned) {
     return temp;
 }
 
-void CashDesk::operator =(Employee* assigned) {
-    assign(assigned);
-}
-
 void CashDesk::push(Customer* shopper) {
 /// assigns a Customer to the CashDesk queue (checking whether Customer is already in a queue will be done via methods and attributes of the Customer class)
     customerQueue.push(shopper);
@@ -124,6 +120,7 @@ Customer* CashDesk::pop() {
 }
 
 Customer* CashDesk::scan(unsigned short scanSpeed) {
+/// basic functionality, scans through next items in the first's Customer's basket until it's fully scaned, only then it returns a pointer to Customer object instead of a nullptr
     itemsScaned += scanSpeed;
     if (customerQueue.front() -> getBasketSize() < itemsScaned) {
         itemsScaned = 0;
