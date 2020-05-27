@@ -59,10 +59,10 @@ void Bill::setID(unsigned short newID) {
 
 string Bill::convertPricePLN(unsigned short price) const {
     string output = to_string(price);
-    unsigned char priceLength = output.length(), dotIndex = priceLength - 2;
+    char priceLength = output.length(), dotIndex = priceLength - 2;
     string prefix = output.substr(0, dotIndex);
     string suffix = output.substr(dotIndex, 2);
-    return (prefix != "" ? prefix: "0") + "." + suffix;
+    return (prefix != "" ? prefix: "0") + "." + (suffix != "" ? suffix: "0");
 }
 
 string Bill::convertToKg(unsigned short quantity) const {
