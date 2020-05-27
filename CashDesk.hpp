@@ -37,6 +37,7 @@ public:
     unsigned long size();
     Customer* pop();
     Customer* scan(unsigned short scanSpeed);
+    unsigned int payment(Customer *customer);
     
     bool operator ==(unsigned short secondID);
     bool operator ==(CashDesk cash2);

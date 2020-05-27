@@ -128,3 +128,15 @@ Customer* CashDesk::scan(unsigned short scanSpeed) {
     }
     return nullptr;
 }
+
+/*unsigned int payment(Customer *customer) {
+    unsigned int summedValue = 0;
+    
+    for (auto productPair:customer -> getBasket()) {
+        for (Product product: stockList)
+            summedValue += product.getPrice() * product.getQuantity();
+        }
+    }
+    
+    return summedValue;
+}*/
