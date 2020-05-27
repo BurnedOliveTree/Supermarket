@@ -22,7 +22,6 @@ void stupidTemporaryMethod() {
 }
 
 void manualTest() {
-    std::cout << "Brak podanych argumentow." << std::endl << "Inicjacja manualnego dostepu do programu." << std::endl;
     TestInvoice invoiceTest;
     invoiceTest.menu();
 }
