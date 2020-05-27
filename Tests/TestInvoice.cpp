@@ -18,11 +18,12 @@ using namespace std;
 
 TestInvoice::TestInvoice() {
     productsPointer = &products;
-    products.push_back(Product("Jablka", 2, 120, 5, 100, kg));
-    products.push_back(Product("Pomidory", 1, 720, 5, 50, kg));
-    products.push_back(Product("Patelnia", 3, 6599, 23, 3, pcs));
-    products.push_back(Product("Puszka kukurydzy", 5, 567, 23, 100, pcs));
-    products.push_back(Product("Mentha rotundifolia (L.) Huds.", 6, 60, 5, 500, pcs));
+    //  argName, argID, argPrice, argVAT, argQuantity, argMeasureUnits
+    products.push_back(Product("Jablka", 1, 120, 5, 10000, g));
+    products.push_back(Product("Pomidory", 2, 720, 5, 50000, g));
+    products.push_back(Product("Patelnia", 3, 6599, 23, 10));
+    products.push_back(Product("Puszka kukurydzy", 4, 567, 23, 70));
+    products.push_back(Product("Mentha rotundifolia (L.) Huds.", 5, 60, 5, 500, g));
 
     Customer seller1(true, 1, "Supermarket", "5351638772", "Poziomkowa", "15A", "00-009", "Szczebrzeszyn", "Atlantyda");
     Customer seller2(true, 2, "DeutschMart", "DE7573850993", "Grossestrasse", "1", "17-120", "Berlin", "Deutschland");
@@ -34,19 +35,18 @@ TestInvoice::TestInvoice() {
     buyers.push_back(buyer1);
     buyers.push_back(buyer2);
 
-    map<unsigned short, unsigned short> productsList;
-    productsList.insert(pair<unsigned short, unsigned short>(1, 10));
-    productsList.insert(pair<unsigned short, unsigned short>(3, 17));
-    //buyers[0].setBasket(productsList);
-    productsList.clear();
-    productsList.insert(pair<unsigned short, unsigned short>(2, 7));
-    productsList.insert(pair<unsigned short, unsigned short>(3, 1));
-    productsList.insert(pair<unsigned short, unsigned short>(6, 90));
-    productsList.insert(pair<unsigned short, unsigned short>(5, 6));
-    //buyers[1].setBasket(productsList);
+    buyers[0].addToBasket(&products[0], 1760);
+    buyers[0].addToBasket(&products[1], 345);
+    buyers[0].addToBasket(&products[2], 3);
+    buyers[0].addToBasket(&products[3], 2);
     
+    buyers[1].addToBasket(&products[4], 331);
+    buyers[1].addToBasket(&products[3], 20);
+    buyers[1].addToBasket(&products[2], 1);
+    buyers[1].addToBasket(&products[1], 543);
+    buyers[1].addToBasket(&products[0], 990);
+
     Invoice invoice1(chrono::steady_clock::now(), 1490, buyers[0], sellers[1]);
-    invoice1.setStock(productsPointer);
     invoices.push_back(invoice1);
     cout << invoice1.generate();
     cout << endl << endl;
@@ -99,7 +99,6 @@ void TestInvoice::menu() {
 void TestInvoice::editElementMenu(string text, char elementChoice) {
     Customer newConsumer;
     Invoice newInvoice;
-    newInvoice.setStock(productsPointer);
     int chosenElement = 0;
     
     string txtMenu = "", clear = "", message = "";
