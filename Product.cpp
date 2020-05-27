@@ -8,12 +8,12 @@
 
 using namespace std;
 
-Product::Product(string argName, unsigned short argID, int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity) {
+Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity) {
     editProduct(argName, argID, argPrice, argVAT, argQuantity, argReservedQuantity);
     return;
 }
 
-void Product::editProduct(string argName, unsigned short argID, int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity) {
+void Product::editProduct(string argName, unsigned short argID, unsigned int argPrice, unsigned short argVAT, unsigned short argQuantity, unsigned short argReservedQuantity) {
     name = argName;
     ID = argID;
     price = argPrice;
@@ -33,7 +33,7 @@ unsigned short Product::getID() {
     return ID;
 }
 
-int Product::getPrice() {
+unsigned int Product::getPrice() {
     return price;
 }
 
@@ -61,7 +61,7 @@ void Product::setID(unsigned short newID) {
     return;
 }
 
-void Product::setPrice(int newPrice) {
+void Product::setPrice(unsigned int newPrice) {
     price = newPrice;
     return;
 }
