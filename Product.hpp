@@ -20,11 +20,10 @@ class Product {
     unsigned int price; // Price netto in 1/100 PLN (gr).
     unsigned char VAT; // VAT value (in percents).
     unsigned short quantity; // Quantity of the product in warehouse.
-    unsigned short reservedQuantity; // Quantity of the product reserved for clients (not on shelf, not bought yet).
     Measure measureUnits;
     
 public:
-    Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, Measure argMeasureUnits = pcs, unsigned short argReservedQuantity = 0);
+    Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, Measure argMeasureUnits = pcs);
         
     // Getters:
     string getName() const;
@@ -32,7 +31,6 @@ public:
     unsigned int getPrice() const;
     unsigned short getVAT() const;
     unsigned short getQuantity() const;
-    unsigned short getReservedQuantity() const;
     
     // Setters:
     void setName(string newName);
@@ -40,7 +38,6 @@ public:
     void setPrice(unsigned int newPrice);
     void setVAT(unsigned short newVAT);
     void setQuantity(unsigned short newQuantity);
-    void setReservedQuantity(unsigned short newReservedQuantity);
     
     // Additional features:
     string getInfo();

@@ -8,13 +8,12 @@
 
 using namespace std;
 
-Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned char argVAT, unsigned short argQuantity, Measure argMeasureUnits, unsigned short argReservedQuantity) {
+Product::Product(string argName, unsigned short argID, unsigned int argPrice, unsigned char argVAT, unsigned short argQuantity, Measure argMeasureUnits) {
     name = argName;
     ID = argID;
     price = argPrice;
     VAT = argVAT;
     quantity = argQuantity;
-    reservedQuantity = argReservedQuantity;
     measureUnits = argMeasureUnits;
     return;
 }
@@ -39,10 +38,6 @@ unsigned short Product::getVAT() const {
 
 unsigned short Product::getQuantity() const {
     return quantity;
-}
-
-unsigned short Product::getReservedQuantity() const {
-    return reservedQuantity;
 }
 
 
@@ -72,11 +67,6 @@ void Product::setQuantity(unsigned short newQuantity) {
     return;
 }
 
-void Product::setReservedQuantity(unsigned short newReservedQuantity) {
-    reservedQuantity = newReservedQuantity;
-    return;
-}
-
 
 // Additional features:
 string Product::getInfo() {
@@ -84,7 +74,6 @@ string Product::getInfo() {
     info = name + " (#" + to_string(ID) + "):\n" + "Price netto: " + to_string(price) + " gr\n";
     info += "Price brutto: " + to_string(calculatePriceBrutto()) + " gr (" + to_string(VAT) +"% VAT)\n";
     info += "At warehouse: " + to_string(quantity) + " pcs\n";
-    info += "Reserved: " + to_string(reservedQuantity) + " pcs\n";
     return info;
 }
 
