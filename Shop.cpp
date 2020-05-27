@@ -14,6 +14,10 @@ Shop::Shop() {
 Shop::Shop(unsigned long argTime) {
     //konstruktor niedomyslny
     time = argTime;
+    cashDesks.maxAmount = 0.2 * argTime;
+    customers.maxAmount = 0.8 * argTime;
+    employees.maxAmount = 0.3 * argTime;
+    products.maxAmount = 1.2 * argTime;
     scanSpeed = 5; // 5, hm
 }
 
@@ -33,8 +37,8 @@ Shop::Shop(string filename) {
     time = values[0];
     scanSpeed = 5; // 5, hm
     cashDesks.maxAmount = values[1];
-    customers.maxAmount = values[2];
     customers.maxAmount = values[3];
+    employees.maxAmount = values[2];
 }
 
 Shop::Shop(char *arguments[]) {
@@ -43,11 +47,7 @@ Shop::Shop(char *arguments[]) {
 
 void Shop::run() {
 /// main method of class, which simulates the whole shop
-    createProduct();
-    createCashDesk();
-    createEmployee();
-    if (customers.maxAmount == 65535)
-        customers.maxAmount = time * 0.8; // a temporary mean
+    generate();
     std::srand(std::time(nullptr));
     for (unsigned short i = 0; i < time; ++i) {
         event();
@@ -57,7 +57,6 @@ void Shop::run() {
 }
 
 void Shop::event() {
-    // ta funkcja obecnie chyba wymaga major rewriting używając set'ów w Container'ach
     double variable = sin(customers.size() / 2 * M_PI / customers.maxAmount);
     int randA, randB;
     unsigned short diceRoll = std::rand()%100;
@@ -65,7 +64,7 @@ void Shop::event() {
     // a new customer enters the shop
         randA = createCustomer();
         if (randA > -1)
-            std::cout << "Customer " << randA << " have entered the shop" << std::endl; // to be changed into return
+            std::cout << "Customer " << randA << " have entered the shop" << std::endl;
         else
             std::cout << "A maximum value of customers has been reached, nothing happens" << std::endl;
     }
@@ -146,6 +145,20 @@ unsigned short Shop::getEmployeeAmount() {
 unsigned short Shop::getProductAmount() {
 /// returns the amount of Customer that are in the shop
     return products.size();
+}
+
+bool Shop::generate() {
+/// generates all the needed object before running
+    for (unsigned short i = products.maxAmount - 1; i >= 0; --i)
+        if (createProduct() == -1)
+            return false;
+    for (unsigned short i = cashDesks.maxAmount - 1; i >= 0; --i)
+        if (createCashDesk() == -1)
+            return false;
+    for (unsigned short i = employees.maxAmount - 1; i >= 0; --i)
+        if (createEmployee() == -1)
+            return false;
+    return true;
 }
 
 int Shop::createCashDesk() {

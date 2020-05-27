@@ -74,6 +74,7 @@ public:
     unsigned short getCustomerAmount();
     unsigned short getEmployeeAmount();
     unsigned short getProductAmount();
+    bool generate();
     int createCashDesk();
     int createCustomer();
     int createEmployee();
