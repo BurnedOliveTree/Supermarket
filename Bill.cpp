@@ -157,11 +157,11 @@ string Receipt::generate() const {
         output += "|";
         output += stringAlign(product -> getName(), 0, 14);
         output += " ";
-        output += stringAlign(to_string(quantity), 0, 5);
+        output += stringAlign(product -> getMeasureUnits() == g ? convertToKg(quantity) : to_string(quantity), 1, 5);
         output += "x ";
-        output += stringAlign(to_string(product -> calculatePriceBrutto()), 0, 7);
+        output += stringAlign(convertPricePLN(product -> calculatePriceBrutto()), 1, 7);
         output += " ";
-        output += stringAlign(to_string(product -> calculatePriceBrutto() * quantity), 0, 8);
+        output += stringAlign(convertPricePLN(product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 8);
         output += "|\n";
     }
     
