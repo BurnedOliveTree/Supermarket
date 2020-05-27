@@ -38,7 +38,7 @@ struct Container {
     }
     unsigned long findActive(unsigned short argID) {
         for (unsigned long i = 0; i < activeSize(); ++i) {
-            if (active[i].getID() == argID)
+            if (active[i] -> getID() == argID)
                 return i;
         }
         return -1;
