@@ -201,13 +201,12 @@ string Receipt::generate() {
     char receiptWidth = 40;
     
     vector<Product> stockList = *stock;
-    unsigned int value = 0;
     string output = stringAlign("_", 0, 40, "_");
     
     output += "\n";
     output += "|" + stringAlign(seller.getName(), 2, receiptWidth - 2) + "|\n";
-    output += "|" + stringAlign(seller.getStreet() + seller.getBuildingNumber(), 2, receiptWidth - 2) + "|\n";
-    output += "|" + stringAlign(seller.getCity() + seller.getPostcode(), 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(seller.getStreet() + " " + seller.getBuildingNumber(), 2, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign(seller.getCity() + " " + seller.getPostcode(), 2, receiptWidth - 2) + "|\n";
     output += "|" + stringAlign(seller.getTaxNumber(), 2, receiptWidth - 2) + "|\n";
     output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
     output += "|" + stringAlign("RECEIPT", 2, receiptWidth - 2) + "|\n";
@@ -217,7 +216,6 @@ string Receipt::generate() {
     for (auto productPair:products) {
         for (Product product: stockList) {
             if (product.getID() == productPair.first) {
-                value = product.calculatePriceBrutto() * product.getQuantity();
                 output += "|";
                 output += stringAlign(product.getName(), 0, 14);
                 output += " ";
@@ -225,13 +223,18 @@ string Receipt::generate() {
                 output += "x ";
                 output += stringAlign(to_string(product.calculatePriceBrutto()), 0, 7);
                 output += " ";
-                output += stringAlign(to_string(value), 0, 8);
+                output += stringAlign(to_string(product.calculatePriceBrutto() * product.getQuantity()), 0, 8);
                 output += "|\n";
                 break;
             }
         }
     }
-    output += stringAlign("_", 0, 40, "_") += "\n";
+    
+    output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
+    output += "|" + stringAlign("SUMMARY: ", 1, receiptWidth - 10) + "XXXXXXXX|\n";
+    output += "|" + stringAlign("TMS: TTTTT   ID: ", 0, receiptWidth - 2) + "|\n";
+
+    output += stringAlign("¯", 0, receiptWidth, "¯") += "\n";
     return output;
 }
 
