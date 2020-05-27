@@ -57,6 +57,7 @@ void Shop::run() {
 }
 
 void Shop::event() {
+    // ta funkcja obecnie chyba wymaga major rewriting używając set'ów w Container'ach
     double variable = sin(customers.size() / 2 * M_PI / customers.maxAmount);
     int custID, otherID;
     unsigned short diceRoll = std::rand()%100;
@@ -80,9 +81,8 @@ void Shop::event() {
     // customer joins the queue to a CashDesk
         // klient już może być w kasie, więc też może być busy, więc ten sam problem z while, więc też dla nich trzeba używać active. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         custID = std::rand() % customers.size();
-        // while(!cashDesks[otherID].getState()) - potential of an infinite loop, have to make sure first that there is one CashDesk open or check just for open CashDesks; also, it needs to be a do{...}while;
-        otherID = std::rand() % cashDesks.size();
-        cashDesks[otherID].push(customers.find(custID));
+        otherID = std::rand() % cashDesks.activeSize();
+        cashDesks.active[otherID] -> push(customers.find(custID));
         std::cout << "Customer " << customers[custID].getID() << " has entered the queue to cash desk " << cashDesks[otherID].getID() << std::endl;
     }
     else if (diceRoll <= 100 - 5 * variable) {
