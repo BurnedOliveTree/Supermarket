@@ -18,9 +18,9 @@ class Employee {
 
 public:
     Employee(unsigned short argID, std::string first, std::string last);
-    unsigned short getID();
-    std::string getName();
-    bool isOccupied();
+    unsigned short getID() const;
+    std::string getName() const;
+    bool isOccupied() const;
     void setFree();
     void setBusy();
 };

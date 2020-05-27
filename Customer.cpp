@@ -25,37 +25,37 @@ void Customer::editCustomer(unsigned short argID, bool argIsBusiness, string arg
 }
 
 // Getters:
-unsigned short Customer::getID() {
+unsigned short Customer::getID() const {
     return ID;
 }
-bool Customer::getIsBusiness() {
+bool Customer::getIsBusiness() const {
     return isBusiness;
 }
-string Customer::getName() {
+string Customer::getName() const {
     return name;
 }
-string Customer::getTaxNumber() {
+string Customer::getTaxNumber() const {
     return taxNumber;
 }
-string Customer::getStreet() {
+string Customer::getStreet() const {
     return street;
 }
-string Customer::getBuildingNumber() {
+string Customer::getBuildingNumber() const {
     return buildingNumber;
 }
-string Customer::getPostcode() {
+string Customer::getPostcode() const {
     return postcode;
 }
-string Customer::getCity() {
+string Customer::getCity() const {
     return city;
 }
-string Customer::getCountry() {
+string Customer::getCountry() const {
     return country;
 }
-map<unsigned short, unsigned short> Customer::getBasket() {
+map<unsigned short, unsigned short> Customer::getBasket() const {
     return basket;
 }
-unsigned long Customer::getBasketSize() {
+unsigned long Customer::getBasketSize() const {
     return basket.size();
 }
 

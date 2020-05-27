@@ -14,17 +14,17 @@ Employee::Employee(unsigned short argID, std::string first, std::string last) {
     occupied = false;
 }
 
-unsigned short Employee::getID() {
+unsigned short Employee::getID() const {
 /// returns the ID of Employee object
     return objID;
 }
 
-std::string Employee::getName() {
+std::string Employee::getName() const {
 /// returns full name of this Employee
     return firstName+" "+lastName;
 };
 
-bool Employee::isOccupied() {
+bool Employee::isOccupied() const {
 /// returns current status of this Employee
     return occupied;
 };

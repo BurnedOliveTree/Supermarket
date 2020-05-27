@@ -42,17 +42,17 @@ public:
     void editCustomer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry);
     
     // Getters:
-    unsigned short getID();
-    bool getIsBusiness();
-    string getName();
-    string getTaxNumber();
-    string getStreet();
-    string getBuildingNumber();
-    string getPostcode();
-    string getCity();
-    string getCountry();
-    map<unsigned short, unsigned short> getBasket();
-    unsigned long getBasketSize();
+    unsigned short getID() const;
+    bool getIsBusiness() const;
+    string getName() const;
+    string getTaxNumber() const;
+    string getStreet() const;
+    string getBuildingNumber() const;
+    string getPostcode() const;
+    string getCity() const;
+    string getCountry() const;
+    map<unsigned short, unsigned short> getBasket() const;
+    unsigned long getBasketSize() const;
     
     //Setters:
     void setID(unsigned short newID);

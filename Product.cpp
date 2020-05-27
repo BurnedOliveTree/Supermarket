@@ -21,27 +21,27 @@ Product::Product(string argName, unsigned short argID, unsigned int argPrice, un
 
 
 // Getters:
-string Product::getName() {
+string Product::getName() const {
     return name;
 }
 
-unsigned short Product::getID() {
+unsigned short Product::getID() const {
     return ID;
 }
 
-unsigned int Product::getPrice() {
+unsigned int Product::getPrice() const {
     return price;
 }
 
-unsigned short Product::getVAT() {
+unsigned short Product::getVAT() const {
     return VAT;
 }
 
-unsigned short Product::getQuantity() {
+unsigned short Product::getQuantity() const {
     return quantity;
 }
 
-unsigned short Product::getReservedQuantity() {
+unsigned short Product::getReservedQuantity() const {
     return reservedQuantity;
 }
 

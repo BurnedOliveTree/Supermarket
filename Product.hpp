@@ -27,12 +27,12 @@ public:
     Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, unsigned short argReservedQuantity = 0, Measure argMeasureUnits = pcs);
         
     // Getters:
-    string getName();
-    unsigned short getID();
-    unsigned int getPrice();
-    unsigned short getVAT();
-    unsigned short getQuantity();
-    unsigned short getReservedQuantity();
+    string getName() const;
+    unsigned short getID() const;
+    unsigned int getPrice() const;
+    unsigned short getVAT() const;
+    unsigned short getQuantity() const;
+    unsigned short getReservedQuantity() const;
     
     // Setters:
     void setName(string newName);

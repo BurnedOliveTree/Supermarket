@@ -41,12 +41,12 @@ public:
     
     
     // Getters:
-    bool getIsPayed();
-    time_t getDate();
-    unsigned short getID();
-    Customer getBuyer();
-    Customer getSeller();
-    map<unsigned short, unsigned short> getProducts();
+    bool getIsPayed() const;
+    time_t getDate() const;
+    unsigned short getID() const;
+    Customer getBuyer() const;
+    Customer getSeller() const;
+    map<unsigned short, unsigned short> getProducts() const;
 
     // Setters:
     /**
@@ -116,7 +116,7 @@ class Invoice: public Bill {
     /**
      Generates ASCII representation of the bill.
      */
-    string generate();
+    string generate() const;
     
     /**
      Saves ASCII representation of the bill to file.
@@ -135,7 +135,7 @@ class Receipt: public Bill {
     /**
      Generates ASCII representation of the bill.
      */
-    string generate();
+    string generate() const;
     
     /**
      Saves ASCII representation of the bill to file.

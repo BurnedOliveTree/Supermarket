@@ -34,27 +34,27 @@ Bill::Bill(bool argIsPayed, time_t argDate, unsigned short argID, Customer argBu
 
 
 // Getters:
-bool Bill::getIsPayed() {
+bool Bill::getIsPayed() const{
     return isPayed;
 }
 
-time_t Bill::getDate() {
+time_t Bill::getDate() const {
     return date;
 }
 
-unsigned short Bill::getID() {
+unsigned short Bill::getID() const {
     return ID;
 }
 
-Customer Bill::getBuyer() {
+Customer Bill::getBuyer() const {
     return buyer;
 }
 
-Customer Bill::getSeller() {
+Customer Bill::getSeller() const {
     return seller;
 }
 
-map<unsigned short, unsigned short> Bill::getProducts() {
+map<unsigned short, unsigned short> Bill::getProducts() const {
     return products;
 }
 
@@ -133,7 +133,7 @@ void Bill::removeProduct(unsigned short removeProductID, unsigned short removeQu
 
 /*   =======================   INVOICE   =======================   */
 
-string Invoice::generate() {
+string Invoice::generate() const {
     char invoiceWidth = 78;
 
     vector<Product> stockList = *stock;
@@ -197,7 +197,7 @@ void Invoice::save(string filename) {
 
 /*   =======================   RECEIPT   =======================   */
 
-string Receipt::generate() {
+string Receipt::generate() const {
     char receiptWidth = 40;
     
     vector<Product> stockList = *stock;
