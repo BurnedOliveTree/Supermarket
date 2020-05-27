@@ -7,6 +7,8 @@
 #ifndef Customer_hpp
 #define Customer_hpp
 
+#include "Product.hpp"
+
 #include <string>
 #include <map>
 
@@ -23,7 +25,7 @@ class Customer {
     string city;
     string country;
     
-    map<unsigned short, unsigned short> basket; // Customer's basket. [productID: quantity]
+    map<Product*, unsigned short> basket; // Customer's basket. [Product: quantity]
     
 public:
     /**
@@ -66,9 +68,9 @@ public:
     void setCountry(string newCountry);
     
     // Tools to edit Basket:
-    void setBasket(map<unsigned short, unsigned short> newBasket);
-    void addToBasket(unsigned short productID, unsigned short quantity);
-    void removeFromBasket(unsigned short productID, unsigned short quantity);
+    void setBasket(map<Product*, unsigned short> newBasket);
+    void addToBasket(Product*, unsigned short quantity);
+    void removeFromBasket(Product*, unsigned short quantity);
     void clearBasket();
     
     string getInfo();

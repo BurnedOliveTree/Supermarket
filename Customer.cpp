@@ -107,16 +107,20 @@ void Customer::setCountry(string newCountry) {
 
 
 // Tools to edit Basket:
-void Customer::setBasket(map<unsigned short, unsigned short> newBasket) {
+void Customer::setBasket(map<Product*, unsigned short> newBasket) {
     basket = newBasket;
     return;
 }
 
-void Customer::addToBasket(unsigned short productID, unsigned short quantity) {
-    return; // Zostanie zaimplementowane w projekcie - niepotrzebne w zad 3.
+void Customer::addToBasket(Product* argProduct, unsigned short argQuantity) {
+    if (basket.find(argProduct) == basket.end())
+        basket.insert(std::pair<Product*, unsigned short>(argProduct, argQuantity));
+    else
+        basket[argProduct] += argQuantity;
+    argProduct -> setQuantity(argProduct -> getQuantity() - argQuantity);
 }
 
-void Customer::removeFromBasket(unsigned short productID, unsigned short quantity) {
+void Customer::removeFromBasket(Product* argProduct, unsigned short quantity) {
     return; // Zostanie zaimplementowane w projekcie - niepotrzebne w zad 3.
 }
 
