@@ -10,9 +10,6 @@ using namespace std;
 
 Customer::Customer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry) {
     basket.clear();
-    editCustomer(argID, argIsBusiness, argName, argTaxNumber, argStreet, argBuildingNumber, argPostcode, argCity, argCountry);
-}
-void Customer::editCustomer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry) {
     ID = argID;
     isBusiness = argIsBusiness;
     name = argName;
@@ -107,11 +104,6 @@ void Customer::setCountry(string newCountry) {
 
 
 // Tools to edit Basket:
-void Customer::setBasket(map<Product*, unsigned short> newBasket) {
-    basket = newBasket;
-    return;
-}
-
 void Customer::addToBasket(Product* argProduct, unsigned short argQuantity) {
     if (basket.find(argProduct) == basket.end())
         basket.insert(std::pair<Product*, unsigned short>(argProduct, argQuantity));

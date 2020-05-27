@@ -24,7 +24,7 @@ class Customer {
     string postcode;
     string city;
     string country;
-    
+
     map<Product*, unsigned short> basket; // Customer's basket. [Product: quantity]
     
 public:
@@ -41,7 +41,6 @@ public:
      @param argCountry Customer's country.
      */
     Customer(unsigned short argID = 0, bool argIsBusiness = false, string argName = "None", string argTaxNumber = "0000000000", string argStreet = "None", string argBuildingNumber = "None", string argPostcode = "None", string argCity = "None", string argCountry = "None");
-    void editCustomer(unsigned short argID, bool argIsBusiness, string argName, string argTaxNumber, string argStreet, string argBuildingNumber, string argPostcode, string argCity, string argCountry);
     
     // Getters:
     unsigned short getID() const;
@@ -68,7 +67,6 @@ public:
     void setCountry(string newCountry);
     
     // Tools to edit Basket:
-    void setBasket(map<Product*, unsigned short> newBasket);
     void addToBasket(Product*, unsigned short quantity);
     void removeFromBasket(Product*, unsigned short quantity);
     void clearBasket();
