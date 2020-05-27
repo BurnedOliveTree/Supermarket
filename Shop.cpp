@@ -58,56 +58,63 @@ void Shop::run() {
 
 void Shop::event() {
     double variable = sin(customers.size() / 2 * M_PI / customers.maxAmount);
-    int randA, randB;
     unsigned short diceRoll = std::rand()%100;
+
     if (diceRoll <= 100 * (1 - variable)) {
     // a new customer enters the shop
-        randA = createCustomer();
-        if (randA > -1)
-            std::cout << "Customer " << randA << " have entered the shop" << std::endl;
+        int customerID = createCustomer();
+
+        if (customerID > -1)
+            std::cout << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") have entered the shop" << std::endl;
         else
             std::cout << "A maximum value of customers has been reached, nothing happens" << std::endl;
     }
     else if (diceRoll <= 100 - 60 * variable) {
     // customer adds something to their basket
-        randA = std::rand() % customers.activeSize();
-        randB = std::rand() % products.activeSize();
-        customers.active[randA]->addToBasket(products.active[randB], 1);
-        if (!products.active[randB]->getQuantity()) {
-            products.active.erase(products.active.begin() + products.findActive(products[randB].getID()));
-        }
-        std::cout << "Customer " << customers.active[randA]->getID() << " has added a/an " << products.active[randB]->getName() << " into his basket" << std::endl;
+        Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
+        Product* randProduct = products.active[std::rand() % products.activeSize()];
+        unsigned short quantity = 1;
+
+        randCustomer->addToBasket(randProduct, quantity);
+        if (!randProduct->getQuantity())
+            products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
+        std::cout << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << "(ID " << randProduct->getID() << ") into his basket" << std::endl;
     }
     else if (diceRoll <= 100 - 20 * variable) {
     // customer joins the queue to a CashDesk
-        randA = std::rand() % customers.activeSize();
-        randB = std::rand() % cashDesks.activeSize();
-        cashDesks.active[randB] -> push(customers.active[randA]);
-        std::cout << "Customer " << customers.active[randA]->getID() << " has entered the queue to cash desk " << cashDesks.active[randB]->getID() << std::endl;
+        Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
+        CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
+
+        randCashDesk->push(randCustomer);
+        std::cout << "Customer " << randCustomer->getID() << " has entered the queue to cash desk " << randCashDesk->getID() << std::endl;
     }
     else if (diceRoll <= 100 - 10 * variable) {
     // random cashDesk changes it status (open / close)
-        randB = std::rand() % cashDesks.size();
-        if (cashDesks[randB].getState()) {
-            Employee* freed = cashDesks[randB].close();
-            std::cout << "Cash desk " << cashDesks[randB].getID() << " has just closed, freeing employee " << freed -> getID() << std::endl;
-            employees.active.push_back(freed);
-            cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(cashDesks[randB].getID()));
+        CashDesk* randCashDesk = &cashDesks[std::rand() % cashDesks.size()];
+        Employee* randEmployee = nullptr;
+
+        if (randCashDesk->getState()) {
+            randEmployee = randCashDesk->close();
+            std::cout << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << std::endl;
+            employees.active.push_back(randEmployee);
+            cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(randCashDesk->getID()));
         }
         else {
-            randA = std::rand() % employees.activeSize();
-            cashDesks[randB].open(employees.active[randA]);
-            employees.active.erase(employees.active.begin() + employees.findActive(employees.active[randA]->getID()));
-            cashDesks.active.push_back(&cashDesks[randB]);
-            std::cout << "Cash desk " << cashDesks[randB].getID() << " has just opened and employee " << employees.active[randA]->getID() << " has been assigned to it" << std::endl;
+            randEmployee = employees.active[std::rand() % employees.activeSize()];
+            randCashDesk->open(randEmployee);
+            employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
+            cashDesks.active.push_back(randCashDesk);
+            std::cout << "Cash desk (ID" << randCashDesk->getID() << ") has just opened and employee " << randEmployee->getID() << " has been assigned to it" << std::endl;
         }
     }
     else if (diceRoll <= 100 - 5 * variable) {
     // a random Employee changes shifts of another on a random CashDesk
-        randA = employees.active[std::rand() % employees.activeSize()] -> getID();
-        randB = std::rand() % cashDesks.activeSize();
-        employees.active.push_back(cashDesks.active[randB] -> assign(employees.find(randA)));
-        employees.active.erase(employees.active.begin() + employees.findActive(randA));
+        Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
+        CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
+
+        employees.active.push_back(randCashDesk->assign(randEmployee));
+        employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
+        std::cout << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")" << std::endl;
     }
     else {
     // customer asks employee about something
