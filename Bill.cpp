@@ -39,10 +39,6 @@ Customer Bill::getSeller() const {
     return seller;
 }
 
-map<unsigned short, unsigned short> Bill::getProducts() const {
-    return products;
-}
-
 
 // Setters:
 void Bill::setDate(chrono::time_point<chrono::high_resolution_clock> newDate) {
@@ -61,19 +57,12 @@ void Bill::setID(unsigned short newID) {
     ID = newID;
 }
 
-void Bill::setStock(vector<Product> *argStock) {
-    stock = argStock;
-}
-
 
 
 /*   =======================   INVOICE   =======================   */
 
 string Invoice::generate() const {
     char invoiceWidth = 78;
-
-    vector<Product> stockList = *stock;
-
     string output = stringAlign("_", 2, invoiceWidth, "_");
 
     output += "\n";
@@ -89,27 +78,24 @@ string Invoice::generate() const {
     output += "|" + stringAlign("_", 2, invoiceWidth - 2, "_") + "|\n";
 
     output += "| NAME                   | QTY | NETTO | BRUTTO | VAT | VAT AMT | BRUTTO AMT |\n";
-    for (auto productPair:products) {
-        for (Product product: stockList) {
-            if (product.getID() == productPair.first) {
-                output += "|";
-                output += stringAlign(product.getName(), 0, 24);
-                output += "|";
-                output += stringAlign(to_string(product.getQuantity()), 0, 5);
-                output += "|";
-                output += stringAlign(to_string(product.getPrice()), 0, 7);
-                output += "|";
-                output += stringAlign(to_string(product.calculatePriceBrutto()), 0, 8);
-                output += "|";
-                output += stringAlign(to_string(product.getVAT()) + " %", 1, 5);
-                output += "|";
-                output += stringAlign(to_string(product.getVAT() * product.getQuantity() * product.getPrice()), 0, 9);
-                output += "|";
-                output += stringAlign(to_string(product.calculatePriceBrutto() * product.getQuantity()), 0, 12);
-                output += "|\n";
-                break;
-            }
-        }
+    for (auto basketPair: buyer.getBasket()) {
+        Product *product = basketPair.first;
+        unsigned short quantity = basketPair.second;
+        output += "|";
+        output += stringAlign(product -> getName(), 0, 24);
+        output += "|";
+        output += stringAlign(to_string(quantity), 0, 5);
+        output += "|";
+        output += stringAlign(to_string(product -> getPrice()), 0, 7);
+        output += "|";
+        output += stringAlign(to_string(product -> calculatePriceBrutto()), 0, 8);
+        output += "|";
+        output += stringAlign(to_string(product -> getVAT()) + " %", 1, 5);
+        output += "|";
+        output += stringAlign(to_string(product -> getVAT() * quantity * product -> getPrice()), 0, 9);
+        output += "|";
+        output += stringAlign(to_string(product -> calculatePriceBrutto() * quantity), 0, 12);
+        output += "|\n";
     }
     output += "|" + stringAlign(".", 2, invoiceWidth - 2, ".") + "|\n";
     output += "|" + stringAlign("SUMMARY: ", 1, invoiceWidth - 14) + "XXXXXXXXXXXX|\n";
@@ -135,7 +121,6 @@ void Invoice::save(string filename) {
 string Receipt::generate() const {
     char receiptWidth = 40;
     
-    vector<Product> stockList = *stock;
     string output = stringAlign("_", 0, 40, "_");
     
     output += "\n";
@@ -148,21 +133,18 @@ string Receipt::generate() const {
     output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
     output += "| NAME          QTY  x PRICE   VALUE   |\n";
 
-    for (auto productPair:products) {
-        for (Product product: stockList) {
-            if (product.getID() == productPair.first) {
-                output += "|";
-                output += stringAlign(product.getName(), 0, 14);
-                output += " ";
-                output += stringAlign(to_string(product.getQuantity()), 0, 5);
-                output += "x ";
-                output += stringAlign(to_string(product.calculatePriceBrutto()), 0, 7);
-                output += " ";
-                output += stringAlign(to_string(product.calculatePriceBrutto() * product.getQuantity()), 0, 8);
-                output += "|\n";
-                break;
-            }
-        }
+    for (auto basketPair: buyer.getBasket()) {
+        Product *product = basketPair.first;
+        unsigned short quantity = basketPair.second;
+        output += "|";
+        output += stringAlign(product -> getName(), 0, 14);
+        output += " ";
+        output += stringAlign(to_string(quantity), 0, 5);
+        output += "x ";
+        output += stringAlign(to_string(product -> calculatePriceBrutto()), 0, 7);
+        output += " ";
+        output += stringAlign(to_string(product -> calculatePriceBrutto() * quantity), 0, 8);
+        output += "|\n";
     }
     
     output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";

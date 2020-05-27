@@ -23,8 +23,6 @@ protected:
     unsigned short ID;
     Customer buyer;
     Customer seller;
-    map<unsigned short, unsigned short> products;
-    vector<Product> *stock;
         
 public:
     /**
@@ -33,7 +31,6 @@ public:
      @param argID Integer to numerate bills.
      @param argBuyer Class Customer object.
      @param argSeller Class Customer object.
-     @param argProducts Map containing product ID and quantity (both unsigned short type).
      */
     Bill(chrono::time_point<chrono::high_resolution_clock> argDate = chrono::steady_clock::now(), unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0);
     
@@ -43,7 +40,6 @@ public:
     unsigned short getID() const;
     Customer getBuyer() const;
     Customer getSeller() const;
-    map<unsigned short, unsigned short> getProducts() const;
 
     // Setters:
     /**
@@ -69,12 +65,6 @@ public:
      @param newID New number.
      */
     void setID(unsigned short newID);
-    
-    /**
-     Sets stock.
-     @param argStock Pointer to stock.
-     */
-    void setStock(vector<Product> *argStock);
 };
 
 
