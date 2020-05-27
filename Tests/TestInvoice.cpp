@@ -333,7 +333,6 @@ void TestInvoice::editInvoice(Invoice &invoice) {
     txtMenu += "2. Edytuj numer. \n";
     txtMenu += "3. Edytuj nabywce. \n";
     txtMenu += "4. Edytuj sprzedawce. \n";
-    txtMenu += "5. Edytuj produkty. \n";
     txtMenu += "0. Wroc do poprzedniego menu. \n";
     txtMenu += "Twoj wybor: ";
 
@@ -383,72 +382,7 @@ void TestInvoice::editInvoice(Invoice &invoice) {
                 }
                 invoice.setSeller(sellers[chosenConsumer]);
                 break;
-            case products:
-                editProducts(invoice);
-                break;
             
-            case exit:
-                break;
-            default:
-                message = "Niepoprawny wybor. Prosze sprobowac ponownie.\n\n";
-                printMessage = false;
-        }
-    } while(choice != exit);
-    return;
-}
-
-void TestInvoice::editProducts(Invoice &invoice) {
-    string txtMenu = "", clear = "", message = "";
-    for (int i = 0; i < 50; ++i) clear += "\n";
-    txtMenu += "Edycja produktu: \n";
-    txtMenu += "1. Przypisz do faktury produkty nabywcy. \n";
-    txtMenu += "2. Dodaj produkt. \n";
-    txtMenu += "3. Usun produkt. \n";
-    txtMenu += "0. Wroc do poprzedniego menu. \n";
-    txtMenu += "Twoj wybor: ";
-
-    enum Possibilities {exit, setProduct, addProduct, removeProduct};
-    int choice = 0;
-    bool printMessage = false;
-    
-    string newString = "";
-    unsigned short newShort1 = 0, newShort2 = 0;
-    
-    do {
-        newString = "";
-        if (printMessage) cout << clear + invoice.generate() + message + txtMenu;
-        else cout << clear + invoice.generate() + "\n\n"+ txtMenu;
-        cin >> choice;
-        printMessage = false;
-        cin.ignore();
-        switch(choice) {
-            case setProduct:
-                invoice.setProducts(invoice.getBuyer().getBasket());
-                break;
-            case addProduct:
-                cout << "Podaj ID produktu:\n";
-                cin >> newShort1;
-                cout << "Podaj ilosc produktu:\n";
-                cin >> newShort2;
-                try {
-                    invoice.addProduct(newShort1, newShort2);
-                } catch(invalid_argument) {
-                    message = "Nie ma takiego produktu w bazie danych";
-                    printMessage = true;
-                }
-                break;
-            case removeProduct:
-                cout << "Podaj ID produktu:\n";
-                cin >> newShort1;
-                cout << "Podaj ilosc produktu:\n";
-                cin >> newShort2;
-                try {
-                    invoice.removeProduct(newShort1, newShort2);
-                } catch(invalid_argument) {
-                    message = "Wystapil blad. Byc moze chcesz usunac wieksza ilosc produktu niz to mozliwe lub produkt nie istnieje.";
-                    printMessage = true;
-                }
-                break;
             case exit:
                 break;
             default:
