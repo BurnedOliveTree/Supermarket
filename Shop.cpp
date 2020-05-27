@@ -46,12 +46,9 @@ Shop::Shop(char *arguments[]) {
 }
 
 Shop::~Shop() {
-    // delete customers
-    for (long i = customers.activeSize()-1; i > -1; --i)
-        delete &customers[i];
-    for (unsigned long j = 0; j < cashDesks.activeSize(); ++j)
-        for (long i = cashDesks[j].size(); i > -1; --i)
-            delete &customers[i];
+    for (long i = customers.iterator-1; i > -1; --i)
+        if (&customers[i])
+            delete &customers[i]; // nie działa :(
     for (long i = cashDesks.size()-1; i > -1; --i)
         delete &cashDesks[i];
     for (long i = employees.size()-1; i > -1; --i)
@@ -80,19 +77,19 @@ std::string Shop::event() {
     unsigned short diceRoll = std::rand()%100;
 
     if (diceRoll <= 100 * (1 - variable)) {
-    // a new customer enters the shop
+    /// a new customer enters the shop
         int customerID = createCustomer();
 
         if (customerID > -1)
-            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") have entered the shop" << std::endl;
+            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") has entered the shop" << std::endl;
         else
             buff << "A maximum value of customers has been reached, nothing happens" << std::endl;
     }
     else if (diceRoll <= 100 - 60 * variable) {
-    // customer adds something to their basket
+    /// customer adds something to their basket
         Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
-        unsigned short quantity = 1;
+        unsigned short quantity = 1; // wzór, a niee jeden
 
         randCustomer->addToBasket(randProduct, quantity);
         if (!randProduct->getQuantity())
@@ -100,7 +97,7 @@ std::string Shop::event() {
         buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl;
     }
     else if (diceRoll <= 100 - 20 * variable) {
-    // customer joins the queue to a CashDesk
+    /// customer joins the queue to a CashDesk
         Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
         CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
 
@@ -108,10 +105,11 @@ std::string Shop::event() {
         buff << "Customer " << randCustomer->getID() << " has entered the queue to cash desk " << randCashDesk->getID() << std::endl;
     }
     else if (diceRoll <= 100 - 10 * variable) {
-    // random cashDesk changes it status (open / close)
+    /// random cashDesk changes it status (open / close)
         CashDesk* randCashDesk = & cashDesks[std::rand() % cashDesks.size()];
         Employee* randEmployee = nullptr;
 
+        // trzeba spradzać, czy nie zamykamy ostatniej kasy
         if (randCashDesk->getState()) {
             randEmployee = randCashDesk->close();
             buff << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << std::endl;
@@ -127,7 +125,7 @@ std::string Shop::event() {
         }
     }
     else if (diceRoll <= 100 - 5 * variable) {
-    // a random Employee changes shifts of another on a random CashDesk
+    /// a random Employee changes shifts of another on a random CashDesk
         Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
         CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
 
@@ -136,8 +134,12 @@ std::string Shop::event() {
         buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")" << std::endl;
     }
     else {
-    // customer asks employee about something
-        buff << "A random customer has asked a random employee about most random of things" << std::endl;
+    /// customer asks employee about the price
+        Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
+        Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
+        Product* randProduct = products.active[std::rand() % products.activeSize()];
+        
+        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID " << randProduct->getID() << ") and it's " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100 << std::endl;
     }
     buff << std::endl;
     return buff.str();
