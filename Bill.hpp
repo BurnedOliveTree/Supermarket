@@ -81,20 +81,6 @@ public:
      @param newProducts New products map.
      */
     void setProducts(map<unsigned short, unsigned short> newProducts);
-    
-
-    // Tools to edit products:
-    /**
-     Adds product to the bill. If already exist will stack with prevoiusy added.
-     @param newProductID New product ID.
-     @param newQuantity Quantity of the ne product.
-     */
-    void addProduct(unsigned short newProductID, unsigned short newQuantity);
-    
-    /**
-     Removes specified product from the bill (if exist).
-     */
-    void removeProduct(unsigned short newProductID, unsigned short newQuantity);
 };
 
 

@@ -80,41 +80,6 @@ void Bill::setProducts(map<unsigned short, unsigned short> newProducts) {
 }
 
 
-// Tools to edit products:
-void Bill::addProduct(unsigned short newProductID, unsigned short newQuantity) {
-    vector<Product> stockList = *stock;
-    bool idExist = false;
-    for (Product product: stockList) {
-        if (product.getID() == newProductID) idExist = true;
-    }
-    if (idExist) {
-        products.insert({newProductID, newQuantity});
-    } else {
-        throw invalid_argument("Product does not exist in stock.");
-    }
-    return;
-}
-
-void Bill::removeProduct(unsigned short removeProductID, unsigned short removeQuantity) {
-    vector<Product> stockList = *stock;
-    unsigned short productQuantity = 0;
-    bool idExist = false;
-    for (Product product: stockList) {
-        if (product.getID() == removeProductID) {
-            idExist = true;
-            productQuantity = products[removeProductID];
-        }
-    }
-    if (idExist) {
-        if (removeQuantity < productQuantity) {
-            products[removeProductID] = productQuantity - removeProductID;
-        }
-        else throw invalid_argument("There are less products then you want to remove.");
-    } else throw invalid_argument("Product does not exist in database.");
-    return;;
-}
-
-
 
 /*   =======================   INVOICE   =======================   */
 
