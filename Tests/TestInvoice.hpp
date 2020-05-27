@@ -1,6 +1,5 @@
 //
 //  TestInvoice.hpp
-//  Zadanie 3
 //
 //  Created by Paweł Müller on 08/04/2020.
 //

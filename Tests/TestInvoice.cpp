@@ -1,6 +1,5 @@
 //
 //  TestInvoice.cpp
-//  Zadanie 3
 //
 //  Created by Paweł Müller on 08/04/2020.
 //
@@ -46,13 +45,13 @@ TestInvoice::TestInvoice() {
     productsList.insert(pair<unsigned short, unsigned short>(5, 6));
     buyers[1].setBasket(productsList);
     
-    Invoice invoice1(false, 0, 1490, buyers[0], sellers[1], buyers[0].getBasket());
+    Invoice invoice1(chrono::steady_clock::now(), 1490, buyers[0], sellers[1], buyers[0].getBasket());
     invoice1.setStock(productsPointer);
     invoices.push_back(invoice1);
     cout << invoice1.generate();
     cout << endl << endl;
     
-    Receipt receipt1(false, 0, 1490, buyers[1], sellers[0], buyers[1].getBasket());
+    Receipt receipt1(chrono::steady_clock::now(), 53342, buyers[1], sellers[0], buyers[1].getBasket());
     receipt1.setStock(productsPointer);
     receipts.push_back(receipt1);
     cout << receipt1.generate();
@@ -355,9 +354,9 @@ void TestInvoice::editInvoice(Invoice &invoice) {
         cin.ignore();
         switch(choice) {
             case isPayed:
-                cout << "Czy faktura jest zaplacona? (1/0):";
+                cout << "Czy faktura jest zaplacona (wywalone)? (1/0):";
                 cin >> newBool;
-                invoice.setIsPayed(newBool);
+                //invoice.setIsPayed(newBool);
                 break;
             case number:
                 cout << "Podaj nowy numer:\n";
