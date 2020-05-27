@@ -98,7 +98,8 @@ Employee* CashDesk::assign(Employee* assigned) {
     Employee* temp = assignee;
     assignee = assigned;
     assigned -> setBusy();
-    temp -> setFree();
+    if (temp)
+        temp -> setFree();
     return temp;
 }
 

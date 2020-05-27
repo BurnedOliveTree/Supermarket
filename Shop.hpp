@@ -13,6 +13,7 @@
 #include "CashDesk.hpp"
 
 #include <iostream> // będzie <string>
+#include <sstream>
 #include <vector>
 #include <cmath>
 #include <ctime>
@@ -47,8 +48,9 @@ struct Container {
     T* find(unsigned short argID) {
     /// returns the adress of T object based on a given ID
         for (unsigned long i=container.size()-1; i>=0; --i)
-            if (container[i].getID() == argID)
+            if (container[i].getID() == argID) {
                 return &container[i];
+            }
         return nullptr;
     }
 };
@@ -67,8 +69,9 @@ public:
     Shop(unsigned long argTime);
     Shop(std::string filename);
     Shop(char *arguments[]);
+    // i tu jest destruktor, jego brak jest tylko iluzją
     void run();
-    void event();
+    std::string event();
     void executeQueues();
     unsigned short getCashDeskAmount();
     unsigned short getCustomerAmount();
