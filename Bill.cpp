@@ -78,7 +78,7 @@ string Bill::convertToKg(unsigned short quantity) const {
 /*   =======================   INVOICE   =======================   */
 
 string Invoice::generate() const {
-    char invoiceWidth = 78;
+    char invoiceWidth = 90;
     string output = stringAlign("_", 2, invoiceWidth, "_");
 
     output += "\n";
@@ -93,24 +93,26 @@ string Invoice::generate() const {
 
     output += "|" + stringAlign("_", 2, invoiceWidth - 2, "_") + "|\n";
 
-    output += "| NAME                   | QTY | NETTO | BRUTTO | VAT | VAT AMT | BRUTTO AMT |\n";
+    output += "| NAME                   |  QTY  | U |  NETTO  |  BRUTTO  | VAT | VAT AMT |  BRUTTO AMT  |\n";
     for (auto basketPair: buyer.getBasket()) {
         Product *product = basketPair.first;
         unsigned short quantity = basketPair.second;
         output += "|";
         output += stringAlign(product -> getName(), 0, 24);
         output += "|";
-        output += stringAlign(to_string(quantity), 0, 5);
+        output += stringAlign(product -> getMeasureUnits() == g ? convertToKg(quantity) : to_string(quantity), 1, 7);
         output += "|";
-        output += stringAlign(to_string(product -> getPrice()), 0, 7);
+        output += stringAlign(product -> getMeasureUnits() == g ? "kg" : "pcs", 2, 3);
         output += "|";
-        output += stringAlign(to_string(product -> calculatePriceBrutto()), 0, 8);
+        output += stringAlign(convertPricePLN(product -> getPrice()), 1, 9);
+        output += "|";
+        output += stringAlign(convertPricePLN(product -> calculatePriceBrutto()), 1, 10);
         output += "|";
         output += stringAlign(to_string(product -> getVAT()) + " %", 1, 5);
         output += "|";
-        output += stringAlign(to_string(product -> getVAT() * quantity * product -> getPrice()), 0, 9);
+        output += stringAlign(convertPricePLN(product -> getVAT() * quantity * product -> getPrice() / 100 / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 9);
         output += "|";
-        output += stringAlign(to_string(product -> calculatePriceBrutto() * quantity), 0, 12);
+        output += stringAlign(convertPricePLN(product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 14);
         output += "|\n";
     }
     output += "|" + stringAlign(".", 2, invoiceWidth - 2, ".") + "|\n";
