@@ -12,7 +12,7 @@
 
 using namespace std;
 
-enum Measure{pcs, kg};
+enum Measure{pcs, g};
 
 class Product {
     string name; // A name of the product.
