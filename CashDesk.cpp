@@ -6,7 +6,7 @@
 
 #include "CashDesk.hpp"
 
-CashDesk::CashDesk(unsigned short argID, int cashIn) {
+CashDesk::CashDesk(unsigned short argID, unsigned int cashIn) {
 /// CashDesk object constructor
     ID = argID;
     isOpen = false;
@@ -65,31 +65,31 @@ Employee* CashDesk::close() {
     return assignee;
 }
 
-int CashDesk::getCash() {
+unsigned int CashDesk::getCash() {
     return cashAmount;
 }
 
-void CashDesk::addCash(int n) {
+void CashDesk::addCash(unsigned int n) {
     cashAmount += n;
 }
 
-void CashDesk::operator +=(int n) {
+void CashDesk::operator +=(unsigned int n) {
     addCash(n);
 }
 
-void CashDesk::setCash(int n) {
+void CashDesk::setCash(unsigned int n) {
     cashAmount = n;
 }
 
-void CashDesk::operator =(int n) {
+void CashDesk::operator =(unsigned int n) {
     setCash(n);
 }
 
-void CashDesk::takeCash(int n) {
+void CashDesk::takeCash(unsigned int n) {
     cashAmount -= n;
 }
 
-void CashDesk::operator -=(int n) {
+void CashDesk::operator -=(unsigned int n) {
     takeCash(n);
 }
 

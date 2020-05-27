@@ -19,19 +19,19 @@ class CashDesk {
     std::queue<Customer*> customerQueue;
     Employee* assignee;
     bool isOpen;
-    int cashAmount;
+    unsigned int cashAmount;
     unsigned short itemsScaned;
 
 public:
-    CashDesk(unsigned short no, int cashIn);
+    CashDesk(unsigned short no, unsigned int cashIn);
     unsigned short getID();
     void open(Employee* assigned);
     bool getState();
     Employee* close();
-    int getCash();
-    void addCash(int n);
-    void setCash(int n);
-    void takeCash(int n);
+    unsigned int getCash();
+    void addCash(unsigned int n);
+    void setCash(unsigned int n);
+    void takeCash(unsigned int n);
     Employee* assign(Employee* assigned);
     void push(Customer* shopper);
     unsigned long size();
@@ -42,10 +42,10 @@ public:
     bool operator ==(CashDesk cash2);
     bool operator !=(unsigned short secondID);
     bool operator !=(CashDesk cash2);
-    void operator =(int n);
+    void operator =(unsigned int n);
     void operator =(Employee* assigned);
-    void operator +=(int n);
-    void operator -=(int n);
+    void operator +=(unsigned int n);
+    void operator -=(unsigned int n);
     friend std::ostream& operator <<(std::ostream& output, CashDesk& cashDesk) {
         output << "Cash " << cashDesk.getID() << " is ";
         if (cashDesk.getState())
