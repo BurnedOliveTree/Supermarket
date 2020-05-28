@@ -46,22 +46,24 @@ Shop::Shop(char *arguments[]) {
 }
 
 Shop::~Shop() {
-    for (long i = customers.iterator-1; i > -1; --i)
-        if (&customers[i])
-            delete &customers[i]; // nie działa :(
+    for (long j = cashDesks.activeSize()-1; j > -1; --j)
+        for (long i = cashDesks[j]->size()-1; i > -1; --i )
+            delete cashDesks[j]->pop();
+    for (long i = customers.activeSize()-1; i > -1; --i)
+        delete customers.active[i];
     for (long i = cashDesks.size()-1; i > -1; --i)
-        delete &cashDesks[i];
+        delete cashDesks[i];
     for (long i = employees.size()-1; i > -1; --i)
-        delete &employees[i];
+        delete employees[i];
     for (long i = products.size()-1; i > -1; --i)
-        delete &products[i];
+        delete products[i];
 }
 
 void Shop::run() {
 /// main method of class, which simulates the whole shop
     generate();
-    cashDesks[1].assign(&employees[1]); // this is a problem - every cash desk is closed at the beginning; also run needs to check if it's not closing the last cash desk, otherwise it's a looming ArithmeticsError
-    cashDesks.active.push_back(&cashDesks[1]);
+    cashDesks[1]->assign(employees[1]); // this is a problem - every cash desk is closed at the beginning; also run needs to check if it's not closing the last cash desk, otherwise it's a looming ArithmeticsError
+    cashDesks.active.push_back(cashDesks[1]);
     std::srand((unsigned int)std::time(nullptr));
     for (unsigned short i = 0; i < time; ++i) {
         std::cout << event();
@@ -89,7 +91,7 @@ std::string Shop::event() {
     /// customer adds something to their basket
         Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
-        unsigned short quantity = 1; // wzór, a niee jeden
+        unsigned short quantity = 1; // wzór, a nie jeden
 
         randCustomer->addToBasket(randProduct, quantity);
         if (!randProduct->getQuantity())
@@ -102,11 +104,12 @@ std::string Shop::event() {
         CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
 
         randCashDesk->push(randCustomer);
-        buff << "Customer " << randCustomer->getID() << " has entered the queue to cash desk " << randCashDesk->getID() << std::endl;
+        customers.active.erase(customers.active.begin() + customers.findActive(randCustomer->getID()));
+        buff << "Customer " << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << std::endl;
     }
     else if (diceRoll <= 100 - 10 * variable) {
     /// random cashDesk changes it status (open / close)
-        CashDesk* randCashDesk = & cashDesks[std::rand() % cashDesks.size()];
+        CashDesk* randCashDesk = cashDesks[std::rand() % cashDesks.size()];
         Employee* randEmployee = nullptr;
 
         // trzeba spradzać, czy nie zamykamy ostatniej kasy
@@ -146,14 +149,13 @@ std::string Shop::event() {
 }
 
 void Shop::executeQueues() {
-    Customer* custPoint = nullptr;
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
         if (cashDesks.active[i]->size()) {
-            custPoint = cashDesks.active[i]->scan(scanSpeed);
+            Customer* custPoint = cashDesks.active[i]->scan(scanSpeed);
             if (custPoint != nullptr) {
                 // to jest moment, w którym wszystkie towary klienta zostały zeskanowane, więc powinien zapłacić, dostać rachunek i wyjść (czyli de facto zostać zniszczony)
                 // custPoint będzie trzymał wskaźnik na tego klienta (który został już wypchnięty z vector'a kolejki)
-                // a, no i delete tego Customer
+                delete custPoint;
             }
         }
     }
@@ -197,7 +199,7 @@ int Shop::createCashDesk() {
 /// calls the CashDesk constructor, appending him to the vector of all cash desks in this shop
     if (cashDesks.iterator + 1 <= cashDesks.maxAmount) {
         CashDesk* p = new CashDesk(cashDesks.iterator, 0);
-        cashDesks.container.push_back(*p);
+        cashDesks.container.push_back(p);
         cashDesks.iterator++;
         return cashDesks.iterator - 1;
     }
@@ -208,7 +210,7 @@ int Shop::createCustomer() {
 /// calls the Customer constructor, appending him to the vector of all customers in this shop
     if (customers.iterator + 1 <= customers.maxAmount) {
         Customer* p = new Customer(customers.iterator, false, "Jan K", "1234567890", "Sezamkowa", "18", "05-800", "Warszawa", "Polska");
-        customers.container.push_back(*p);
+        customers.container.push_back(p);
         customers.active.push_back(p);
         customers.iterator++;
         return customers.iterator - 1;
@@ -220,7 +222,7 @@ int Shop::createEmployee() {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 <= employees.maxAmount) {
         Employee* p = new Employee(employees.iterator, "Geralt", "z Rivii");
-        employees.container.push_back(*p);
+        employees.container.push_back(p);
         employees.active.push_back(p);
         employees.iterator++;
         return employees.iterator - 1;
@@ -232,7 +234,7 @@ int Shop::createProduct() {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (products.iterator + 1 <= products.maxAmount) {
         Product* p = new Product("Banana", products.iterator, 320, 23, 8, pcs);
-        products.container.push_back(*p);
+        products.container.push_back(p);
         products.active.push_back(p);
         products.iterator++;
         return products.iterator - 1;

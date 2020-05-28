@@ -115,7 +115,8 @@ unsigned long CashDesk::size() {
 
 Customer* CashDesk::pop() {
 /// removes first Customer from the queue
-    Customer* result = customerQueue.front();
+    Customer* result = new Customer;
+    result = customerQueue.front();
     customerQueue.pop();
     return result;
 }
