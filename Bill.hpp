@@ -77,6 +77,14 @@ public:
      @param quantity Quantity in g.
      */
     string convertToKg(unsigned short quantity) const;
+    
+    /**
+     Saves ASCII representation of the bill to file.
+     @param filename String filename to use. Remember about extension (preferred .txt).
+     */
+    void save(string filename);
+    
+    virtual string generate() const = 0;
 };
 
 
@@ -90,12 +98,6 @@ class Invoice: public Bill {
      Generates ASCII representation of the bill.
      */
     string generate() const;
-    
-    /**
-     Saves ASCII representation of the bill to file.
-     @param filename String filename to use. Remember about extension (preferred .txt).
-     */
-    void save(string filename);
 };
 
 
@@ -109,12 +111,6 @@ class Receipt: public Bill {
      Generates ASCII representation of the bill.
      */
     string generate() const;
-    
-    /**
-     Saves ASCII representation of the bill to file.
-     @param filename String filename to use. Remember about extension (preferred .txt).
-     */
-    void save(string filename);
 };
 
 #endif /* Bill_hpp */

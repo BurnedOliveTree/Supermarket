@@ -73,6 +73,12 @@ string Bill::convertToKg(unsigned short quantity) const {
     return (prefix != "" ? prefix: "0") + "." + suffix;
 }
 
+void Bill::save(string filename) {
+    fstream file;
+    file.open(filename, ios::out);
+    file << generate();
+    file.close();
+}
 
 
 /*   =======================   INVOICE   =======================   */
@@ -123,13 +129,6 @@ string Invoice::generate() const {
     return output;
 }
 
-void Invoice::save(string filename) {
-    fstream file;
-    file.open(filename, ios::out);
-    file << generate();
-    file.close();
-}
-
 
 
 
@@ -171,11 +170,4 @@ string Receipt::generate() const {
 
     output += stringAlign("¯", 0, receiptWidth, "¯") += "\n";
     return output;
-}
-
-void Receipt::save(string filename) {
-    fstream file;
-    file.open(filename, ios::out);
-    file << generate();
-    file.close();
 }
