@@ -158,12 +158,15 @@ std::string Shop::event() {
     }
     else if (diceRoll <= 100 - 5 * variable) {
     /// a random Employee changes shifts of another on a random CashDesk
-        Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
-        CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
+        if (employees.activeSize() > 0)
+        {
+            Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
+            CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
 
-        employees.active.push_back(randCashDesk->assign(randEmployee));
-        employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
-        buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")";
+            employees.active.push_back(randCashDesk->assign(randEmployee));
+            employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
+            buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")";
+        }
     }
     else {
     /// customer asks employee about the price
@@ -261,7 +264,7 @@ int Shop::createCustomer() {
 int Shop::createEmployee() {
 /// calls the Employee constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 <= employees.maxAmount) {
-        Employee* p = new Employee(employees.iterator, "Geralt", "z Rivii");
+        Employee* p = new Employee(employees.iterator, "Geralt z Rivii");
         employees.container.push_back(p);
         employees.active.push_back(p);
         employees.iterator++;
