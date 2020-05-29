@@ -13,12 +13,13 @@ Shop::Shop() {
 
 Shop::Shop(unsigned long argTime) {
     //konstruktor niedomyslny
-    time = argTime;
+    maxTime = argTime;
     cashDesks.maxAmount = 0.2 * argTime;
     customers.maxAmount = 0.8 * argTime;
-    employees.maxAmount = 0.3 * argTime;
+    employees.maxAmount = 0.3 * argTime; // needs to be bigger than no of CashDesks
     products.maxAmount = 1.2 * argTime;
     scanSpeed = 5; // 5, hm
+    eventsPerTick = 6;
 }
 
 Shop::Shop(string filename) {
@@ -34,8 +35,9 @@ Shop::Shop(string filename) {
     file.close();
     
     //czas, ilosc kas, ilosc pracownikow, ilosc klientow
-    time = values[0];
+    maxTime = values[0];
     scanSpeed = 5; // 5, hm
+    eventsPerTick = 6;
     cashDesks.maxAmount = values[1];
     customers.maxAmount = values[3];
     employees.maxAmount = values[2];
@@ -61,16 +63,22 @@ Shop::~Shop() {
 
 void Shop::run() {
 /// main method of class, which simulates the whole shop
-    generate();
-    cashDesks[1]->assign(employees[1]); // this is a problem - every cash desk is closed at the beginning; also run needs to check if it's not closing the last cash desk, otherwise it's a looming ArithmeticsError
-    cashDesks.active.push_back(cashDesks[1]);
     std::srand((unsigned int)std::time(nullptr));
-    for (unsigned short i = 0; i < time; ++i) {
-        std::cout << event();
-        // czy liczba wydarzeń nie powinna się zwiększać w zależności od liczby klientów?
+    std::ofstream log("log.txt");
+    std::string temp;
+    generate();
+    for (unsigned short i = 0; i < maxTime; ++i) {
+        for (unsigned short j = 0; j < eventsPerTick; ++j) {
+            temp = event();
+            std::cout << temp;
+            log << temp;
+            // std::cout << std::chrono::seconds(1).count(); // should be outputing in-simulation time
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
         executeQueues();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    log.close();
 }
 
 std::string Shop::event() {
@@ -83,39 +91,60 @@ std::string Shop::event() {
         int customerID = createCustomer();
 
         if (customerID > -1)
-            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") has entered the shop" << std::endl;
+            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") has entered the shop";
         else
-            buff << "A maximum value of customers has been reached, nothing happens" << std::endl;
+            buff << "A maximum value of customers has been reached, nothing happens";
     }
     else if (diceRoll <= 100 - 60 * variable) {
     /// customer adds something to their basket
-        Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
-        Product* randProduct = products.active[std::rand() % products.activeSize()];
-        unsigned short quantity = 1; // wzór, a nie jeden
+        if (customers.activeSize() > 0 && products.activeSize() > 0) {
+            Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
+            Product* randProduct = products.active[std::rand() % products.activeSize()];
+            unsigned short quantity = 1; // wzór, a nie jeden
 
-        randCustomer->addToBasket(randProduct, quantity);
-        if (!randProduct->getQuantity())
-            products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
-        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl;
+            randCustomer->addToBasket(randProduct, quantity);
+            if (!randProduct->getQuantity())
+                products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
+            buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket";
+        }
     }
     else if (diceRoll <= 100 - 20 * variable) {
     /// customer joins the queue to a CashDesk
-        Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
-        CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
+        if (customers.activeSize() > 0) {
+            Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
+            CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
 
-        randCashDesk->push(randCustomer);
-        customers.active.erase(customers.active.begin() + customers.findActive(randCustomer->getID()));
-        buff << "Customer " << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << std::endl;
+            randCashDesk->push(randCustomer);
+            customers.active.erase(customers.active.begin() + customers.findActive(randCustomer->getID()));
+            buff << "Customer " << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID();
+        }
     }
     else if (diceRoll <= 100 - 10 * variable) {
     /// random cashDesk changes it status (open / close)
-        CashDesk* randCashDesk = cashDesks[std::rand() % cashDesks.size()];
+        CashDesk* randCashDesk = nullptr;
+        // checks if wee are not closing the last CashDesk
+        if (cashDesks.activeSize() > 1)
+            randCashDesk = cashDesks[std::rand() % cashDesks.size()];
+        else {
+            // checks if we have more than one CashDesk (opened or closed)
+            if (cashDesks.size() > 1) {
+                for (unsigned short i = 0; i < cashDesks.size(); ++i)
+                    if (!cashDesks[i]->getState()) {
+                        randCashDesk = cashDesks[i];
+                        break;
+                    }
+            }
+            else {
+                // we don't -> the only CashDesk in Shop should always stay open
+                buff << std::endl << std::endl;
+                return buff.str();
+            }
+        }
         Employee* randEmployee = nullptr;
 
-        // trzeba spradzać, czy nie zamykamy ostatniej kasy
         if (randCashDesk->getState()) {
             randEmployee = randCashDesk->close();
-            buff << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << std::endl;
+            buff << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID();
             employees.active.push_back(randEmployee);
             cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(randCashDesk->getID()));
         }
@@ -124,7 +153,7 @@ std::string Shop::event() {
             randCashDesk->open(randEmployee);
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
             cashDesks.active.push_back(randCashDesk);
-            buff << "Cash desk (ID " << randCashDesk->getID() << ") has just opened and employee " << randEmployee->getID() << " has been assigned to it" << std::endl;
+            buff << "Cash desk (ID " << randCashDesk->getID() << ") has just opened and employee " << randEmployee->getID() << " has been assigned to it";
         }
     }
     else if (diceRoll <= 100 - 5 * variable) {
@@ -134,17 +163,19 @@ std::string Shop::event() {
 
         employees.active.push_back(randCashDesk->assign(randEmployee));
         employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
-        buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")" << std::endl;
+        buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")";
     }
     else {
     /// customer asks employee about the price
+        if (customers.activeSize() > 0 && products.activeSize() > 0){
         Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
         Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
         
-        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID " << randProduct->getID() << ") and it's " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100 << std::endl;
+        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID " << randProduct->getID() << ") and it's " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100;
+        }
     }
-    buff << std::endl;
+    buff << std::endl << std::endl;
     return buff.str();
 }
 
@@ -192,6 +223,15 @@ bool Shop::generate() {
     for (int i = employees.maxAmount - 1; i >= 0; --i)
         if (createEmployee() == -1)
             return false;
+    // assigning random employees to few CashDesks, so at least some will be open at the start of simulation
+    float temp = 0.25 * cashDesks.size();
+    Employee* randEmployee = nullptr;
+    for (int i = ceil(temp) - 1; i > -1; --i) {
+        randEmployee = employees.active[std::rand() % employees.activeSize()];
+        cashDesks[i]->open(randEmployee);
+        employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
+        cashDesks.active.push_back(cashDesks[i]);
+    }
     return true;
 }
 
@@ -219,7 +259,7 @@ int Shop::createCustomer() {
 }
 
 int Shop::createEmployee() {
-/// calls the Product constructor, appending him to the vector of all products in this shop
+/// calls the Employee constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 <= employees.maxAmount) {
         Employee* p = new Employee(employees.iterator, "Geralt", "z Rivii");
         employees.container.push_back(p);

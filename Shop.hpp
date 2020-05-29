@@ -27,7 +27,6 @@ struct Container {
     unsigned short iterator = 0;
     std::vector<T*> container;
     std::vector<T*> active;
-    // one chyba muszą być std::set, a nie vector... jeśli mamy się do nich zwracać po ID
     
     unsigned long size() {
         return container.size();
@@ -61,7 +60,8 @@ class Shop {
     Container<Customer> customers;
     Container<Employee> employees;
     Container<Product> products;
-    unsigned short time;
+    unsigned short maxTime;
+    unsigned short eventsPerTick;
     unsigned short scanSpeed;
 
 public:
