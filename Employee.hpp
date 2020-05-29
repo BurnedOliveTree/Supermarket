@@ -12,12 +12,11 @@
 class Employee {
 /// Employee object, eaech representing a single employee
     unsigned short objID;
-    std::string firstName;
-    std::string lastName;
+    std::string name;
     bool occupied;
 
 public:
-    Employee(unsigned short argID, std::string first, std::string last);
+    Employee(unsigned short argID, std::string argName);
     unsigned short getID() const;
     std::string getName() const;
     bool isOccupied() const;

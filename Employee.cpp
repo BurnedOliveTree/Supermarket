@@ -6,11 +6,10 @@
 
 #include "Employee.hpp"
 
-Employee::Employee(unsigned short argID, std::string first, std::string last) {
+Employee::Employee(unsigned short argID, std::string argName) {
 /// Employee object constructor, a primitive version of
     objID = argID;
-    firstName = first;
-    lastName = last;
+    name = argName;
     occupied = false;
 }
 
@@ -21,7 +20,7 @@ unsigned short Employee::getID() const {
 
 std::string Employee::getName() const {
 /// returns full name of this Employee
-    return firstName+" "+lastName;
+    return name;
 };
 
 bool Employee::isOccupied() const {
