@@ -73,10 +73,6 @@ public:
     void run();
     std::string event();
     void executeQueues();
-    unsigned short getCashDeskAmount();
-    unsigned short getCustomerAmount();
-    unsigned short getEmployeeAmount();
-    unsigned short getProductAmount();
     bool generate();
     int createCashDesk();
     int createCustomer();

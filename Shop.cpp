@@ -187,32 +187,12 @@ void Shop::executeQueues() {
         if (cashDesks.active[i]->size()) {
             Customer* custPoint = cashDesks.active[i]->scan(scanSpeed);
             if (custPoint != nullptr) {
-                // to jest moment, w którym wszystkie towary klienta zostały zeskanowane, więc powinien zapłacić, dostać rachunek i wyjść (czyli de facto zostać zniszczony)
-                // custPoint będzie trzymał wskaźnik na tego klienta (który został już wypchnięty z vector'a kolejki)
+                // cashDesks.active[i] += wartość pieniędzy z rachunku
+                // custPoint.stwórzRachunekIGoWrzućDoPliku
                 delete custPoint;
             }
         }
     }
-}
-
-unsigned short Shop::getCashDeskAmount() {
-/// returns the amount of Customer that are in the shop
-    return cashDesks.size();
-}
-
-unsigned short Shop::getCustomerAmount() {
-/// returns the amount of Customer that are in the shop
-    return customers.size();
-}
-
-unsigned short Shop::getEmployeeAmount() {
-/// returns the amount of Customer that are in the shop
-    return employees.size();
-}
-
-unsigned short Shop::getProductAmount() {
-/// returns the amount of Customer that are in the shop
-    return products.size();
 }
 
 bool Shop::generate() {
@@ -276,7 +256,7 @@ int Shop::createEmployee() {
 int Shop::createProduct() {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (products.iterator + 1 <= products.maxAmount) {
-        Product* p = new Product("Banana", products.iterator, 320, 23, 8, pcs);
+        Product* p = new Product("Banana", products.iterator, 320, 23, 8, pcs); // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
         products.container.push_back(p);
         products.active.push_back(p);
         products.iterator++;
