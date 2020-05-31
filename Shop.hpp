@@ -100,8 +100,8 @@ public:
     void checkCustomers();
     int createCashDesk();
     int createCustomer();
-    int createEmployee();
-    int createProduct();
+    int createEmployee(std::string name);
+    int createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit);
 };
 
 #endif /* Shop_hpp */

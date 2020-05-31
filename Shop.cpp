@@ -207,13 +207,13 @@ void Shop::executeQueues() {
 bool Shop::generate() {
 /// generates all the needed object before running
     for (int i = products.maxAmount - 1; i >= 0; --i)
-        if (createProduct() == -1)
+        if (createProduct("Banana", 320, 23, 8, pcs) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     for (int i = cashDesks.maxAmount - 1; i >= 0; --i)
         if (createCashDesk() == -1)
             return false;
     for (int i = employees.maxAmount - 1; i >= 0; --i)
-        if (createEmployee() == -1)
+        if (createEmployee("Geralt z Rivii") == -1)
             return false;
     // assigning random employees to few CashDesks, so at least some will be open at the start of simulation
     float temp = 0.25 * cashDesks.size();
@@ -256,10 +256,10 @@ int Shop::createCustomer() {
     return -1;
 }
 
-int Shop::createEmployee() {
+int Shop::createEmployee(std::string name) {
 /// calls the Employee constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 <= employees.maxAmount) {
-        Employee* p = new Employee(employees.iterator, "Geralt z Rivii");
+        Employee* p = new Employee(employees.iterator, name);
         employees.container.push_back(p);
         employees.active.push_back(p);
         employees.iterator++;
@@ -268,10 +268,10 @@ int Shop::createEmployee() {
     return -1;
 }
 
-int Shop::createProduct() {
+int Shop::createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit) {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (products.iterator + 1 <= products.maxAmount) {
-        Product* p = new Product("Banana", products.iterator, 320, 23, 8, pcs); // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+        Product* p = new Product(name, products.iterator, price, VAT, quantity, unit);
         products.container.push_back(p);
         products.active.push_back(p);
         products.iterator++;
