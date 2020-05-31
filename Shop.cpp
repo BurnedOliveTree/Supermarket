@@ -8,43 +8,49 @@
 #include <fstream>
 
 Shop::Shop() {
-    //konstruktor domyslny
+/// default constructor with pre-set parameters
+    std::cout << "started simulation with default arguments: 20 seconds duration and 3 events per second" << std::endl << std::endl;
+    constructor(20, 3);
 }
 
-Shop::Shop(unsigned long argTime) {
-    //konstruktor niedomyslny
-    maxTime = argTime;
-    cashDesks.maxAmount = 0.2 * argTime;
-    customers.maxAmount = 0.8 * argTime;
-    employees.maxAmount = 0.3 * argTime; // needs to be bigger than no of CashDesks
-    products.maxAmount = 1.2 * argTime;
-    eventsPerTick = 3;
-    scanSpeed = eventsPerTick * 2;
+Shop::Shop(unsigned long argTime, unsigned short argEvents) {
+/// default constructor without pre-set parameters
+    constructor(argTime, argEvents);
 }
 
 Shop::Shop(string filename) {
-    //odczyt pliku i przekazanie argumentow
-    unsigned short values[5] = {};
+/// reading parameters from files
+    unsigned short values[2] = {};
     char i = 0;
-    
+
     ifstream file;
     file.open(filename);
     if (file >> values[i++]) {}
     else cout << "File error." << endl;
-    
     file.close();
-    
-    //czas, ilosc kas, ilosc pracownikow, ilosc klientow
-    maxTime = values[0];
-    eventsPerTick = 3;
-    scanSpeed = eventsPerTick * 2;
-    cashDesks.maxAmount = values[1];
-    customers.maxAmount = values[3];
-    employees.maxAmount = values[2];
+
+    constructor(values[0], values[1]);
 }
 
-Shop::Shop(char *arguments[]) {
-    //odczyt argumentow przekazanych bezposrednio
+Shop::Shop(char *arguments[], int argc) {
+/// reading parameters directly from console
+    if (argc != 3)
+        throw "Uncorrect number of arguments was given through console";
+    else {
+        constructor(std::stoi(arguments[1]), std::stoi(arguments[2]));
+    }
+}
+
+void Shop::constructor(unsigned long argTime, unsigned short argEvents) {
+/// a basic method for all constructors
+    maxTime = argTime;
+    cashDesks.maxAmount = 0.2 * argTime;
+    customers.maxAmount = 0.8 * argTime;
+    // employees amount needs always to be bigger than the amount of CashDesks, otherwise program is going to struggle
+    employees.maxAmount = 0.3 * argTime;
+    products.maxAmount = 1.2 * argTime;
+    eventsPerTick = argEvents;
+    scanSpeed = argEvents * 2;
 }
 
 Shop::~Shop() {
@@ -82,6 +88,7 @@ void Shop::run() {
 }
 
 std::string Shop::event() {
+/// a crucial method in simulation - randomly selects and resolve an event
     std::stringstream buff;
     double variable = sin(customers.size() / 2 * M_PI / customers.maxAmount);
     unsigned short diceRoll = std::rand()%100;
@@ -183,6 +190,7 @@ std::string Shop::event() {
 }
 
 void Shop::executeQueues() {
+/// iterates over all active CashDesks and calls scan() form each, also resolve Customers payment for Product's in its basket, if all items were scanned
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
         if (cashDesks.active[i]->size()) {
             Customer* custPoint = cashDesks.active[i]->scan(scanSpeed);
@@ -220,6 +228,7 @@ bool Shop::generate() {
 }
 
 void Shop::checkCustomers() {
+/// resets customers iterator if there aren't any clients in Shop, but the iterator is at its max value
     if (customers.size() == 0)
         customers.iterator = 0;
 }

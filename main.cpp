@@ -17,7 +17,7 @@ void stupidTemporaryMethod() {
     unsigned long a;
     std::cout << "Podaj czas trwania [s]:" << std::endl;
     std::cin >> a;
-    Shop simulation(a);
+    Shop simulation(a, 3);
     simulation.run();
 }
 
@@ -38,6 +38,8 @@ int main(int argc, char* argv[]) {
         case 0: case 1: {
             stupidTemporaryMethod();
 //            manualTest();
+//            Shop simulation;  <- default code
+//            simulation.run(); <- default code
             break;
         }
         case 2: {
@@ -46,7 +48,7 @@ int main(int argc, char* argv[]) {
             break;
         }
         default: {
-            Shop simulation(argv);
+            Shop simulation(argv, argc);
             simulation.run();
         }
     }

@@ -71,11 +71,12 @@ class Shop {
     unsigned short eventsPerTick;
     unsigned short scanSpeed;
 
+    void constructor(unsigned long argTime, unsigned short argEvents);
 public:
     Shop();
-    Shop(unsigned long argTime);
+    Shop(unsigned long argTime, unsigned short argEvents);
     Shop(std::string filename);
-    Shop(char *arguments[]);
+    Shop(char *arguments[], int argc);
     ~Shop();
     void run();
     std::string event();
