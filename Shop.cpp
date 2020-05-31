@@ -44,10 +44,10 @@ Shop::Shop(char *arguments[], int argc) {
 void Shop::constructor(unsigned long argTime, unsigned short argEvents) {
 /// a basic method for all constructors
     maxTime = argTime;
-    cashDesks.maxAmount = 0.2 * argTime;
-    customers.maxAmount = 0.8 * argTime;
+    cashDesks.maxAmount = ceil(0.2 * (float)argTime);
+    customers.maxAmount = ceil(0.8 * (float)argTime);
     // employees amount needs always to be bigger than the amount of CashDesks, otherwise program is going to struggle
-    employees.maxAmount = 0.3 * argTime;
+    employees.maxAmount = ceil(0.3 * (float)argTime);
     products.maxAmount = 1.2 * argTime;
     eventsPerTick = argEvents;
     scanSpeed = argEvents * 2;
