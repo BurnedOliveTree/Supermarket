@@ -43,7 +43,6 @@ public:
     void decQuantity(unsigned short argQuantity);
     
     // Additional features:
-    string getInfo();
     int calculatePriceBrutto();
 };
 

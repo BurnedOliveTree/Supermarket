@@ -84,14 +84,6 @@ void Product::decQuantity(unsigned short argQuantity) {
 
 
 // Additional features:
-string Product::getInfo() {
-    string info = "";
-    info = name + " (#" + to_string(ID) + "):\n" + "Price netto: " + to_string(price) + " gr\n";
-    info += "Price brutto: " + to_string(calculatePriceBrutto()) + " gr (" + to_string(VAT) +"% VAT)\n";
-    info += "At warehouse: " + to_string(quantity) + " pcs\n";
-    return info;
-}
-
 int Product::calculatePriceBrutto() {
     float brutto = ((100 + VAT) * price);
     brutto /= 100;
