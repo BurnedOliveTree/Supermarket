@@ -9,6 +9,15 @@
 
 #include <string>
 
+class EmployeeInterface {
+public:
+    virtual unsigned short getID() const = 0;
+    virtual std::string getName() const = 0;
+    virtual bool isOccupied() const = 0;
+    virtual void setFree() = 0;
+    virtual void setBusy() = 0;
+};
+
 class Employee {
 /// Employee object, eaech representing a single employee
     unsigned short objID;
