@@ -70,8 +70,6 @@ public:
     void addToBasket(Product*, unsigned short quantity);
     void removeFromBasket(Product*, unsigned short quantity);
     void clearBasket();
-    
-    string getInfo();
 };
 
 #endif /* Customer_hpp */

@@ -122,8 +122,3 @@ void Customer::clearBasket() {
     basket.clear();
     return;
 }
-
-string Customer::getInfo() {
-    if (isBusiness) return "Business client\n" + getName() + "\nTax no: " + getTaxNumber() + "\n" + getStreet() + " " + getBuildingNumber() + "\n" + getPostcode() + " " + getCity() + "\n" + getCountry();
-    else return getName() + "\n" + getStreet() + " " + getBuildingNumber() + "\n" + getPostcode() + " " + getCity() + "\n" + getCountry();
-}
