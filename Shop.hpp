@@ -72,6 +72,7 @@ class Shop {
     unsigned short scanSpeed;
 
     void constructor(unsigned long argTime, unsigned short argEvents);
+    std::string formatHour(unsigned long minutes);
 public:
     Shop();
     Shop(unsigned long argTime, unsigned short argEvents);

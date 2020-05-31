@@ -72,13 +72,15 @@ void Shop::run() {
     std::srand((unsigned int)std::time(nullptr));
     std::ofstream log("log.txt");
     std::string temp;
+    unsigned long currTime = 480;
     generate();
     for (unsigned short i = 0; i < maxTime; ++i) {
         for (unsigned short j = 0; j < eventsPerTick; ++j) {
             temp = event();
+            if (temp != "")
+                temp = formatHour(currTime+i) + " " + temp;
             std::cout << temp;
             log << temp;
-            // std::cout << std::chrono::seconds(1).count(); // should be outputing in-simulation time
         }
         executeQueues();
         checkCustomers();
@@ -98,9 +100,9 @@ std::string Shop::event() {
         int customerID = createCustomer();
 
         if (customerID > -1)
-            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") has entered the shop";
+            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") has entered the shop" << std::endl << std::endl;
         else
-            buff << "A maximum value of customers has been reached, nothing happens";
+            buff << "A maximum value of customers has been reached, nothing happens" << std::endl << std::endl;
     }
     else if (diceRoll <= 100 - 60 * variable) {
     /// customer adds something to their basket
@@ -112,7 +114,7 @@ std::string Shop::event() {
             randCustomer->addToBasket(randProduct, quantity);
             if (!randProduct->getQuantity())
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
-            buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket";
+            buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 20 * variable) {
@@ -123,7 +125,7 @@ std::string Shop::event() {
 
             randCashDesk->push(randCustomer);
             customers.active.erase(customers.active.begin() + customers.findActive(randCustomer->getID()));
-            buff << "Customer " << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID();
+            buff << "Customer " << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 10 * variable) {
@@ -143,7 +145,6 @@ std::string Shop::event() {
             }
             else {
                 // we don't -> the only CashDesk in Shop should always stay open
-                buff << std::endl << std::endl;
                 return buff.str();
             }
         }
@@ -151,7 +152,7 @@ std::string Shop::event() {
 
         if (randCashDesk->getState()) {
             randEmployee = randCashDesk->close();
-            buff << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID();
+            buff << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << std::endl << std::endl;
             employees.active.push_back(randEmployee);
             cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(randCashDesk->getID()));
         }
@@ -160,7 +161,7 @@ std::string Shop::event() {
             randCashDesk->open(randEmployee);
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
             cashDesks.active.push_back(randCashDesk);
-            buff << "Cash desk (ID " << randCashDesk->getID() << ") has just opened and employee " << randEmployee->getID() << " has been assigned to it";
+            buff << "Cash desk (ID " << randCashDesk->getID() << ") has just opened and employee " << randEmployee->getID() << " has been assigned to it" << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 5 * variable) {
@@ -172,7 +173,7 @@ std::string Shop::event() {
 
             employees.active.push_back(randCashDesk->assign(randEmployee));
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
-            buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")";
+            buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")" << std::endl << std::endl;
         }
     }
     else {
@@ -182,10 +183,9 @@ std::string Shop::event() {
         Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
         
-        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID " << randProduct->getID() << ") and it's " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100;
+        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID " << randProduct->getID() << ") and it's " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100  << std::endl << std::endl;
         }
     }
-    buff << std::endl << std::endl;
     return buff.str();
 }
 
@@ -278,4 +278,11 @@ int Shop::createProduct() {
         return products.iterator - 1;
     }
     return -1;
+}
+
+std::string Shop::formatHour(unsigned long minutes) {
+    std::string result = std::to_string(minutes / 60) + ":";
+    if (minutes % 60 < 10)
+        result += "0";
+    return result + std::to_string(minutes % 60);
 }
