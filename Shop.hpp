@@ -44,6 +44,13 @@ struct Container {
         }
         return -1;
     }
+    unsigned long findAll(unsigned short argID) {
+        for (unsigned long i = 0; i < size(); ++i) {
+            if (container[i] -> getID() == argID)
+                return i;
+        }
+        return -1;
+    }
     T* find(unsigned short argID) {
     /// returns the adress of T object based on a given ID
         for (unsigned long i=container.size()-1; i>=0; --i)
@@ -74,6 +81,7 @@ public:
     std::string event();
     void executeQueues();
     bool generate();
+    void checkCustomers();
     int createCashDesk();
     int createCustomer();
     int createEmployee();

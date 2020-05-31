@@ -18,8 +18,8 @@ Shop::Shop(unsigned long argTime) {
     customers.maxAmount = 0.8 * argTime;
     employees.maxAmount = 0.3 * argTime; // needs to be bigger than no of CashDesks
     products.maxAmount = 1.2 * argTime;
-    scanSpeed = 5; // 5, hm
-    eventsPerTick = 6;
+    eventsPerTick = 3;
+    scanSpeed = eventsPerTick * 2;
 }
 
 Shop::Shop(string filename) {
@@ -36,8 +36,8 @@ Shop::Shop(string filename) {
     
     //czas, ilosc kas, ilosc pracownikow, ilosc klientow
     maxTime = values[0];
-    scanSpeed = 5; // 5, hm
-    eventsPerTick = 6;
+    eventsPerTick = 3;
+    scanSpeed = eventsPerTick * 2;
     cashDesks.maxAmount = values[1];
     customers.maxAmount = values[3];
     employees.maxAmount = values[2];
@@ -73,10 +73,10 @@ void Shop::run() {
             std::cout << temp;
             log << temp;
             // std::cout << std::chrono::seconds(1).count(); // should be outputing in-simulation time
-            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         executeQueues();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        checkCustomers();
+        std::this_thread::sleep_for(std::chrono::seconds(eventsPerTick / 2));
     }
     log.close();
 }
@@ -170,7 +170,7 @@ std::string Shop::event() {
     }
     else {
     /// customer asks employee about the price
-        if (customers.activeSize() > 0 && products.activeSize() > 0){
+        if (customers.activeSize() > 0 && products.activeSize() > 0 && employees.activeSize() > 0){
         Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
         Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
@@ -189,6 +189,7 @@ void Shop::executeQueues() {
             if (custPoint != nullptr) {
                 // cashDesks.active[i] += wartość pieniędzy z rachunku
                 // custPoint.stwórzRachunekIGoWrzućDoPliku
+                customers.container.erase(customers.container.begin() + customers.findAll(custPoint->getID()));
                 delete custPoint;
             }
         }
@@ -216,6 +217,11 @@ bool Shop::generate() {
         cashDesks.active.push_back(cashDesks[i]);
     }
     return true;
+}
+
+void Shop::checkCustomers() {
+    if (customers.size() == 0)
+        customers.iterator = 0;
 }
 
 int Shop::createCashDesk() {
