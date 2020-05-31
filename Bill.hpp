@@ -17,7 +17,60 @@
 
 using namespace std;
 
-class Bill {
+class BillInterface {
+public:
+    virtual chrono::time_point<chrono::high_resolution_clock> getDate() const = 0;
+    virtual unsigned short getID() const = 0;
+    virtual Customer getBuyer() const = 0;
+    virtual Customer getSeller() const = 0;
+
+    // Setters:
+    /**
+     Sets date attribute to given argument.
+     @param newDate New date of bill.
+     */
+    virtual void setDate(chrono::time_point<chrono::high_resolution_clock> newDate) = 0;
+    
+    /**
+     Sets buyer attribute to given argument.
+     @param newBuyer New buyer object.
+     */
+    virtual void setBuyer(Customer newBuyer) = 0;
+    
+    /**
+     Sets seller attribute to given argument.
+     @param newSeller New seller object.
+    */
+    virtual void setSeller(Customer newSeller) = 0;
+    
+    /**
+     Sets number attribute to given argument.
+     @param newID New number.
+     */
+    virtual void setID(unsigned short newID) = 0;
+    
+    /**
+     Converts price in PLN/100 to PLN.
+     @param price Price in PLN/100.
+     */
+    virtual string convertPricePLN(unsigned short price) const = 0;
+    
+    /**
+     Converts g to kg.
+     @param quantity Quantity in g.
+     */
+    virtual string convertToKg(unsigned short quantity) const = 0;
+    
+    /**
+     Saves ASCII representation of the bill to file.
+     @param filename String filename to use. Remember about extension (preferred .txt).
+     */
+    virtual void save(string filename) = 0;
+    
+    virtual string generate() const = 0;
+};
+
+class Bill : public BillInterface {
 protected:
     chrono::time_point<chrono::high_resolution_clock> date;
     unsigned short ID;
@@ -83,8 +136,6 @@ public:
      @param filename String filename to use. Remember about extension (preferred .txt).
      */
     void save(string filename);
-    
-    virtual string generate() const = 0;
 };
 
 

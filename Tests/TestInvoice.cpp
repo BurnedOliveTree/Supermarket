@@ -271,7 +271,7 @@ void TestInvoice::editConsumer(Customer &consumer) {
     
     do {
         newString = "";
-        if (isCorrect) cout << clear + "Business status: " + to_string(consumer.getIsBusiness()) + "\n" +  consumer.getInfo() + "\n\n"+ txtMenu;
+        if (isCorrect) cout << clear + "Nothing."/* + to_string(consumer.getIsBusiness()) + "\n" +  consumer.getInfo() + "\n\n"+ txtMenu*/;
         else cout << clear + "Niepoprawny wybor. Prosze sprobowac ponownie.\n\n" + txtMenu;
         cin >> choice;
         isCorrect = true;
