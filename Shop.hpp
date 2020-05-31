@@ -61,7 +61,21 @@ struct Container {
     }
 };
 
-class Shop {
+class ShopInterface {
+public:
+    virtual void run() = 0;
+    virtual std::string event() = 0;
+    virtual void executeQueues() = 0;
+    virtual bool generate() = 0;
+    virtual void checkCustomers() = 0;
+    virtual int createCashDesk() = 0;
+    virtual int createCustomer() = 0;
+    virtual int createEmployee() = 0;
+    virtual int createProduct() = 0;
+};
+
+
+class Shop : public ShopInterface {
 /// Shop object, representing the whole shop, containing all other objects (Employees, Customers, CashDesks etc.)
     Container<CashDesk> cashDesks;
     Container<Customer> customers;
