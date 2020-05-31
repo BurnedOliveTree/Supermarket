@@ -13,7 +13,32 @@
 #include <iostream>
 #include <queue>
 
-class CashDesk {
+class CashDeskInterface {
+public:
+    virtual unsigned short getID() = 0;
+    virtual void open(Employee* assigned) = 0;
+    virtual bool getState() = 0;
+    virtual Employee* close() = 0;
+    virtual unsigned int getCash() = 0;
+    virtual void addCash(unsigned int n) = 0;
+    virtual void setCash(unsigned int n) = 0;
+    virtual void takeCash(unsigned int n) = 0;
+    virtual Employee* assign(Employee* assigned) = 0;
+    virtual void push(Customer* shopper) = 0;
+    virtual unsigned long size() = 0;
+    virtual Customer* pop() = 0;
+    virtual Customer* scan(unsigned short scanSpeed) = 0;
+    // virtual unsigned int payment(Customer *customer) = 0;
+    virtual bool operator ==(unsigned short secondID) = 0;
+    // virtual bool operator ==(CashDeskInterface cash2) = 0;
+    virtual bool operator !=(unsigned short secondID) = 0;
+    // virtual bool operator !=(CashDeskInterface cash2) = 0;
+    virtual void operator =(unsigned int n) = 0;
+    virtual void operator +=(unsigned int n) = 0;
+    virtual void operator -=(unsigned int n) = 0;
+};
+
+class CashDesk : public CashDeskInterface {
 /// CashDesk object, each representing a single cash register and it's queue of customers
     unsigned short ID;
     std::queue<Customer*> customerQueue;
