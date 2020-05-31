@@ -14,7 +14,39 @@
 
 using namespace std;
 
-class Customer {
+class CustomerInterface {
+public:
+    // Getters:
+    virtual unsigned short getID() const = 0;
+    virtual bool getIsBusiness() const = 0;
+    virtual string getName() const = 0;
+    virtual string getTaxNumber() const = 0;
+    virtual string getStreet() const = 0;
+    virtual string getBuildingNumber() const = 0;
+    virtual string getPostcode() const = 0;
+    virtual string getCity() const = 0;
+    virtual string getCountry() const = 0;
+    virtual map<Product*, unsigned short> getBasket() const = 0;
+    virtual unsigned long getBasketSize() const = 0;
+    
+    //Setters:
+    virtual void setID(unsigned short newID) = 0;
+    virtual void setIsBusiness(bool newIsBusiness) = 0;
+    virtual void setName(string newName) = 0;
+    virtual void setTaxNumber(string newTaxNumber) = 0;
+    virtual void setStreet(string newStreet) = 0;
+    virtual void setBuildingNumber(string newBuildingNumber) = 0;
+    virtual void setPostcode(string newPostcode) = 0;
+    virtual void setCity(string newCity) = 0;
+    virtual void setCountry(string newCountry) = 0;
+    
+    // Tools to edit Basket:
+    virtual void addToBasket(Product*, unsigned short quantity) = 0;
+    virtual void removeFromBasket(Product*, unsigned short quantity) = 0;
+    virtual void clearBasket() = 0;
+};
+
+class Customer : public CustomerInterface {
     unsigned short ID;
     bool isBusiness;
     string name;
