@@ -207,7 +207,7 @@ void Shop::executeQueues() {
 bool Shop::generate() {
 /// generates all the needed object before running
     for (int i = products.maxAmount - 1; i >= 0; --i)
-        if (createProduct("Banana", 320, 23, 8, pcs) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+        if (createProduct("Banana", 320, 23, 8, (Measure)0) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     for (int i = cashDesks.maxAmount - 1; i >= 0; --i)
         if (createCashDesk() == -1)
