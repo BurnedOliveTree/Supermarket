@@ -50,24 +50,10 @@ public:
     virtual void setID(unsigned short newID) = 0;
     
     /**
-     Converts price in PLN/100 to PLN.
-     @param price Price in PLN/100.
-     */
-    virtual string convertPricePLN(unsigned short price) const = 0;
-    
-    /**
-     Converts g to kg.
-     @param quantity Quantity in g.
-     */
-    virtual string convertToKg(unsigned short quantity) const = 0;
-    
-    /**
      Saves ASCII representation of the bill to file.
      @param filename String filename to use. Remember about extension (preferred .txt).
      */
     virtual void save(string filename) = 0;
-    
-    virtual string generate() const = 0;
 };
 
 class Bill : public BillInterface {
@@ -94,47 +80,23 @@ public:
     Customer getBuyer() const;
     Customer getSeller() const;
 
-    // Setters:
-    /**
-     Sets date attribute to given argument.
-     @param newDate New date of bill.
-     */
+
     void setDate(chrono::time_point<chrono::high_resolution_clock> newDate);
-    
-    /**
-     Sets buyer attribute to given argument.
-     @param newBuyer New buyer object.
-     */
     void setBuyer(Customer newBuyer);
-    
-    /**
-     Sets seller attribute to given argument.
-     @param newSeller New seller object.
-    */
     void setSeller(Customer newSeller);
-    
-    /**
-     Sets number attribute to given argument.
-     @param newID New number.
-     */
     void setID(unsigned short newID);
-    
+
     /**
      Converts price in PLN/100 to PLN.
      @param price Price in PLN/100.
      */
     string convertPricePLN(unsigned short price) const;
-    
+
     /**
      Converts g to kg.
      @param quantity Quantity in g.
      */
     string convertToKg(unsigned short quantity) const;
-    
-    /**
-     Saves ASCII representation of the bill to file.
-     @param filename String filename to use. Remember about extension (preferred .txt).
-     */
     void save(string filename);
 };
 
