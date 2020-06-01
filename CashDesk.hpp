@@ -28,14 +28,6 @@ public:
     virtual unsigned long size() = 0;
     virtual Customer* pop() = 0;
     virtual Customer* scan(unsigned short scanSpeed) = 0;
-    // virtual unsigned int payment(Customer *customer) = 0;
-    virtual bool operator ==(unsigned short secondID) = 0;
-    // virtual bool operator ==(CashDeskInterface cash2) = 0;
-    virtual bool operator !=(unsigned short secondID) = 0;
-    // virtual bool operator !=(CashDeskInterface cash2) = 0;
-    virtual void operator =(unsigned int n) = 0;
-    virtual void operator +=(unsigned int n) = 0;
-    virtual void operator -=(unsigned int n) = 0;
 };
 
 class CashDesk : public CashDeskInterface {
