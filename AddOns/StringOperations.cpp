@@ -67,6 +67,6 @@ std::string lowerString(std::string text) {
 
 std::string reverseString(std::string text) {
     std::string new_string = "";
-    for (int i = text.length() - 1; i >= 0; i--) new_string += text[i];
+    for (int i = (int)text.length() - 1; i >= 0; i--) new_string += text[i];
     return new_string;
 }
