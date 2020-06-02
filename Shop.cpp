@@ -193,13 +193,13 @@ std::string Shop::event() {
 void Shop::executeQueues() {
 /// iterates over all active CashDesks and calls scan() form each, also resolve Customers payment for Product's in its basket, if all items were scanned
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
-        if (cashDesks.active[i]->size()) {
-            Customer* custPoint = cashDesks.active[i]->scan(scanSpeed);
-            if (custPoint != nullptr) {
+        if (cashDesks.active[i] -> size()) {
+            Customer* customerPtr = cashDesks.active[i] -> scan(scanSpeed);
+            if (customerPtr != nullptr) {
                 // cashDesks.active[i] += wartość pieniędzy z rachunku
                 // custPoint.stwórzRachunekIGoWrzućDoPliku
-                customers.container.erase(customers.container.begin() + customers.findAll(custPoint->getID()));
-                delete custPoint;
+                customers.container.erase(customers.container.begin() + customers.findAll(customerPtr -> getID()));
+                delete customerPtr;
             }
         }
     }
