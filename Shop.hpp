@@ -80,6 +80,7 @@ class Shop : public ShopInterface {
     unsigned short maxTime;
     unsigned short eventsPerTick;
     unsigned short scanSpeed;
+    unsigned short billNumber;
 
     void constructor(unsigned long argTime, unsigned short argEvents);
     std::string formatHour(unsigned long minutes);

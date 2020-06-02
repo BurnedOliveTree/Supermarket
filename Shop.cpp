@@ -5,17 +5,20 @@
 //
 
 #include "Shop.hpp"
+#include "Bill.hpp"
 #include <fstream>
 
 Shop::Shop() {
 /// default constructor with pre-set parameters
     std::cout << "started simulation with default arguments: 20 seconds duration and 3 events per second" << std::endl << std::endl;
     constructor(20, 3);
+    billNumber = 0;
 }
 
 Shop::Shop(unsigned long argTime, unsigned short argEvents) {
 /// default constructor without pre-set parameters
     constructor(argTime, argEvents);
+    billNumber = 0;
 }
 
 Shop::Shop(string filename) {
@@ -30,6 +33,7 @@ Shop::Shop(string filename) {
     file.close();
 
     constructor(values[0], values[1]);
+    billNumber = 0;
 }
 
 Shop::Shop(char *arguments[], int argc) {
@@ -39,6 +43,7 @@ Shop::Shop(char *arguments[], int argc) {
     else {
         constructor(std::stoi(arguments[1]), std::stoi(arguments[2]));
     }
+    billNumber = 0;
 }
 
 void Shop::constructor(unsigned long argTime, unsigned short argEvents) {
