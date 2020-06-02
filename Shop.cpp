@@ -110,12 +110,12 @@ std::string Shop::event() {
         else
             buff << "A maximum value of customers has been reached, nothing happens" << std::endl << std::endl;
     }
-    else if (diceRoll <= 100 - 60 * variable) {
+    else if (diceRoll <= 100 - 40 * variable) {
     /// customer adds something to their basket
         if (customers.activeSize() > 0 && products.activeSize() > 0) {
             Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
             Product* randProduct = products.active[std::rand() % products.activeSize()];
-            unsigned short quantity = ((4.0 * randProduct->getMeasureUnits()==g?1000.0:1 / ((float)(std::rand() % 12) + 1)) + 1);
+            unsigned short quantity = ((4.0 * (randProduct->getMeasureUnits()==g?1000:1) / ((float)(std::rand() % 12) + 1)) + 1);
 
             if (quantity >= randProduct->getQuantity())
                 quantity = randProduct->getQuantity();
@@ -289,7 +289,7 @@ bool Shop::createProducts(std::string filename) {
     unsigned short randIter;
     for (int i = products.maxAmount - 1; i >= 0; --i) {
         randIter = rand() % names.size();
-        if (createProduct(names[randIter], prices[randIter]*(0.9+((float)(rand()%20)/20)), VATs[randIter], (100+rand()%100)* units[randIter]==g?1000.0:1, units[randIter]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+        if (createProduct(names[randIter], prices[randIter]*(0.9+((float)(rand()%20)/20)), VATs[randIter], (100+rand()%100)*(units[randIter]==g?1000:1), units[randIter]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     }
     return true;
