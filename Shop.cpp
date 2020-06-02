@@ -109,7 +109,7 @@ std::string Shop::event() {
         if (customers.activeSize() > 0 && products.activeSize() > 0) {
             Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
             Product* randProduct = products.active[std::rand() % products.activeSize()];
-            unsigned short quantity = (4 / (std::rand() % 12)) + 1;
+            unsigned short quantity = (4 / ((float)(std::rand() % 12) + 1)) + 1;
 
             if (quantity >= randProduct->getQuantity())
                 quantity = randProduct->getQuantity();
