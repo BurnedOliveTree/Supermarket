@@ -46,13 +46,13 @@ TestInvoice::TestInvoice() {
     buyers[1].addToBasket(&products[1], 543);
     buyers[1].addToBasket(&products[0], 990);
 
-    Invoice invoice1(chrono::steady_clock::now(), 1490, buyers[0], sellers[1]);
+    Invoice invoice1(1490, buyers[0], sellers[1]);
     invoices.push_back(invoice1);
     cout << invoice1.generate();
     invoice1.save("Logs/invoice1.txt");
     cout << endl << endl;
     
-    Receipt receipt1(chrono::steady_clock::now(), 53342, buyers[1], sellers[0]);
+    Receipt receipt1(53342, buyers[1], sellers[0]);
     receipts.push_back(receipt1);
     cout << receipt1.generate();
     receipt1.save("Logs/receipt1.txt");
