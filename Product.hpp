@@ -32,9 +32,6 @@ public:
     virtual void setQuantity(unsigned short newQuantity) = 0;
     virtual void addQuantity(unsigned short argQuantity) = 0;
     virtual void decQuantity(unsigned short argQuantity) = 0;
-    
-    // Additional features:
-    virtual int calculatePriceBrutto() = 0;
 };
 
 class Product : public ProductInterface {
@@ -44,6 +41,9 @@ class Product : public ProductInterface {
     unsigned char VAT; // VAT value (in percents).
     unsigned short quantity; // Quantity of the product in warehouse.
     Measure measureUnits;
+    
+    // Additional features:
+    int calculatePriceBrutto();
     
 public:
     Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, Measure argMeasureUnits = pcs);
@@ -64,9 +64,6 @@ public:
     void setQuantity(unsigned short newQuantity);
     void addQuantity(unsigned short argQuantity);
     void decQuantity(unsigned short argQuantity);
-    
-    // Additional features:
-    int calculatePriceBrutto();
 };
 
 #endif /* Product_hpp */
