@@ -258,14 +258,15 @@ bool Shop::createProducts(std::string filename) {
     std::vector<unsigned short> VATs;
     std::vector<Measure> units;
     std::string tempString;
-    unsigned short tempShort;
+    unsigned short tempShort, tempData[3];
     ifstream file;
     file.open("RandomData/"+filename);
-    while (!file.eof()) {
-        if (file >> tempString) {names.push_back(tempString);} else throw "File error.";
-        if (file >> tempShort) {prices.push_back(tempShort);} else throw "File error.";
-        if (file >> tempShort) {VATs.push_back(tempShort);} else throw "File error.";
-        if (file >> tempShort) {units.push_back((Measure)tempShort);} else throw "File error.";
+    if (!file.good()) throw "File error.";
+    while (file >> tempString and file >> tempData[0] and file >> tempData[1] and file >> tempData[2]) {
+        names.push_back(tempString);
+        prices.push_back(tempData[0]);
+        VATs.push_back(tempData[1]);
+        units.push_back((Measure)tempData[2]);
     }
     file.close();
 

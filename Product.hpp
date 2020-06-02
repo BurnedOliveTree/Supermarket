@@ -42,9 +42,6 @@ class Product : public ProductInterface {
     unsigned short quantity; // Quantity of the product in warehouse.
     Measure measureUnits;
     
-    // Additional features:
-    int calculatePriceBrutto();
-    
 public:
     Product(string argName = "None", unsigned short argID = 0, unsigned int argPrice = 0, unsigned char argVAT = 0, unsigned short argQuantity = 0, Measure argMeasureUnits = pcs);
         
@@ -64,6 +61,9 @@ public:
     void setQuantity(unsigned short newQuantity);
     void addQuantity(unsigned short argQuantity);
     void decQuantity(unsigned short argQuantity);
+
+    // Additional features:
+    int calculatePriceBrutto();
 };
 
 #endif /* Product_hpp */
