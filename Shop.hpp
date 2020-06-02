@@ -70,8 +70,8 @@ public:
     virtual void checkCustomers() = 0;
     virtual int createCashDesk() = 0;
     virtual int createCustomer() = 0;
-    virtual int createEmployee() = 0;
-    virtual int createProduct() = 0;
+    virtual int createEmployee(std::string name) = 0;
+    virtual int createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit) = 0;
 };
 
 
