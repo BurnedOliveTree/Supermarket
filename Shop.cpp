@@ -109,11 +109,12 @@ std::string Shop::event() {
         if (customers.activeSize() > 0 && products.activeSize() > 0) {
             Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
             Product* randProduct = products.active[std::rand() % products.activeSize()];
-            unsigned short quantity = 1; // wzór, a nie jeden
+            unsigned short quantity = (4 / ((float)(std::rand() % 12) + 1)) + 1;
 
-            randCustomer->addToBasket(randProduct, quantity);
-            if (!randProduct->getQuantity())
+            if (quantity >= randProduct->getQuantity())
+                quantity = randProduct->getQuantity();
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
+            randCustomer->addToBasket(randProduct, quantity);
             buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl << std::endl;
         }
     }
@@ -206,11 +207,9 @@ void Shop::executeQueues() {
 
 bool Shop::generate() {
 /// generates all the needed object before running
-    createProducts();
     createCashDesks();
-    for (int i = employees.maxAmount - 1; i >= 0; --i)
-        if (createEmployee("Geralt z Rivii") == -1)
-            return false;
+    createEmployees("Surname.txt");
+    createProducts("Products.txt");
     // assigning random employees to few CashDesks, so at least some will be open at the start of simulation
     float temp = 0.25 * cashDesks.size();
     Employee* randEmployee = nullptr;
@@ -237,16 +236,34 @@ bool Shop::createCashDesks() {
     return true;
 }
 
-bool Shop::createProducts() {
+bool Shop::createEmployees(std::string filename) {
+/// calls the Employee constructor, appending him to the vector of all products in this shop
+    std::vector<std::string> names;
+    std::string tempString;
+    ifstream file;
+    file.open("RandomData/"+filename);
+    if (!file.good()) throw "File error.";
+    while (file >> tempString) {
+        names.push_back(tempString);
+    }
+    file.close();
+
+    for (int i = employees.maxAmount - 1; i >= 0; --i)
+        if (createEmployee(names[rand() % names.size()]) == -1)
+            return false;
+    return true;
+}
+
+bool Shop::createProducts(std::string filename) {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     std::vector<std::string> names;
     std::vector<unsigned short> prices;
     std::vector<unsigned short> VATs;
     std::vector<Measure> units;
     std::string tempString;
-    unsigned short tempShort, tempData[3];
+    unsigned short tempData[3];
     ifstream file;
-    file.open("RandomData/Products.txt");
+    file.open("RandomData/"+filename);
     if (!file.good()) throw "File error.";
     while (file >> tempString and file >> tempData[0] and file >> tempData[1] and file >> tempData[2]) {
         names.push_back(tempString);
@@ -256,9 +273,10 @@ bool Shop::createProducts() {
     }
     file.close();
 
+    unsigned short randIter;
     for (int i = products.maxAmount - 1; i >= 0; --i) {
-        tempShort = rand() % (names.size()-1);
-        if (createProduct(names[tempShort], prices[tempShort]*(0.9+((float)(rand()%20)/20)), VATs[tempShort], 100+rand()%100, units[tempShort]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+        randIter = rand() % names.size();
+        if (createProduct(names[randIter], prices[randIter]*(0.9+((float)(rand()%20)/20)), VATs[randIter], 100+rand()%100, units[randIter]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     }
     return true;

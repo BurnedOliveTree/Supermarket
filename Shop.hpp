@@ -84,7 +84,8 @@ class Shop : public ShopInterface {
     void constructor(unsigned long argTime, unsigned short argEvents);
     std::string formatHour(unsigned long minutes);
     bool createCashDesks();
-    bool createProducts();
+    bool createEmployees(std::string filename);
+    bool createProducts(std::string filename);
     int createCashDesk();
     int createCustomer();
     int createEmployee(std::string name);
