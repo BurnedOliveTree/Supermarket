@@ -68,10 +68,6 @@ public:
     virtual void executeQueues() = 0;
     virtual bool generate() = 0;
     virtual void checkCustomers() = 0;
-    virtual int createCashDesk() = 0;
-    virtual int createCustomer() = 0;
-    virtual int createEmployee(std::string name) = 0;
-    virtual int createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit) = 0;
 };
 
 
@@ -87,6 +83,12 @@ class Shop : public ShopInterface {
 
     void constructor(unsigned long argTime, unsigned short argEvents);
     std::string formatHour(unsigned long minutes);
+    bool createCashDesks();
+    bool createProducts();
+    int createCashDesk();
+    int createCustomer();
+    int createEmployee(std::string name);
+    int createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit);
 public:
     Shop();
     Shop(unsigned long argTime, unsigned short argEvents);
@@ -98,10 +100,6 @@ public:
     void executeQueues();
     bool generate();
     void checkCustomers();
-    int createCashDesk();
-    int createCustomer();
-    int createEmployee(std::string name);
-    int createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit);
 };
 
 #endif /* Shop_hpp */
