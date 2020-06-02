@@ -62,6 +62,20 @@ protected:
     unsigned short ID;
     Customer buyer;
     Customer seller;
+    
+    /**
+     Converts price in PLN/100 to PLN.
+     @param price Price in PLN/100.
+     */
+    string convertPricePLN(unsigned short price) const;
+
+    /**
+     Converts g to kg.
+     @param quantity Quantity in g.
+     */
+    string convertToKg(unsigned short quantity) const;
+    
+    virtual string generate() const = 0;
         
 public:
     /**
@@ -80,29 +94,13 @@ public:
     Customer getBuyer() const;
     Customer getSeller() const;
 
-
+    // Setters:
     void setDate(chrono::time_point<chrono::high_resolution_clock> newDate);
     void setBuyer(Customer newBuyer);
     void setSeller(Customer newSeller);
     void setID(unsigned short newID);
-
-    /**
-     Converts price in PLN/100 to PLN.
-     @param price Price in PLN/100.
-     */
-    string convertPricePLN(unsigned short price) const;
-
-    /**
-     Converts g to kg.
-     @param quantity Quantity in g.
-     */
-    string convertToKg(unsigned short quantity) const;
     void save(string filename);
-    
-    virtual string generate() const = 0;
 };
-
-
 
 
 class Invoice: public Bill {
@@ -114,8 +112,6 @@ class Invoice: public Bill {
      */
     string generate() const;
 };
-
-
 
 
 class Receipt: public Bill {
