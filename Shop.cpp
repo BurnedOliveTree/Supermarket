@@ -206,12 +206,8 @@ void Shop::executeQueues() {
 
 bool Shop::generate() {
 /// generates all the needed object before running
-    for (int i = products.maxAmount - 1; i >= 0; --i)
-        if (createProduct("Banana", 320, 23, 8, (Measure)1) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
-            return false;
-    for (int i = cashDesks.maxAmount - 1; i >= 0; --i)
-        if (createCashDesk() == -1)
-            return false;
+    createProducts();
+    createCashDesks();
     for (int i = employees.maxAmount - 1; i >= 0; --i)
         if (createEmployee("Geralt z Rivii") == -1)
             return false;
@@ -231,6 +227,40 @@ void Shop::checkCustomers() {
 /// resets customers iterator if there aren't any clients in Shop, but the iterator is at its max value
     if (customers.size() == 0)
         customers.iterator = 0;
+}
+
+bool Shop::createCashDesks() {
+/// calls the Product constructor, appending him to the vector of all products in this shop
+    for (int i = cashDesks.maxAmount - 1; i >= 0; --i)
+        if (createCashDesk() == -1)
+            return false;
+    return true;
+}
+
+bool Shop::createProducts() {
+/// calls the Product constructor, appending him to the vector of all products in this shop
+    std::vector<std::string> names;
+    std::vector<unsigned short> prices;
+    std::vector<unsigned short> VATs;
+    std::vector<Measure> units;
+    std::string tempString;
+    unsigned short tempShort;
+    ifstream file;
+    file.open("RandomData/Products.txt");
+    while (!file.eof()) {
+        if (file >> tempString) {names.push_back(tempString);} else throw "File error.";
+        if (file >> tempShort) {prices.push_back(tempShort);} else throw "File error.";
+        if (file >> tempShort) {VATs.push_back(tempShort);} else throw "File error.";
+        if (file >> tempShort) {units.push_back((Measure)tempShort);} else throw "File error.";
+    }
+    file.close();
+
+    for (int i = products.maxAmount - 1; i >= 0; --i) {
+        tempShort = rand() % (names.size()-1);
+        if (createProduct(names[tempShort], prices[tempShort]*(0.9+((float)(rand()%20)/20)), VATs[tempShort], 100+rand()%100, units[tempShort]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+            return false;
+    }
+    return true;
 }
 
 int Shop::createCashDesk() {
