@@ -77,6 +77,7 @@ void Bill::save(string filename) {
 
 string Invoice::generate() const {
     char invoiceWidth = 90;
+    unsigned short priceBrutto = 0, totalBrutto = 0;
     string output = stringAlign("_", 2, invoiceWidth, "_");
 
     output += "\n";
@@ -110,11 +111,15 @@ string Invoice::generate() const {
         output += "|";
         output += stringAlign(convertPricePLN(product -> getVAT() * quantity * product -> getPrice() / 100 / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 9);
         output += "|";
-        output += stringAlign(convertPricePLN(product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 14);
+        priceBrutto = product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000);
+        output += stringAlign(convertPricePLN(priceBrutto), 1, 14);
         output += "|\n";
+        totalBrutto += priceBrutto;
     }
+    
+
     output += "|" + stringAlign(".", 2, invoiceWidth - 2, ".") + "|\n";
-    output += "|" + stringAlign("SUMMARY: ", 1, invoiceWidth - 14) + "XXXXXXXXXXXX|\n";
+    output += "|" + stringAlign("SUMMARY: ", 1, invoiceWidth - 14) + stringAlign(convertPricePLN(totalBrutto), 2, 12) + "|\n";
     output += "|" + stringAlign("TMS: TTTTT   ID: " + to_string(ID), 2, invoiceWidth - 2) + "|\n";
 
     output += stringAlign("¯", 0, invoiceWidth, "¯") += "\n";
@@ -129,6 +134,7 @@ string Invoice::generate() const {
 
 string Receipt::generate() const {
     char receiptWidth = 40;
+    unsigned short priceBrutto = 0, totalBrutto = 0;
     
     string output = stringAlign("_", 0, 40, "_");
     
@@ -152,12 +158,14 @@ string Receipt::generate() const {
         output += "x ";
         output += stringAlign(convertPricePLN(product -> calculatePriceBrutto()), 1, 7);
         output += " ";
-        output += stringAlign(convertPricePLN(product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 8);
+        priceBrutto = product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000);
+        output += stringAlign(convertPricePLN(priceBrutto), 1, 8);
         output += "|\n";
+        totalBrutto += priceBrutto;
     }
     
     output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
-    output += "|" + stringAlign("SUMMARY: ", 1, receiptWidth - 10) + "XXXXXXXX|\n";
+    output += "|" + stringAlign("SUMMARY: ", 1, receiptWidth - 10) + stringAlign(convertPricePLN(totalBrutto), 2, 8) + "|\n";
     output += "|" + stringAlign("TMS: TTTTT   ID: ", 0, receiptWidth - 2) + "|\n";
 
     output += stringAlign("¯", 0, receiptWidth, "¯") += "\n";
