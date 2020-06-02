@@ -98,6 +98,8 @@ public:
      */
     string convertToKg(unsigned short quantity) const;
     void save(string filename);
+    
+    virtual string generate() const = 0;
 };
 
 
