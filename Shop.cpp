@@ -206,11 +206,9 @@ void Shop::executeQueues() {
 
 bool Shop::generate() {
 /// generates all the needed object before running
-    createProducts();
     createCashDesks();
-    for (int i = employees.maxAmount - 1; i >= 0; --i)
-        if (createEmployee("Geralt z Rivii") == -1)
-            return false;
+    createEmployees("Surname.txt");
+    createProducts("Products.txt");
     // assigning random employees to few CashDesks, so at least some will be open at the start of simulation
     float temp = 0.25 * cashDesks.size();
     Employee* randEmployee = nullptr;
@@ -237,7 +235,23 @@ bool Shop::createCashDesks() {
     return true;
 }
 
-bool Shop::createProducts() {
+bool Shop::createEmployees(std::string filename) {
+/// calls the Employee constructor, appending him to the vector of all products in this shop
+    std::vector<std::string> names;
+    std::string tempString;
+    ifstream file;
+    file.open("RandomData/"+filename);
+    while (!file.eof()) {
+        if (file >> tempString) {names.push_back(tempString);} else throw "File error.";
+    }
+    file.close();
+    for (int i = employees.maxAmount - 1; i >= 0; --i)
+        if (createEmployee(names[rand() % names.size()]) == -1)
+            return false;
+    return true;
+}
+
+bool Shop::createProducts(std::string filename) {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     std::vector<std::string> names;
     std::vector<unsigned short> prices;
@@ -246,7 +260,7 @@ bool Shop::createProducts() {
     std::string tempString;
     unsigned short tempShort;
     ifstream file;
-    file.open("RandomData/Products.txt");
+    file.open("RandomData/"+filename);
     while (!file.eof()) {
         if (file >> tempString) {names.push_back(tempString);} else throw "File error.";
         if (file >> tempShort) {prices.push_back(tempShort);} else throw "File error.";
@@ -256,7 +270,7 @@ bool Shop::createProducts() {
     file.close();
 
     for (int i = products.maxAmount - 1; i >= 0; --i) {
-        tempShort = rand() % (names.size()-1);
+        tempShort = rand() % names.size();
         if (createProduct(names[tempShort], prices[tempShort]*(0.9+((float)(rand()%20)/20)), VATs[tempShort], 100+rand()%100, units[tempShort]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     }
