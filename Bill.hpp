@@ -85,7 +85,7 @@ public:
      @param argBuyer Class Customer object.
      @param argSeller Class Customer object.
      */
-    Bill(unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = 0, chrono::time_point<chrono::high_resolution_clock> argDate = chrono::steady_clock::now());
+    Bill(unsigned short argID = 0, Customer argBuyer = 0, Customer argSeller = Customer(true, 99999, "Supermarket", "5351638772", "Poziomkowa", "15A", "00-009", "Szczebrzeszyn", "Atlantyda"), chrono::time_point<chrono::high_resolution_clock> argDate = chrono::steady_clock::now());
     
     
     // Getters:
