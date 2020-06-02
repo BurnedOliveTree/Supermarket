@@ -220,6 +220,7 @@ void Shop::executeQueues() {
 
 bool Shop::generate() {
 /// generates all the needed object before running
+    loadCustomers("Customers.txt");
     createCashDesks();
     createEmployees("Surname.txt");
     createProducts("Products.txt");
@@ -247,6 +248,17 @@ bool Shop::createCashDesks() {
         if (createCashDesk() == -1)
             return false;
     return true;
+}
+
+void Shop::loadCustomers(std::string filename) {
+    std::string tempStrings[6];
+    ifstream file;
+    file.open("RandomData/"+filename);
+    if (!file.good()) throw "File error.";
+    while (file >> tempStrings[0] and file >> tempStrings[1] and file >> tempStrings[2] and file >> tempStrings[3]) {
+        customersData.push_back(CustData(tempStrings[0], tempStrings[1], tempStrings[2], tempStrings[3]));
+    }
+    file.close();
 }
 
 bool Shop::createEmployees(std::string filename) {
@@ -309,7 +321,14 @@ int Shop::createCashDesk() {
 int Shop::createCustomer() {
 /// calls the Customer constructor, appending him to the vector of all customers in this shop
     if (customers.iterator + 1 <= customers.maxAmount) {
-        Customer* p = new Customer(customers.iterator, false, "Jan K", "1234567890", "Sezamkowa", "18", "05-800", "Warszawa", "Polska");
+        unsigned long iter = std::rand() % customersData.size();
+        bool buss = !(rand() % 4);
+        std::string bussNum = "";
+        if (buss)
+            for (int i=0; i<10; ++i)
+                bussNum += ((char)(rand() % 10));
+        std::string pstcd = to_string(rand() % 10) + to_string(rand() % 10) + "-" + to_string(rand() % 10) + to_string(rand() % 10) + to_string(rand() % 10);
+        Customer* p = new Customer(customers.iterator, buss, customersData[iter].name, bussNum, customersData[iter].street, to_string(rand() % 64), pstcd, customersData[iter].city, customersData[iter].country);
         customers.container.push_back(p);
         customers.active.push_back(p);
         customers.iterator++;

@@ -61,6 +61,20 @@ struct Container {
     }
 };
 
+struct CustData {
+/// structure holding data to create Customer objects from (this exist so that we don't have to keep getting data by opening the file over and over again)
+    std::string name;
+    std::string street;
+    std::string city;
+    std::string country;
+    CustData(std::string argName, std::string argStreet, std::string argCity, std::string argCountry) {
+        name = argName;
+        street = argStreet;
+        city = argCity;
+        country = argCountry;
+    }
+};
+
 class ShopInterface {
 public:
     virtual void run() = 0;
@@ -77,6 +91,7 @@ class Shop : public ShopInterface {
     Container<Customer> customers;
     Container<Employee> employees;
     Container<Product> products;
+    std::vector<CustData> customersData;
     unsigned short maxTime;
     unsigned short eventsPerTick;
     unsigned short scanSpeed;
@@ -85,6 +100,7 @@ class Shop : public ShopInterface {
     void constructor(unsigned long argTime, unsigned short argEvents);
     std::string formatHour(unsigned long minutes);
     bool createCashDesks();
+    void loadCustomers(std::string filename);
     bool createEmployees(std::string filename);
     bool createProducts(std::string filename);
     int createCashDesk();
