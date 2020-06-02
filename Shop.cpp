@@ -202,16 +202,15 @@ void Shop::executeQueues() {
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
         if (cashDesks.active[i] -> size()) {
             Customer* customerPtr = cashDesks.active[i] -> scan(scanSpeed);
-            if (customerPtr != nullptr) {
+            if (customerPtr != nullptr and customerPtr -> getBasketSize() != 0) {
                 cashDesks.active[i] -> checkout(customerPtr);
                 if (customerPtr -> getTaxNumber() == "") {
-                    Receipt receipt(billNumber, *customerPtr);
+                    Receipt receipt(billNumber++, *customerPtr);
                     receipt.save("Logs/Receipt_" + to_string(receipt.getID()) + ".txt");
                 } else {
-                    Invoice invoice(billNumber, *customerPtr);
+                    Invoice invoice(billNumber++, *customerPtr);
                     invoice.save("Logs/Invoice_" + to_string(invoice.getID()) + ".txt");
                 }
-                billNumber++;
                 customers.container.erase(customers.container.begin() + customers.findAll(customerPtr -> getID()));
                 delete customerPtr;
             }
