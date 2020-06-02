@@ -109,11 +109,12 @@ std::string Shop::event() {
         if (customers.activeSize() > 0 && products.activeSize() > 0) {
             Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
             Product* randProduct = products.active[std::rand() % products.activeSize()];
-            unsigned short quantity = 1; // wzór, a nie jeden
+            unsigned short quantity = (4 / (std::rand() % 12)) + 1;
 
-            randCustomer->addToBasket(randProduct, quantity);
-            if (!randProduct->getQuantity())
+            if (quantity >= randProduct->getQuantity())
+                quantity = randProduct->getQuantity();
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
+            randCustomer->addToBasket(randProduct, quantity);
             buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl << std::endl;
         }
     }
