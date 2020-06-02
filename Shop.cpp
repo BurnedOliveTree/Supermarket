@@ -241,10 +241,12 @@ bool Shop::createEmployees(std::string filename) {
     std::string tempString;
     ifstream file;
     file.open("RandomData/"+filename);
-    while (!file.eof()) {
-        if (file >> tempString) {names.push_back(tempString);} else throw "File error.";
+    if (!file.good()) throw "File error.";
+    while (file >> tempString) {
+        names.push_back(tempString);
     }
     file.close();
+
     for (int i = employees.maxAmount - 1; i >= 0; --i)
         if (createEmployee(names[rand() % names.size()]) == -1)
             return false;
@@ -258,7 +260,7 @@ bool Shop::createProducts(std::string filename) {
     std::vector<unsigned short> VATs;
     std::vector<Measure> units;
     std::string tempString;
-    unsigned short tempShort, tempData[3];
+    unsigned short tempData[3];
     ifstream file;
     file.open("RandomData/"+filename);
     if (!file.good()) throw "File error.";
@@ -270,9 +272,10 @@ bool Shop::createProducts(std::string filename) {
     }
     file.close();
 
+    unsigned short randIter;
     for (int i = products.maxAmount - 1; i >= 0; --i) {
-        tempShort = rand() % names.size();
-        if (createProduct(names[tempShort], prices[tempShort]*(0.9+((float)(rand()%20)/20)), VATs[tempShort], 100+rand()%100, units[tempShort]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+        randIter = rand() % names.size();
+        if (createProduct(names[randIter], prices[randIter]*(0.9+((float)(rand()%20)/20)), VATs[randIter], 100+rand()%100, units[randIter]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     }
     return true;
