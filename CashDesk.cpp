@@ -136,5 +136,6 @@ unsigned int CashDesk::checkout(Customer *customer) {
         Product* product = productPair.first;
         summedValue += product -> getPrice() * product -> getQuantity();
     }
+    this -> addCash(summedValue);
     return summedValue;
 }
