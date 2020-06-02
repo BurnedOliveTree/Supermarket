@@ -25,33 +25,43 @@ Customer::Customer(unsigned short argID, bool argIsBusiness, string argName, str
 unsigned short Customer::getID() const {
     return ID;
 }
+
 bool Customer::getIsBusiness() const {
     return isBusiness;
 }
+
 string Customer::getName() const {
     return name;
 }
+
 string Customer::getTaxNumber() const {
     return taxNumber;
 }
+
 string Customer::getStreet() const {
     return street;
 }
+
 string Customer::getBuildingNumber() const {
     return buildingNumber;
 }
+
 string Customer::getPostcode() const {
     return postcode;
 }
+
 string Customer::getCity() const {
     return city;
 }
+
 string Customer::getCountry() const {
     return country;
 }
+
 map<Product*, unsigned short> Customer::getBasket() const {
     return basket;
 }
+
 unsigned long Customer::getBasketSize() const {
     return basket.size();
 }
