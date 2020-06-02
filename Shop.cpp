@@ -56,6 +56,7 @@ void Shop::constructor(unsigned long argTime, unsigned short argEvents) {
     products.maxAmount = 1.2 * argTime;
     eventsPerTick = argEvents;
     scanSpeed = argEvents * 2;
+    billNumber = 0;
 }
 
 Shop::~Shop() {
@@ -201,8 +202,15 @@ void Shop::executeQueues() {
         if (cashDesks.active[i] -> size()) {
             Customer* customerPtr = cashDesks.active[i] -> scan(scanSpeed);
             if (customerPtr != nullptr) {
-                // cashDesks.active[i] += wartość pieniędzy z rachunku
-                // custPoint.stwórzRachunekIGoWrzućDoPliku
+                cashDesks.active[i] -> checkout(customerPtr);
+                if (customerPtr -> getTaxNumber() == "") {
+                    Receipt receipt(billNumber, *customerPtr);
+                    receipt.save("Logs/Receipt_" + to_string(receipt.getID()) + ".txt");
+                } else {
+                    Invoice invoice(billNumber, *customerPtr);
+                    invoice.save("Logs/Invoice_" + to_string(invoice.getID()) + ".txt");
+                }
+                billNumber++;
                 customers.container.erase(customers.container.begin() + customers.findAll(customerPtr -> getID()));
                 delete customerPtr;
             }
