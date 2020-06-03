@@ -157,7 +157,7 @@ std::string Shop::event() {
                     }
             }
             else {
-                // we don't -> the only CashDesk in Shop should always stay open
+                // we don't -> the last opened CashDesk in Shop should always stay open
                 return buff.str();
             }
         }
@@ -212,17 +212,17 @@ std::string Shop::executeQueues() {
                 cashDesks.active[i] -> checkout(customerPtr);
                 string customerName = customerPtr -> getName(), customerID = to_string(customerPtr -> getID());
                 if (customerPtr -> getBasketSize() != 0) {
-                    if (customerPtr -> getTaxNumber() == "") {
-                        Receipt receipt(billNumber++, *customerPtr);
-                        string receiptID = to_string(receipt.getID());
-                        receipt.save("Logs/Receipt_" + receiptID + ".txt");
-                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with receipt (ID: " + receiptID + ")." << std::endl << std::endl;
-                    } else {
+                    if (customerPtr -> getIsBusiness()){
                         Invoice invoice(billNumber++, *customerPtr);
                         string invoiceID = to_string(invoice.getID());
 
                         invoice.save("Logs/Invoice_" + invoiceID + ".txt");
                         buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with invoice (ID: " + invoiceID + ")." << std::endl << std::endl;
+                    } else {
+                        Receipt receipt(billNumber++, *customerPtr);
+                        string receiptID = to_string(receipt.getID());
+                        receipt.save("Logs/Receipt_" + receiptID + ".txt");
+                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with receipt (ID: " + receiptID + ")." << std::endl << std::endl;
                     }
                 }
                 else
