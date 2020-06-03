@@ -11,8 +11,10 @@
 #include "Customer.hpp"
 #include "Employee.hpp"
 #include "CashDesk.hpp"
+#include "Bill.hpp"
 
-#include <iostream> // będzie <string>
+#include <iostream>
+#include <fstream>
 #include <sstream>
 #include <vector>
 #include <cmath>
@@ -94,7 +96,6 @@ class Shop : public ShopInterface {
     std::vector<CustData> customersData;
     unsigned short maxTime;
     unsigned short eventsPerTick;
-    unsigned short scanSpeed;
     unsigned short billNumber;
 
     void constructor(unsigned long argTime, unsigned short argEvents);
@@ -105,7 +106,7 @@ class Shop : public ShopInterface {
     bool createProducts(std::string filename);
     int createCashDesk();
     int createCustomer();
-    int createEmployee(std::string name);
+    int createEmployee(std::string name, unsigned short scanSpeed);
     int createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit);
 public:
     Shop();

@@ -120,9 +120,9 @@ Customer* CashDesk::pop() {
     return result;
 }
 
-Customer* CashDesk::scan(unsigned short scanSpeed) {
+Customer* CashDesk::scan() {
 /// basic functionality, scans through next items in the first's Customer's basket until it's fully scaned, only then it returns a pointer to Customer object instead of a nullptr
-    itemsScaned += scanSpeed;
+    itemsScaned += (assignee->getScanSpeed());
     if (customerQueue.front() -> getBasketSize() < itemsScaned) {
         itemsScaned = 0;
         return pop();
