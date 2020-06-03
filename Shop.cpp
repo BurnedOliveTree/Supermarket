@@ -78,14 +78,16 @@ void Shop::run() {
     unsigned long currTime = 480;
     generate();
     for (unsigned short i = 0; i < maxTime; ++i) {
+        std::cout << formatHour(currTime+i) << std::endl;
+        log << formatHour(currTime+i) << std::endl;
         for (unsigned short j = 0; j < eventsPerTick; ++j) {
             temp = event();
-            if (temp != "")
-                temp = formatHour(currTime+i) + " " + temp;
             std::cout << temp;
             log << temp;
         }
-        executeQueues();
+        temp = executeQueues();
+        std::cout << temp;
+        log << temp;
         checkCustomers();
         std::this_thread::sleep_for(std::chrono::seconds(eventsPerTick / 2));
     }
@@ -200,25 +202,33 @@ std::string Shop::event() {
     return buff.str();
 }
 
-void Shop::executeQueues() {
+std::string Shop::executeQueues() {
 /// iterates over all active CashDesks and calls scan() form each, also resolve Customers payment for Product's in its basket, if all items were scanned
+    std::stringstream buff;
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
         if (cashDesks.active[i] -> size()) {
             Customer* customerPtr = cashDesks.active[i] -> scan();
-            if (customerPtr != nullptr and customerPtr -> getBasketSize() != 0) {
+            if (customerPtr != nullptr) {
                 cashDesks.active[i] -> checkout(customerPtr);
-                if (customerPtr -> getTaxNumber() == "") {
-                    Receipt receipt(billNumber++, *customerPtr);
-                    receipt.save("Logs/Receipt_" + to_string(receipt.getID()) + ".txt");
-                } else {
-                    Invoice invoice(billNumber++, *customerPtr);
-                    invoice.save("Logs/Invoice_" + to_string(invoice.getID()) + ".txt");
+                if (customerPtr -> getBasketSize() != 0) {
+                    if (customerPtr -> getTaxNumber() == "") {
+                        Receipt receipt(billNumber++, *customerPtr);
+                        receipt.save("Logs/Receipt_" + to_string(receipt.getID()) + ".txt");
+                        buff << "Customer {Name} (ID {ID}) has left the shop with receipt {ID}" << std::endl << std::endl;
+                    } else {
+                        Invoice invoice(billNumber++, *customerPtr);
+                        invoice.save("Logs/Invoice_" + to_string(invoice.getID()) + ".txt");
+                        buff << "Customer {Name} (ID {ID}) has left the shop with invoice {ID}" << std::endl << std::endl;
+                    }
                 }
+                else
+                    buff << "Customer {Name} (ID {ID}) left the shop without buying anything" << std::endl << std::endl;
                 customers.container.erase(customers.container.begin() + customers.findAll(customerPtr -> getID()));
                 delete customerPtr;
             }
         }
     }
+    return buff.str();
 }
 
 bool Shop::generate() {

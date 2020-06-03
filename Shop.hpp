@@ -81,7 +81,7 @@ class ShopInterface {
 public:
     virtual void run() = 0;
     virtual std::string event() = 0;
-    virtual void executeQueues() = 0;
+    virtual std::string executeQueues() = 0;
     virtual bool generate() = 0;
     virtual void checkCustomers() = 0;
 };
@@ -116,7 +116,7 @@ public:
     ~Shop();
     void run();
     std::string event();
-    void executeQueues();
+    std::string executeQueues();
     bool generate();
     void checkCustomers();
 };
