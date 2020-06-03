@@ -58,11 +58,13 @@ void Bill::setID(unsigned short newID) {
 }
 
 string Bill::convertPricePLN(unsigned short price) const {
-    return to_string(price / 100) + "." + (to_string(price % 100) + "00").substr(0, 2);
+    string prefix = to_string(price / 100), suffix = to_string(price % 100);
+    return prefix + "." + (suffix.length() == 1 ? ("0" + suffix) : suffix);
 }
 
 string Bill::convertToKg(unsigned short quantity) const {
-    return to_string(quantity / 1000) + "." + (to_string(quantity % 1000) + "000").substr(0, 3);
+    string prefix = to_string(quantity / 1000), suffix = to_string(quantity % 1000);
+    return prefix + "." + (suffix.length() == 1 ? ("00" + suffix) : (suffix.length() == 2 ? ("0" + suffix) : suffix));
 }
 
 void Bill::save(string filename) {
