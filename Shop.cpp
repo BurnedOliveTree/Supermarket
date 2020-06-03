@@ -10,7 +10,7 @@
 
 Shop::Shop() {
 /// default constructor with pre-set parameters
-    std::cout << "started simulation with default arguments: 20 seconds duration and 3 events per second" << std::endl << std::endl;
+    std::cout << "Started simulation with default arguments: duration of 20 seconds and 3 events per second." << std::endl << std::endl;
     constructor(20, 3);
     billNumber = 0;
 }
@@ -39,7 +39,7 @@ Shop::Shop(string filename) {
 Shop::Shop(char *arguments[], int argc) {
 /// reading parameters directly from console
     if (argc != 3)
-        throw "Uncorrect number of arguments was given through console";
+        throw "Incorrect number of arguments was given through console.";
     else {
         constructor(std::stoi(arguments[1]), std::stoi(arguments[2]));
     }
@@ -106,9 +106,9 @@ std::string Shop::event() {
         int customerID = createCustomer();
 
         if (customerID > -1)
-            buff << "Customer " << customers.find(customerID)->getName() << " (ID " << customerID << ") has entered the shop" << std::endl << std::endl;
+            buff << "Customer " << customers.find(customerID)->getName() << " (ID: " << customerID << ") has entered the shop." << std::endl << std::endl;
         else
-            buff << "A maximum value of customers has been reached, nothing happens" << std::endl << std::endl;
+            buff << "A maximum value of customers has been reached, nothing happens." << std::endl << std::endl;
     }
     else if (diceRoll <= 100 - 40 * variable) {
     /// customer adds something to their basket
@@ -128,7 +128,7 @@ std::string Shop::event() {
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
             }
             randCustomer->addToBasket(randProduct, quantity);
-            buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << (randProduct->getMeasureUnits()?"g":"pcs") << " of " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl << std::endl;
+            buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has put " << quantity << " " << (randProduct->getMeasureUnits()?"g":"pcs") << " of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") into his basket." << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 20 * variable) {
@@ -139,7 +139,7 @@ std::string Shop::event() {
 
             randCashDesk->push(randCustomer);
             customers.active.erase(customers.active.begin() + customers.findActive(randCustomer->getID()));
-            buff << "Customer " << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << std::endl << std::endl;
+            buff << "Customer " << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << "." << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 10 * variable) {
@@ -166,7 +166,7 @@ std::string Shop::event() {
 
         if (randCashDesk->getState()) {
             randEmployee = randCashDesk->close();
-            buff << "Cash desk (ID " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << std::endl << std::endl;
+            buff << "Cash desk (ID: " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << "." << std::endl << std::endl;
             employees.active.push_back(randEmployee);
             cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(randCashDesk->getID()));
         }
@@ -175,7 +175,7 @@ std::string Shop::event() {
             randCashDesk->open(randEmployee);
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
             cashDesks.active.push_back(randCashDesk);
-            buff << "Cash desk (ID " << randCashDesk->getID() << ") has just opened and employee " << randEmployee->getID() << " has been assigned to it" << std::endl << std::endl;
+            buff << "Cash desk (ID: " << randCashDesk->getID() << ") has just opened - assigned employee " << randEmployee->getID() << "." << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 5 * variable) {
@@ -187,7 +187,7 @@ std::string Shop::event() {
 
             employees.active.push_back(randCashDesk->assign(randEmployee));
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
-            buff << randEmployee->getName() << " (ID " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID " << randCashDesk->getID() << ")" << std::endl << std::endl;
+            buff << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID: " << randCashDesk->getID() << ")." << std::endl << std::endl;
         }
     }
     else {
@@ -197,7 +197,7 @@ std::string Shop::event() {
         Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
         
-        buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID " << randProduct->getID() << ") and it's " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100  << std::endl << std::endl;
+        buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") and it costs " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100  << std::endl << std::endl;
         }
     }
     return buff.str();
