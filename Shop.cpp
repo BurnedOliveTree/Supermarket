@@ -105,7 +105,7 @@ std::string Shop::event() {
         if (customerID > -1)
             buff << "Customer " << customers.find(customerID)->getName() << " (ID: " << customerID << ") has entered the shop." << std::endl << std::endl;
         else
-            buff << "A maximum value of customers has been reached, nothing happens." << std::endl << std::endl;
+            buff << "A new customer tried to enter the shop, but it's too crowded." << std::endl << std::endl;
     }
     else if (diceRoll <= 100 - 40 * variable) {
     /// customer adds something to their basket
