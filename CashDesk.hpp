@@ -27,7 +27,7 @@ public:
     virtual void push(Customer* shopper) = 0;
     virtual unsigned long size() = 0;
     virtual Customer* pop() = 0;
-    virtual Customer* scan(unsigned short scanSpeed) = 0;
+    virtual Customer* scan() = 0;
 };
 
 class CashDesk : public CashDeskInterface {
@@ -53,7 +53,7 @@ public:
     void push(Customer* shopper);
     unsigned long size();
     Customer* pop();
-    Customer* scan(unsigned short scanSpeed);
+    Customer* scan();
     unsigned int checkout(Customer *customer);
     
     bool operator ==(unsigned short secondID);

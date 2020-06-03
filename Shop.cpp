@@ -5,8 +5,6 @@
 //
 
 #include "Shop.hpp"
-#include "Bill.hpp"
-#include <fstream>
 
 Shop::Shop() {
 /// default constructor with pre-set parameters
@@ -55,7 +53,6 @@ void Shop::constructor(unsigned long argTime, unsigned short argEvents) {
     employees.maxAmount = ceil(0.3 * (float)argTime);
     products.maxAmount = 1.2 * argTime;
     eventsPerTick = argEvents;
-    scanSpeed = argEvents * 2;
     billNumber = 0;
 }
 
@@ -207,7 +204,7 @@ void Shop::executeQueues() {
 /// iterates over all active CashDesks and calls scan() form each, also resolve Customers payment for Product's in its basket, if all items were scanned
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
         if (cashDesks.active[i] -> size()) {
-            Customer* customerPtr = cashDesks.active[i] -> scan(scanSpeed);
+            Customer* customerPtr = cashDesks.active[i] -> scan();
             if (customerPtr != nullptr and customerPtr -> getBasketSize() != 0) {
                 cashDesks.active[i] -> checkout(customerPtr);
                 if (customerPtr -> getTaxNumber() == "") {
@@ -280,7 +277,7 @@ bool Shop::createEmployees(std::string filename) {
     file.close();
 
     for (int i = employees.maxAmount - 1; i >= 0; --i)
-        if (createEmployee(names[rand() % names.size()]) == -1)
+        if (createEmployee(names[rand() % names.size()], (eventsPerTick * 2) * (0.9 + (float)(rand() % 20) / 20)) == -1)
             return false;
     return true;
 }
@@ -343,10 +340,10 @@ int Shop::createCustomer() {
     return -1;
 }
 
-int Shop::createEmployee(std::string name) {
+int Shop::createEmployee(std::string name, unsigned short scanSpeed) {
 /// calls the Employee constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 <= employees.maxAmount) {
-        Employee* p = new Employee(employees.iterator, name);
+        Employee* p = new Employee(employees.iterator, name, scanSpeed);
         employees.container.push_back(p);
         employees.active.push_back(p);
         employees.iterator++;
