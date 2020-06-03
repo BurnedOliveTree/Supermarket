@@ -122,7 +122,7 @@ std::string Shop::event() {
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
             }
             randCustomer->addToBasket(randProduct, quantity);
-            buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << randProduct->getMeasureUnits() << " of " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl << std::endl;
+            buff << randCustomer->getName() << " (ID " << randCustomer->getID() << ") has put " << quantity << " " << (randProduct->getMeasureUnits()?"g":"pcs") << " of " << randProduct->getName() << " (ID " << randProduct->getID() << ") into his basket" << std::endl << std::endl;
         }
     }
     else if (diceRoll <= 100 - 20 * variable) {
