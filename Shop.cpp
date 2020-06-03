@@ -117,6 +117,12 @@ std::string Shop::event() {
             Product* randProduct = products.active[std::rand() % products.activeSize()];
             unsigned short quantity = ((4.0 * (randProduct->getMeasureUnits()==g?1000:1) / ((float)(std::rand() % 12) + 1)) + 1);
 
+            if (randProduct->getMeasureUnits() == g)
+                if (randProduct->getQuantity() < 100) {
+                /// avoid a situation in which Customer is going to take 10 g of meat or sweets (which does not happen in real-life Shop)
+                    products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
+                    return buff.str();
+                }
             if (quantity >= randProduct->getQuantity()) {
                 quantity = randProduct->getQuantity();
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
