@@ -220,8 +220,8 @@ void Shop::executeQueues() {
 
 bool Shop::generate() {
 /// generates all the needed object before running
-    loadCustomers("Customers.txt");
     createCashDesks();
+    loadCustomers("Customers.txt");
     createEmployees("Surname.txt");
     createProducts("Products.txt");
     // assigning random employees to few CashDesks, so at least some will be open at the start of simulation
@@ -251,7 +251,7 @@ bool Shop::createCashDesks() {
 }
 
 void Shop::loadCustomers(std::string filename) {
-    std::string tempStrings[6];
+    std::string tempStrings[4];
     ifstream file;
     file.open("RandomData/"+filename);
     if (!file.good()) throw "File error.";
