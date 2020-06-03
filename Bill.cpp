@@ -111,7 +111,7 @@ string Invoice::generate() const {
         output += "|";
         output += stringAlign(convertPricePLN(product -> getVAT() * quantity * product -> getPrice() / 100 / (product -> getMeasureUnits() == pcs ? 1 : 1000)), 1, 9);
         output += "|";
-        priceBrutto = product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000);
+        priceBrutto = ceil(product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000));
         output += stringAlign(convertPricePLN(priceBrutto), 1, 14);
         output += "|\n";
         totalBrutto += priceBrutto;
@@ -120,7 +120,7 @@ string Invoice::generate() const {
 
     output += "|" + stringAlign(".", 2, invoiceWidth - 2, ".") + "|\n";
     output += "|" + stringAlign("SUMMARY: ", 1, invoiceWidth - 14) + stringAlign(convertPricePLN(totalBrutto), 2, 12) + "|\n";
-    output += "|" + stringAlign("TMS: TTTTT   ID: " + to_string(ID), 2, invoiceWidth - 2) + "|\n";
+    output += "|" + stringAlign("ID: " + to_string(ID), 0, invoiceWidth - 2) + "|\n";
 
     output += stringAlign("¯", 0, invoiceWidth, "¯") += "\n";
     return output;
@@ -158,7 +158,7 @@ string Receipt::generate() const {
         output += "x ";
         output += stringAlign(convertPricePLN(product -> calculatePriceBrutto()), 1, 7);
         output += " ";
-        priceBrutto = product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000);
+        priceBrutto = ceil(product -> calculatePriceBrutto() * quantity / (product -> getMeasureUnits() == pcs ? 1 : 1000));
         output += stringAlign(convertPricePLN(priceBrutto), 1, 8);
         output += "|\n";
         totalBrutto += priceBrutto;
@@ -166,7 +166,7 @@ string Receipt::generate() const {
     
     output += "|" + stringAlign(".", 2, receiptWidth - 2, ".") + "|\n";
     output += "|" + stringAlign("SUMMARY: ", 1, receiptWidth - 10) + stringAlign(convertPricePLN(totalBrutto), 2, 8) + "|\n";
-    output += "|" + stringAlign("TMS: TTTTT   ID: ", 0, receiptWidth - 2) + "|\n";
+    output += "|" + stringAlign("ID: ", 0, receiptWidth - 2) + "|\n";
 
     output += stringAlign("¯", 0, receiptWidth, "¯") += "\n";
     return output;
