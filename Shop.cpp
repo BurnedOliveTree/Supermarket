@@ -343,7 +343,7 @@ int Shop::createCustomer() {
         std::string bussNum = "";
         if (buss)
             for (int i=0; i<10; ++i)
-                bussNum += ((char)(rand() % 10));
+                bussNum += ((rand() % 10)+'0');
         std::string pstcd = to_string(rand() % 10) + to_string(rand() % 10) + "-" + to_string(rand() % 10) + to_string(rand() % 10) + to_string(rand() % 10);
         Customer* p = new Customer(customers.iterator, buss, customersData[iter].name, bussNum, customersData[iter].street, to_string(rand() % 64), pstcd, customersData[iter].city, customersData[iter].country);
         customers.container.push_back(p);
