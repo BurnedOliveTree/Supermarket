@@ -210,19 +210,23 @@ std::string Shop::executeQueues() {
             Customer* customerPtr = cashDesks.active[i] -> scan();
             if (customerPtr != nullptr) {
                 cashDesks.active[i] -> checkout(customerPtr);
+                string customerName = customerPtr -> getName(), customerID = to_string(customerPtr -> getID());
                 if (customerPtr -> getBasketSize() != 0) {
                     if (customerPtr -> getTaxNumber() == "") {
                         Receipt receipt(billNumber++, *customerPtr);
-                        receipt.save("Logs/Receipt_" + to_string(receipt.getID()) + ".txt");
-                        buff << "Customer {Name} (ID {ID}) has left the shop with receipt {ID}" << std::endl << std::endl;
+                        string receiptID = to_string(receipt.getID());
+                        receipt.save("Logs/Receipt_" + receiptID + ".txt");
+                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with receipt (ID: " + receiptID + ")." << std::endl << std::endl;
                     } else {
                         Invoice invoice(billNumber++, *customerPtr);
-                        invoice.save("Logs/Invoice_" + to_string(invoice.getID()) + ".txt");
-                        buff << "Customer {Name} (ID {ID}) has left the shop with invoice {ID}" << std::endl << std::endl;
+                        string invoiceID = to_string(invoice.getID());
+
+                        invoice.save("Logs/Invoice_" + invoiceID + ".txt");
+                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with invoice (ID: " + invoiceID + ")." << std::endl << std::endl;
                     }
                 }
                 else
-                    buff << "Customer {Name} (ID {ID}) left the shop without buying anything" << std::endl << std::endl;
+                    buff << "The employee looks suspiciously at the " + customerName + " (ID: " + customerID + "), as he/she left the shop without buying anything." << std::endl << std::endl;
                 customers.container.erase(customers.container.begin() + customers.findAll(customerPtr -> getID()));
                 delete customerPtr;
             }
