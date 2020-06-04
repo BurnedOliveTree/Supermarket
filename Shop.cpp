@@ -6,9 +6,11 @@
 
 #include "Shop.hpp"
 
+using namespace std;
+
 Shop::Shop() {
 /// default constructor with pre-set parameters
-    std::cout << "Started simulation with default arguments: duration of 20 seconds and 3 events per second." << std::endl << std::endl;
+    cout << "Started simulation with default arguments: duration of 20 seconds and 3 events per second." << endl << endl;
     constructor(20, 3);
     billNumber = 0;
 }
@@ -22,12 +24,17 @@ Shop::Shop(unsigned long argTime, unsigned short argEvents) {
 Shop::Shop(string filename) {
 /// reading parameters from files
     unsigned short values[2] = {};
+    string tempString;
     char i = 0;
 
     ifstream file;
     file.open(filename);
-    if (file >> values[i++]) {}
-    else cout << "File error." << endl;
+    if (!file.good()) throw "File named "+filename+" not found.";
+    while (file >> tempString && i < 2) {
+        try { values[i] = stoi(tempString); }
+        catch (invalid_argument e) { cerr << "Values in " << filename << " should be integers." << endl; }
+        i++;
+    }
     file.close();
 
     constructor(values[0], values[1]);
@@ -39,7 +46,8 @@ Shop::Shop(char *arguments[], int argc) {
     if (argc != 3)
         throw "Incorrect number of arguments was given through console.";
     else {
-        constructor(std::stoi(arguments[1]), std::stoi(arguments[2]));
+        try { constructor(stoi(arguments[1]), stoi(arguments[2])); }
+        catch (invalid_argument e) { cerr << "Parameters given in console should be integers." << endl; }
     }
     billNumber = 0;
 }
@@ -72,49 +80,49 @@ Shop::~Shop() {
 
 void Shop::run() {
 /// main method of class, which simulates the whole shop
-    std::srand((unsigned int)std::time(nullptr));
-    std::ofstream log("log.txt");
-    std::string temp;
+    srand((unsigned int)time(nullptr));
+    ofstream log("log.txt");
+    string temp;
     unsigned long currTime = 480;
     generate();
     for (unsigned short i = 0; i < maxTime; ++i) {
-        std::cout << formatHour(currTime+i) << std::endl;
-        log << formatHour(currTime+i) << std::endl;
+        cout << formatHour(currTime+i) << endl;
+        log << formatHour(currTime+i) << endl;
         for (unsigned short j = 0; j < eventsPerTick; ++j) {
             temp = event();
-            std::cout << temp;
+            cout << temp;
             log << temp;
         }
         temp = executeQueues();
-        std::cout << temp;
+        cout << temp;
         log << temp;
         checkCustomers();
-        std::this_thread::sleep_for(std::chrono::seconds(eventsPerTick / 2));
+        this_thread::sleep_for(chrono::seconds(eventsPerTick / 2));
     }
     log.close();
 }
 
-std::string Shop::event() {
+string Shop::event() {
 /// a crucial method in simulation - randomly selects and resolve an event
-    std::stringstream buff;
+    stringstream buff;
     double variable = sin(customers.size() / 2 * M_PI / customers.maxAmount);
-    unsigned short diceRoll = std::rand()%100;
+    unsigned short diceRoll = rand()%100;
 
     if (diceRoll <= 100 * (1 - variable)) {
     /// a new customer enters the shop
         int customerID = createCustomer();
 
         if (customerID > -1)
-            buff << "Customer " << customers.find(customerID)->getName() << " (ID: " << customerID << ") has entered the shop." << std::endl << std::endl;
+            buff << "Customer " << customers.find(customerID)->getName() << " (ID: " << customerID << ") has entered the shop." << endl << endl;
         else
-            buff << "A new customer tried to enter the shop, but it's too crowded." << std::endl << std::endl;
+            buff << "A new customer tried to enter the shop, but it's too crowded." << endl << endl;
     }
     else if (diceRoll <= 100 - 40 * variable) {
     /// customer adds something to their basket
         if (customers.activeSize() > 0 && products.activeSize() > 0) {
-            Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
-            Product* randProduct = products.active[std::rand() % products.activeSize()];
-            unsigned short quantity = ((4.0 * (randProduct->getMeasureUnits()==g?1000:1) / ((float)(std::rand() % 12) + 1)) + 1);
+            Customer* randCustomer = customers.active[rand() % customers.activeSize()];
+            Product* randProduct = products.active[rand() % products.activeSize()];
+            unsigned short quantity = ((4.0 * (randProduct->getMeasureUnits()==g?1000:1) / ((float)(rand() % 12) + 1)) + 1);
 
             if (randProduct->getMeasureUnits() == g)
                 if (randProduct->getQuantity() < 100) {
@@ -127,18 +135,18 @@ std::string Shop::event() {
                 products.active.erase(products.active.begin() + products.findActive(randProduct->getID()));
             }
             randCustomer->addToBasket(randProduct, quantity);
-            buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has put " << quantity << " " << (randProduct->getMeasureUnits()?"g":"pcs") << " of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") into his basket." << std::endl << std::endl;
+            buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has put " << quantity << " " << (randProduct->getMeasureUnits()?"g":"pcs") << " of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") into his basket." << endl << endl;
         }
     }
     else if (diceRoll <= 100 - 20 * variable) {
     /// customer joins the queue to a CashDesk
         if (customers.activeSize() > 0) {
-            Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
-            CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
+            Customer* randCustomer = customers.active[rand() % customers.activeSize()];
+            CashDesk* randCashDesk = cashDesks.active[rand() % cashDesks.activeSize()];
 
             randCashDesk->push(randCustomer);
             customers.active.erase(customers.active.begin() + customers.findActive(randCustomer->getID()));
-            buff << "Customer " << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << "." << std::endl << std::endl;
+            buff << "Customer " << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has entered the queue to cash desk " << randCashDesk->getID() << "." << endl << endl;
         }
     }
     else if (diceRoll <= 100 - 10 * variable) {
@@ -146,7 +154,7 @@ std::string Shop::event() {
         CashDesk* randCashDesk = nullptr;
         // checks if wee are not closing the last CashDesk
         if (cashDesks.activeSize() > 1)
-            randCashDesk = cashDesks[std::rand() % cashDesks.size()];
+            randCashDesk = cashDesks[rand() % cashDesks.size()];
         else {
             // checks if we have more than one CashDesk (opened or closed)
             if (cashDesks.size() > 1) {
@@ -165,46 +173,46 @@ std::string Shop::event() {
 
         if (randCashDesk->getState()) {
             randEmployee = randCashDesk->close();
-            buff << "Cash desk (ID: " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << "." << std::endl << std::endl;
+            buff << "Cash desk (ID: " << randCashDesk -> getID() << ") has just closed, freeing employee " << randEmployee -> getID() << "." << endl << endl;
             employees.active.push_back(randEmployee);
             cashDesks.active.erase(cashDesks.active.begin() + cashDesks.findActive(randCashDesk->getID()));
         }
         else {
-            randEmployee = employees.active[std::rand() % employees.activeSize()];
+            randEmployee = employees.active[rand() % employees.activeSize()];
             randCashDesk->open(randEmployee);
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
             cashDesks.active.push_back(randCashDesk);
-            buff << "Cash desk (ID: " << randCashDesk->getID() << ") has just opened - assigned employee " << randEmployee->getID() << "." << std::endl << std::endl;
+            buff << "Cash desk (ID: " << randCashDesk->getID() << ") has just opened - assigned employee " << randEmployee->getID() << "." << endl << endl;
         }
     }
     else if (diceRoll <= 100 - 5 * variable) {
     /// a random Employee changes shifts of another on a random CashDesk
         if (employees.activeSize() > 0)
         {
-            Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
-            CashDesk* randCashDesk = cashDesks.active[std::rand() % cashDesks.activeSize()];
+            Employee* randEmployee = employees.active[rand() % employees.activeSize()];
+            CashDesk* randCashDesk = cashDesks.active[rand() % cashDesks.activeSize()];
 
             employees.active.push_back(randCashDesk->assign(randEmployee));
             employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
-            buff << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID: " << randCashDesk->getID() << ")." << std::endl << std::endl;
+            buff << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") has replaced another employee as a cashier at cash desk (ID: " << randCashDesk->getID() << ")." << endl << endl;
         }
     }
     else {
     /// customer asks employee about the price
         if (customers.activeSize() > 0 && products.activeSize() > 0 && employees.activeSize() > 0){
-        Customer* randCustomer = customers.active[std::rand() % customers.activeSize()];
-        Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
-        Product* randProduct = products.active[std::rand() % products.activeSize()];
+        Customer* randCustomer = customers.active[rand() % customers.activeSize()];
+        Employee* randEmployee = employees.active[rand() % employees.activeSize()];
+        Product* randProduct = products.active[rand() % products.activeSize()];
         
-        buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") and it costs " << randProduct->calculatePriceBrutto()/100 << "." << randProduct->calculatePriceBrutto()%100  << std::endl << std::endl;
+        buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") and it costs " << randProduct->calculatePriceBrutto()/100 << "." << randProduct->calculatePriceBrutto()%100  << endl << endl;
         }
     }
     return buff.str();
 }
 
-std::string Shop::executeQueues() {
+string Shop::executeQueues() {
 /// iterates over all active CashDesks and calls scan() form each, also resolve Customers payment for Product's in its basket, if all items were scanned
-    std::stringstream buff;
+    stringstream buff;
     for (unsigned long i = 0; i < cashDesks.activeSize(); ++i) {
         if (cashDesks.active[i] -> size()) {
             Customer* customerPtr = cashDesks.active[i] -> scan();
@@ -217,16 +225,16 @@ std::string Shop::executeQueues() {
                         string invoiceID = to_string(invoice.getID());
 
                         invoice.save("Logs/Invoice_" + invoiceID + ".txt");
-                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with invoice (ID: " + invoiceID + ")." << std::endl << std::endl;
+                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with invoice (ID: " + invoiceID + ")." << endl << endl;
                     } else {
                         Receipt receipt(billNumber++, *customerPtr);
                         string receiptID = to_string(receipt.getID());
                         receipt.save("Logs/Receipt_" + receiptID + ".txt");
-                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with receipt (ID: " + receiptID + ")." << std::endl << std::endl;
+                        buff << "Customer " + customerName + " (ID: " + customerID + ") has left the shop with receipt (ID: " + receiptID + ")." << endl << endl;
                     }
                 }
                 else
-                    buff << "The employee looks suspiciously at the " + customerName + " (ID: " + customerID + "), as he/she left the shop without buying anything." << std::endl << std::endl;
+                    buff << "The employee looks suspiciously at the " + customerName + " (ID: " + customerID + "), as he/she left the shop without buying anything." << endl << endl;
                 customers.container.erase(customers.container.begin() + customers.findAll(customerPtr -> getID()));
                 delete customerPtr;
             }
@@ -245,7 +253,7 @@ bool Shop::generate() {
     float temp = 0.25 * cashDesks.size();
     Employee* randEmployee = nullptr;
     for (int i = ceil(temp) - 1; i > -1; --i) {
-        randEmployee = employees.active[std::rand() % employees.activeSize()];
+        randEmployee = employees.active[rand() % employees.activeSize()];
         cashDesks[i]->open(randEmployee);
         employees.active.erase(employees.active.begin() + employees.findActive(randEmployee->getID()));
         cashDesks.active.push_back(cashDesks[i]);
@@ -267,8 +275,8 @@ bool Shop::createCashDesks() {
     return true;
 }
 
-void Shop::loadCustomers(std::string filename) {
-    std::string tempStrings[4];
+void Shop::loadCustomers(string filename) {
+    string tempStrings[4];
     ifstream file;
     file.open("RandomData/"+filename);
     if (!file.good()) throw "File error.";
@@ -278,10 +286,10 @@ void Shop::loadCustomers(std::string filename) {
     file.close();
 }
 
-bool Shop::createEmployees(std::string filename) {
+bool Shop::createEmployees(string filename) {
 /// calls the Employee constructor, appending him to the vector of all products in this shop
-    std::vector<std::string> names;
-    std::string tempString;
+    vector<string> names;
+    string tempString;
     ifstream file;
     file.open("RandomData/"+filename);
     if (!file.good()) throw "File error.";
@@ -296,13 +304,13 @@ bool Shop::createEmployees(std::string filename) {
     return true;
 }
 
-bool Shop::createProducts(std::string filename) {
+bool Shop::createProducts(string filename) {
 /// calls the Product constructor, appending him to the vector of all products in this shop
-    std::vector<std::string> names;
-    std::vector<unsigned short> prices;
-    std::vector<unsigned short> VATs;
-    std::vector<Measure> units;
-    std::string tempString;
+    vector<string> names;
+    vector<unsigned short> prices;
+    vector<unsigned short> VATs;
+    vector<Measure> units;
+    string tempString;
     unsigned short tempData[3];
     ifstream file;
     file.open("RandomData/"+filename);
@@ -318,7 +326,7 @@ bool Shop::createProducts(std::string filename) {
     unsigned short randIter;
     for (int i = products.maxAmount - 1; i >= 0; --i) {
         randIter = rand() % names.size();
-        if (createProduct(names[randIter], prices[randIter]*(0.9+((float)(rand()%20)/20)), VATs[randIter], (100+rand()%100)*(units[randIter]==g?1000:1), units[randIter]) == -1) // tan(((double)(std::rand() % 100) / 100 + M_PI / 2) / M_PI)
+        if (createProduct(names[randIter], prices[randIter]*(0.9+((float)(rand()%20)/20)), VATs[randIter], (100+rand()%100)*(units[randIter]==g?1000:1), units[randIter]) == -1) // tan(((double)(rand() % 100) / 100 + M_PI / 2) / M_PI)
             return false;
     }
     return true;
@@ -338,13 +346,13 @@ int Shop::createCashDesk() {
 int Shop::createCustomer() {
 /// calls the Customer constructor, appending him to the vector of all customers in this shop
     if (customers.iterator + 1 <= customers.maxAmount) {
-        unsigned long iter = std::rand() % customersData.size();
+        unsigned long iter = rand() % customersData.size();
         bool buss = !(rand() % 4);
-        std::string bussNum = "";
+        string bussNum = "";
         if (buss)
             for (int i=0; i<10; ++i)
                 bussNum += ((rand() % 10)+'0');
-        std::string pstcd = to_string(rand() % 10) + to_string(rand() % 10) + "-" + to_string(rand() % 10) + to_string(rand() % 10) + to_string(rand() % 10);
+        string pstcd = to_string(rand() % 10) + to_string(rand() % 10) + "-" + to_string(rand() % 10) + to_string(rand() % 10) + to_string(rand() % 10);
         Customer* p = new Customer(customers.iterator, buss, customersData[iter].name, bussNum, customersData[iter].street, to_string(rand() % 64), pstcd, customersData[iter].city, customersData[iter].country);
         customers.container.push_back(p);
         customers.active.push_back(p);
@@ -354,7 +362,7 @@ int Shop::createCustomer() {
     return -1;
 }
 
-int Shop::createEmployee(std::string name, unsigned short scanSpeed) {
+int Shop::createEmployee(string name, unsigned short scanSpeed) {
 /// calls the Employee constructor, appending him to the vector of all products in this shop
     if (employees.iterator + 1 <= employees.maxAmount) {
         Employee* p = new Employee(employees.iterator, name, scanSpeed);
@@ -366,7 +374,7 @@ int Shop::createEmployee(std::string name, unsigned short scanSpeed) {
     return -1;
 }
 
-int Shop::createProduct(std::string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit) {
+int Shop::createProduct(string name, unsigned int price, unsigned char VAT, unsigned short quantity, Measure unit) {
 /// calls the Product constructor, appending him to the vector of all products in this shop
     if (products.iterator + 1 <= products.maxAmount) {
         Product* p = new Product(name, products.iterator, price, VAT, quantity, unit);
@@ -378,9 +386,9 @@ int Shop::createProduct(std::string name, unsigned int price, unsigned char VAT,
     return -1;
 }
 
-std::string Shop::formatHour(unsigned long minutes) {
-    std::string result = std::to_string(minutes / 60) + ":";
+string Shop::formatHour(unsigned long minutes) {
+    string result = to_string(minutes / 60) + ":";
     if (minutes % 60 < 10)
         result += "0";
-    return result + std::to_string(minutes % 60);
+    return result + to_string(minutes % 60);
 }
