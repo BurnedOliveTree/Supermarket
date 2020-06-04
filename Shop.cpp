@@ -196,7 +196,7 @@ std::string Shop::event() {
         Employee* randEmployee = employees.active[std::rand() % employees.activeSize()];
         Product* randProduct = products.active[std::rand() % products.activeSize()];
         
-        buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") and it costs " << randProduct->getPrice()/100 << "." << randProduct->getPrice()%100  << std::endl << std::endl;
+        buff << randCustomer->getName() << " (ID: " << randCustomer->getID() << ") has asked a " << randEmployee->getName() << " (ID: " << randEmployee->getID() << ") about the price of " << randProduct->getName() << " (ID: " << randProduct->getID() << ") and it costs " << randProduct->calculatePriceBrutto()/100 << "." << randProduct->calculatePriceBrutto()%100  << std::endl << std::endl;
         }
     }
     return buff.str();
