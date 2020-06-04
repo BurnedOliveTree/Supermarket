@@ -29,14 +29,10 @@ Shop::Shop(string filename) {
 
     ifstream file;
     file.open(filename);
-    if (!file.good()) throw "File error.";
+    if (!file.good()) throw "File named "+filename+" not found.";
     while (file >> tempString && i < 2) {
-        try {
-            values[i] = stoi(tempString);
-        }
-        catch (invalid_argument e) {
-            cerr << "Values in " << filename << " should be integers" << endl;
-        }
+        try { values[i] = stoi(tempString); }
+        catch (invalid_argument e) { cerr << "Values in " << filename << " should be integers." << endl; }
         i++;
     }
     file.close();
@@ -50,7 +46,8 @@ Shop::Shop(char *arguments[], int argc) {
     if (argc != 3)
         throw "Incorrect number of arguments was given through console.";
     else {
-        constructor(stoi(arguments[1]), stoi(arguments[2]));
+        try { constructor(stoi(arguments[1]), stoi(arguments[2])); }
+        catch (invalid_argument e) { cerr << "Parameters given in console should be integers." << endl; }
     }
     billNumber = 0;
 }
