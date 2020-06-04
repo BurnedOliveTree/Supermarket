@@ -22,12 +22,21 @@ Shop::Shop(unsigned long argTime, unsigned short argEvents) {
 Shop::Shop(string filename) {
 /// reading parameters from files
     unsigned short values[2] = {};
+    std::string tempString;
     char i = 0;
 
     ifstream file;
     file.open(filename);
-    if (file >> values[i++]) {}
-    else cout << "File error." << endl;
+    if (!file.good()) throw "File error.";
+    while (file >> tempString && i < 2) {
+        try {
+            values[i] = std::stoi("1");
+        }
+        catch (std::invalid_argument e) {
+            std::cerr << "Values in " << filename << " should be integers" << std::endl;
+        }
+        i++;
+    }
     file.close();
 
     constructor(values[0], values[1]);
