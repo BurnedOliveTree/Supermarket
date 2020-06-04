@@ -1,13 +1,13 @@
 CC = g++
 
 supermarket: main.o Shop.o Bill.o Product.o Customer.o Employee.o CashDesk.o StringOperations.o
-	$(CC) main.o Shop.o Bill.o Product.o Customer.o Employee.o CashDesk.o StringOperations.o -o supermarket
+	$(CC) -std=c++11 main.o Shop.o Bill.o Product.o Customer.o Employee.o CashDesk.o StringOperations.o -o supermarket
 
 main.o: main.cpp
-	$(CC) -Wall -c main.cpp
+	$(CC) -std=c++11 -Wall -c main.cpp
 	
 %.o: %.cpp %.hpp
-	$(CC) -Wall -c $<
+	$(CC) -std=c++11 -Wall -c $<
 
 Shop.o: Shop.cpp Shop.hpp
 Bill.o: Bill.cpp Bill.hpp
