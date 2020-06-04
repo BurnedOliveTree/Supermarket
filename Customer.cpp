@@ -116,7 +116,7 @@ void Customer::setCountry(string newCountry) {
 // Tools to edit Basket:
 void Customer::addToBasket(Product* argProduct, unsigned short argQuantity) {
     if (basket.find(argProduct) == basket.end())
-        basket.insert(std::pair<Product*, unsigned short>(argProduct, argQuantity));
+        basket.insert(pair<Product*, unsigned short>(argProduct, argQuantity));
     else
         basket[argProduct] += argQuantity;
     argProduct -> decQuantity(argQuantity);
