@@ -14,8 +14,7 @@
 
 using namespace std;
 
-Bill::Bill(unsigned short argID, Customer argBuyer, Customer argSeller, chrono::time_point<chrono::high_resolution_clock> argDate) {
-    date = argDate;
+Bill::Bill(unsigned short argID, Customer argBuyer, Customer argSeller) {
     ID = argID;
     buyer = argBuyer;
     seller = argSeller;
@@ -23,10 +22,6 @@ Bill::Bill(unsigned short argID, Customer argBuyer, Customer argSeller, chrono::
 
 
 // Getters:
-chrono::time_point<chrono::high_resolution_clock> Bill::getDate() const {
-    return date;
-}
-
 unsigned short Bill::getID() const {
     return ID;
 }
@@ -41,10 +36,6 @@ Customer Bill::getSeller() const {
 
 
 // Setters:
-void Bill::setDate(chrono::time_point<chrono::high_resolution_clock> newDate) {
-    date = newDate;
-}
-
 void Bill::setBuyer(Customer newBuyer) {
     buyer = newBuyer;
 }
